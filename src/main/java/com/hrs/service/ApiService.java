@@ -2,9 +2,8 @@ package com.hrs.service;
 
 
 /**
- *  A service class that provides database access
+ * A service class that provides database access
  */
-public class ApiService
-{
+public class ApiService {
 
 }

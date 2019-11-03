@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Airline-Reservation-System" />
         <module name="Project--Airline-Reservation-System-GUI" />
       </profile>
     </annotationProcessing>
