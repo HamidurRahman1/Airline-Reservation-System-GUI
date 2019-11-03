@@ -7,11 +7,16 @@ import javafx.application.Platform;
 /**
  * Application Runner
  */
-public class MainApplication extends View {
-    public static void main(String[] args) {
-        try {
+public class MainApplication extends View
+{
+    public static void main(String[] args)
+    {
+        try
+        {
             View.launch();
-        } catch (RuntimeException ex) {
+        }
+        catch (RuntimeException ex)
+        {
             System.out.println(ex.getMessage());
             Platform.exit();
         }

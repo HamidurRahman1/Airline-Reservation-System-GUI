@@ -12,11 +12,17 @@
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
-  <!--<properties>-->
-    <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
-    <!--<maven.compiler.source>1.7</maven.compiler.source>-->
-    <!--<maven.compiler.target>1.7</maven.compiler.target>-->
-  <!--</properties>-->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <java.version>13</java.version>
+    <javafx.version>13</javafx.version>
+    <mysql.connector.version>8.0.16</mysql.connector.version>
+
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+
+  </properties>
 
   <dependencies>
 
@@ -24,9 +30,17 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>13</version>
+      <version>${javafx.version}</version>
     </dependency>
     <!-- DEPENDENCY FOR JAVAFX - END -->
+
+    <!-- DEPENDENCY FOR MySQL CONNECTOR - START -->
+    <!--<dependency>-->
+      <!--<groupId>mysql</groupId>-->
+      <!--<artifactId>mysql-connector-java</artifactId>-->
+      <!--<version>${mysql.connector.version}</version>-->
+    <!--</dependency>-->
+    <!-- DEPENDENCY FOR MySQL CONNECTOR - END -->
 
   </dependencies>
 
@@ -48,31 +62,6 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
