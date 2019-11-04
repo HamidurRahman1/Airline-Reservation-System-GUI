@@ -2,6 +2,7 @@ package com.hrs.view;
 
 import com.hrs.controller.Controller;
 import com.hrs.util.Utility;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
