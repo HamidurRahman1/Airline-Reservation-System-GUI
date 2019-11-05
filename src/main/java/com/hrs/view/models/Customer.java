@@ -1,6 +1,7 @@
 package com.hrs.view.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *  A model to represent customer.
@@ -8,6 +9,7 @@ import java.io.Serializable;
 public class Customer extends Person implements Serializable
 {
     private Integer customerId;
+    private Login login;
     
     public Customer()
     {

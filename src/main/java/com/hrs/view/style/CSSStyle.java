@@ -1,6 +1,7 @@
 package com.hrs.view.style;
 
 import com.hrs.util.Utility;
+import com.hrs.view.util.FieldValue;
 
 public class CSSStyle
 {
@@ -11,10 +12,10 @@ public class CSSStyle
     
     public static String VBoxCSS()
     {
-        return fontFamily(Utility.FONT_MONACO)
-                .concat(fontSize(Utility.FONT_SIZE_17))
-                .concat(fontColor(Utility.FONT_COLOR_BLACK))
-                .concat(fontPadding(Utility.FONT_PADDING_7));
+        return fontFamily(FieldValue.FONT_MONACO)
+                .concat(fontSize(FieldValue.FONT_SIZE_17))
+                .concat(fontColor(FieldValue.FONT_COLOR_BLACK))
+                .concat(fontPadding(FieldValue.FONT_PADDING_7));
     }
     
     public static String fontSize(Integer size)

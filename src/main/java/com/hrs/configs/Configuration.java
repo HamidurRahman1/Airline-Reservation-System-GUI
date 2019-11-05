@@ -3,10 +3,13 @@ package com.hrs.configs;
 import com.hrs.service.ApiService;
 import com.hrs.view.controller.Controller;
 
+import java.time.LocalDate;
+
 public class Configuration
 {
     private static Controller controller = null;
     private static ApiService apiService = null;
+    private static LocalDate startingDate = null;
     
     static
     {
@@ -22,5 +25,15 @@ public class Configuration
     public static Controller getController()
     {
         return controller;
+    }
+    
+    public static void setStartingDate(LocalDate localDate)
+    {
+        startingDate = localDate;
+    }
+    
+    public static LocalDate getStartingDate()
+    {
+        return startingDate;
     }
 }
