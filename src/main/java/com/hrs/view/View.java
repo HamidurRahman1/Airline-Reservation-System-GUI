@@ -99,10 +99,10 @@ public class View extends Application
         airport1.setOnAction(e -> controller.eventLaunchAirport(airport1.getText().split(" ")[2]));
         
         final MenuItem airport2 = new MenuItem(FieldValue.AIRPORT2);
-        airport2.setOnAction(e -> controller.eventHelp());
+        airport2.setOnAction(e -> controller.eventLaunchAirport(airport2.getText().split(" ")[2]));
         
         final MenuItem airport3 = new MenuItem(FieldValue.AIRPORT3);
-        airport3.setOnAction(e -> controller.eventHelp());
+        airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
         
         final MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
         airline1.setOnAction(e -> controller.eventHelp());

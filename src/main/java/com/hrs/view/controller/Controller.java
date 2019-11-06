@@ -64,16 +64,14 @@ public class Controller
         Double y1 = primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 770;
         
         arrivalScreen(airportName, x1, y1);
-        departureScreen(airportName, (primaryScreenBounds.getWidth()-2000), y1);
+        departureScreen(airportName, (primaryScreenBounds.getWidth()), y1);
     }
     
     private void departureScreen(String airportName, Double x1, Double y1)
     {
         VBox departure = genericAirport(airportName, "departure", x1, y1, FieldValue.DEPARTURE_CONTAINER_ID);
     
-        GridPane gridPane = populateGrid(FieldValue.TABLE_FLIGHT, FieldValue.TABLE_AIRLINE,
-                FieldValue.TABLE_DEPARTURE_DESTINATION, FieldValue.TABLE_TIME, FieldValue.TABLE_STATUS,
-                Tester.arrivals());
+        GridPane gridPane = populateGrid(FieldValue.TABLE_DEPARTURE_DESTINATION, Tester.arrivals());
     
         Label header = new Label("Departure Flights for ".concat(airportName.toUpperCase()));
         header.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO).concat(CSSStyle.fontSize(20)));
@@ -82,9 +80,7 @@ public class Controller
     
         submit.setOnAction(e ->
         {
-            departure.getChildren().set(2, populateGrid(FieldValue.TABLE_FLIGHT, FieldValue.TABLE_AIRLINE,
-                    FieldValue.TABLE_ARRIVAL_SOURCE, FieldValue.TABLE_TIME, FieldValue.TABLE_STATUS,
-                    Tester.arrivals2()));
+            departure.getChildren().set(2, populateGrid(FieldValue.TABLE_DEPARTURE_DESTINATION, Tester.arrivals2()));
         });
     
         departure.getChildren().add(header);
@@ -96,9 +92,7 @@ public class Controller
     {
         VBox arrival = genericAirport(airportName, "arrival", x1, y1, FieldValue.ARRIVAL_CONTAINER_ID);
         
-        GridPane gridPane = populateGrid(FieldValue.TABLE_FLIGHT, FieldValue.TABLE_AIRLINE,
-                FieldValue.TABLE_ARRIVAL_SOURCE, FieldValue.TABLE_TIME, FieldValue.TABLE_STATUS,
-                Tester.arrivals());
+        GridPane gridPane = populateGrid(FieldValue.TABLE_ARRIVAL_SOURCE, Tester.arrivals());
     
         Label header = new Label("Arrival Flights for ".concat(airportName.toUpperCase()));
         header.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO).concat(CSSStyle.fontSize(20)));
@@ -107,9 +101,7 @@ public class Controller
         
         submit.setOnAction(e ->
         {
-            arrival.getChildren().set(2, populateGrid(FieldValue.TABLE_FLIGHT, FieldValue.TABLE_AIRLINE,
-                    FieldValue.TABLE_ARRIVAL_SOURCE, FieldValue.TABLE_TIME, FieldValue.TABLE_STATUS,
-                    Tester.arrivals2()));
+            arrival.getChildren().set(2, populateGrid(FieldValue.TABLE_ARRIVAL_SOURCE, Tester.arrivals2()));
         });
     
         arrival.getChildren().add(header);
@@ -140,8 +132,7 @@ public class Controller
         return container;
     }
     
-    public GridPane populateGrid(String flightHeader, String airlineHeader, String airportHeader,
-                                 String timeHeader, String statusHeader, List<Arrival> arrivals)
+    public GridPane populateGrid(String airportHeader, List<Arrival> arrivals)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
@@ -154,7 +145,7 @@ public class Controller
         gridPane.add(flight, 0,0);
         Label airline = new Label(FieldValue.TABLE_AIRLINE);
         gridPane.add(airline, 1,0);
-        Label airport = new Label(FieldValue.TABLE_ARRIVAL_SOURCE);
+        Label airport = new Label(airportHeader);
         gridPane.add(airport, 2,0);
         Label time = new Label(FieldValue.TABLE_TIME);
         gridPane.add(time, 3,0);
