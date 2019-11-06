@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e59237b-389e-4bdb-bcba-1e0f26bc0875" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidPassword.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidUserName.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/service/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/service/ApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/service/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/service/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/view/View.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,13 +14,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="74">
-              <caret line="32" column="26" lean-forward="true" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
+            <state relative-caret-position="120">
+              <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="method#start#0;class#View#0" />
                 <element signature="method#initialize#0;class#View#0" />
                 <element signature="method#initialize_top#0;class#View#0" />
@@ -37,24 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidPassword.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-              <folding>
-                <element signature="e#276#277#0" expanded="true" />
-                <element signature="e#306#307#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidUserName.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
-              <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
+              <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
               <folding>
                 <element signature="e#276#277#0" expanded="true" />
                 <element signature="e#306#307#0" expanded="true" />
@@ -103,12 +85,12 @@
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/view/style/CSSStyle.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/util/Utility.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/view/util/FieldValue.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hrs/view/View.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/service/Service.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/service/ApiService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidUserName.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidPassword.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hrs/view/View.java" />
       </list>
     </option>
   </component>
@@ -164,24 +146,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="hrs" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="hrs" type="462c0819:PsiDirectoryNode" />
-              <item name="exceptions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="hrs" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -191,7 +155,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573011032201" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573011479251" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -277,9 +241,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18864469" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18864469" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -293,7 +256,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.33061224" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.33061224" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32959184" />
@@ -550,27 +513,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="74">
-          <caret line="32" column="26" lean-forward="true" selection-start-line="32" selection-start-column="26" selection-end-line="32" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#start#0;class#View#0" />
-            <element signature="method#initialize#0;class#View#0" />
-            <element signature="method#initialize_top#0;class#View#0" />
-            <element signature="method#ui_newCustomerContainer#0;class#View#0" />
-            <element signature="method#ui_searchBarContainer#0;class#View#0" />
-            <element signature="method#ui_loginContainer#0;class#View#0" />
-            <element signature="e#9482#9522#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/exceptions/InvalidUserName.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
-          <caret line="4" column="4" lean-forward="true" selection-start-line="4" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
           <folding>
             <element signature="e#276#277#0" expanded="true" />
             <element signature="e#306#307#0" expanded="true" />
@@ -585,6 +531,22 @@
           <folding>
             <element signature="e#276#277#0" expanded="true" />
             <element signature="e#306#307#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+          <folding>
+            <element signature="method#start#0;class#View#0" />
+            <element signature="method#initialize#0;class#View#0" />
+            <element signature="method#initialize_top#0;class#View#0" />
+            <element signature="method#ui_newCustomerContainer#0;class#View#0" />
+            <element signature="method#ui_searchBarContainer#0;class#View#0" />
+            <element signature="method#ui_loginContainer#0;class#View#0" />
+            <element signature="e#9482#9522#0" />
           </folding>
         </state>
       </provider>
