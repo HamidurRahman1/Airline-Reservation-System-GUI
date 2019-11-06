@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="4e59237b-389e-4bdb-bcba-1e0f26bc0875" name="Default Changelist" comment="">
 <<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -10,6 +11,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" afterDir="false" />
 >>>>>>> hamid
     </list>
+=======
+    <list default="true" id="4e59237b-389e-4bdb-bcba-1e0f26bc0875" name="Default Changelist" comment="" />
+>>>>>>> hamid
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +23,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="true">
 <<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
@@ -34,6 +39,9 @@
                 <element signature="method#ui_loginContainer#0;class#View#0" />
                 <element signature="e#9482#9522#0" />
 =======
+=======
+      <file pinned="false" current-in-tab="false">
+>>>>>>> hamid
         <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="302">
@@ -50,6 +58,15 @@
                 <element signature="method#populateTable#0;class#Controller#0" />
 >>>>>>> hamid
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="64" column="21" lean-forward="true" selection-start-line="64" selection-start-column="21" selection-end-line="64" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -156,6 +173,11 @@
             <path>
               <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
               <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
@@ -687,6 +709,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -700,6 +723,12 @@
             <element signature="method#ui_loginContainer#0;class#View#0" />
             <element signature="e#9482#9522#0" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="64" column="21" lean-forward="true" selection-start-line="64" selection-start-column="21" selection-end-line="64" selection-end-column="21" />
+>>>>>>> hamid
         </state>
       </provider>
     </entry>
