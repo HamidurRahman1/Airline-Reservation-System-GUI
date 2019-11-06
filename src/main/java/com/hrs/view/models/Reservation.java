@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Reservation implements Serializable
 {
     private Customer customer;
-    private Airport source;
-    private Airport destination;
+    private Source source;
+    private Destination destination;
     private Flight flight;
 }

@@ -1,17 +1,16 @@
 package com.hrs.view;
 
 import com.hrs.configs.Configuration;
+import com.hrs.util.Utility;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,12 +29,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class View extends Application
 {
     private Controller controller;
-    
+    private Stage primaryStage;
     private Scene homeScene;
     private BorderPane homeSceneContainer;
     
@@ -44,14 +44,22 @@ public class View extends Application
     
     public void start(Stage primaryStage) throws Exception
     {
+        this.primaryStage = primaryStage;
         initialize();
-        
+        controller.eventLaunchDatePicker();
+    }
+    
+    public void start2()
+    {
         this.homeScene = new Scene(this.homeSceneContainer, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
-        
+    
         primaryStage.setTitle(FieldValue.APP_TITLE);
-        primaryStage.setMinWidth(FieldValue.HOME_WINDOW_WIDTH);
-        primaryStage.setMinHeight(FieldValue.HOME_WINDOW_HEIGHT);
+        primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
+        primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
         primaryStage.setScene(this.homeScene);
+    
+        Utility.setOnCenter(primaryStage);
+        
         primaryStage.show();
     }
     
@@ -88,11 +96,13 @@ public class View extends Application
         newCustomer.setOnAction(e -> controller.eventLaunchNewCustomer(ui_newCustomerContainer()));
         
         final MenuItem airport1 = new MenuItem(FieldValue.AIRPORT1);
-        airport1.setOnAction(e -> controller.eventHelp());
+        airport1.setOnAction(e -> controller.eventLaunchAirport(airport1.getText().split(" ")[2]));
+        
         final MenuItem airport2 = new MenuItem(FieldValue.AIRPORT2);
-        airport2.setOnAction(e -> controller.eventHelp());
+        airport2.setOnAction(e -> controller.eventLaunchAirport(airport2.getText().split(" ")[2]));
+        
         final MenuItem airport3 = new MenuItem(FieldValue.AIRPORT3);
-        airport3.setOnAction(e -> controller.eventHelp());
+        airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
         
         final MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
         airline1.setOnAction(e -> controller.eventHelp());
@@ -175,9 +185,6 @@ public class View extends Application
         GridPane.setHalignment(submitButton, HPos.CENTER);
         GridPane.setMargin(submitButton, new Insets(20, 0,20,0));
         
-//        submitButton.setOnAction(e -> controller.eventInsertCustomer
-//                        (firstField.getText(), lastField.getText(), emailField.getText(), passwordField.getText()));
-//
         return gridPane;
     }
     
