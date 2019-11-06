@@ -185,9 +185,6 @@ public class View extends Application
         GridPane.setHalignment(submitButton, HPos.CENTER);
         GridPane.setMargin(submitButton, new Insets(20, 0,20,0));
         
-//        submitButton.setOnAction(e -> controller.eventInsertCustomer
-//                        (firstField.getText(), lastField.getText(), emailField.getText(), passwordField.getText()));
-//
         return gridPane;
     }
     

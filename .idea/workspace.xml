@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e59237b-389e-4bdb-bcba-1e0f26bc0875" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/view/View.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java" afterDir="false" />
     </list>
@@ -15,32 +14,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="104" column="59" lean-forward="true" selection-start-line="104" selection-start-column="59" selection-end-line="104" selection-end-column="59" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#start#0;class#View#0" />
-                <element signature="method#start2#0;class#View#0" />
-                <element signature="method#initialize#0;class#View#0" />
-                <element signature="method#ui_newCustomerContainer#0;class#View#0" />
-                <element signature="method#ui_searchBarContainer#0;class#View#0" />
-                <element signature="method#ui_loginContainer#0;class#View#0" />
-                <element signature="e#10099#10139#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="84" column="4" lean-forward="true" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="4" />
+            <state relative-caret-position="302">
+              <caret line="65" column="89" selection-start-line="65" selection-start-column="89" selection-end-line="65" selection-end-column="89" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#departureScreen#0;class#Controller#0" />
+                <element signature="method#arrivalScreen#0;class#Controller#0" />
                 <element signature="method#genericAirport#0;class#Controller#0" />
                 <element signature="method#populateGrid#0;class#Controller#0" />
                 <element signature="method#eventLaunchDatePicker#0;class#Controller#0" />
@@ -165,6 +147,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="hrs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="hrs" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -605,14 +596,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="104" column="59" lean-forward="true" selection-start-line="104" selection-start-column="59" selection-end-line="104" selection-end-column="59" />
+        <state relative-caret-position="289">
+          <caret line="186" column="8" selection-start-line="186" selection-start-column="8" selection-end-line="186" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#start#0;class#View#0" />
             <element signature="method#start2#0;class#View#0" />
             <element signature="method#initialize#0;class#View#0" />
-            <element signature="method#ui_newCustomerContainer#0;class#View#0" />
             <element signature="method#ui_searchBarContainer#0;class#View#0" />
             <element signature="method#ui_loginContainer#0;class#View#0" />
             <element signature="e#10099#10139#0" />
@@ -622,10 +612,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="84" column="4" lean-forward="true" selection-start-line="84" selection-start-column="4" selection-end-line="84" selection-end-column="4" />
+        <state relative-caret-position="302">
+          <caret line="65" column="89" selection-start-line="65" selection-start-column="89" selection-end-line="65" selection-end-column="89" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#departureScreen#0;class#Controller#0" />
+            <element signature="method#arrivalScreen#0;class#Controller#0" />
             <element signature="method#genericAirport#0;class#Controller#0" />
             <element signature="method#populateGrid#0;class#Controller#0" />
             <element signature="method#eventLaunchDatePicker#0;class#Controller#0" />

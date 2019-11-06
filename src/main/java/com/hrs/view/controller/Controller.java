@@ -62,9 +62,11 @@ public class Controller
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         Double x1 = primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 840;
         Double y1 = primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 770;
+    
+        Double x2 = primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 1200;
         
         arrivalScreen(airportName, x1, y1);
-        departureScreen(airportName, (primaryScreenBounds.getWidth()), y1);
+        departureScreen(airportName, x2, y1);
     }
     
     private void departureScreen(String airportName, Double x1, Double y1)
