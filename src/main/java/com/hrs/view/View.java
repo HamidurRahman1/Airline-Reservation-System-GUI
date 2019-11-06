@@ -6,6 +6,7 @@ import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -21,12 +22,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -38,11 +37,10 @@ public class View extends Application
     private Controller controller;
     
     private Scene homeScene;
-    
     private BorderPane homeSceneContainer;
-    private Pane center;
-    private MenuBar menuBar;
-    private GridPane searchBar;
+    
+    private MenuBar menuBarUI;
+    private GridPane searchBarUI;
     
     public void start(Stage primaryStage) throws Exception
     {
@@ -61,11 +59,11 @@ public class View extends Application
     {
         homeSceneContainer = new BorderPane();
         
-        menuBar = initialize_top();
-        homeSceneContainer.setTop(menuBar);
+        menuBarUI = ui_menuBar();
+        homeSceneContainer.setTop(menuBarUI);
     
-        searchBar = ui_searchBar();
-        homeSceneContainer.setCenter(searchBar);
+        searchBarUI = ui_searchBarContainer();
+        homeSceneContainer.setCenter(searchBarUI);
         
         homeSceneContainer.setLeft(new VBox());
         homeSceneContainer.setRight(new VBox());
@@ -75,7 +73,7 @@ public class View extends Application
         controller.setView(this);
     }
     
-    private MenuBar initialize_top()
+    private MenuBar ui_menuBar()
     {
         MenuBar menuBar = new MenuBar();
     
@@ -84,6 +82,10 @@ public class View extends Application
         final Menu airlinesMenu = new Menu(FieldValue.AIRLINE_LABEL);
     
         final MenuItem customerLogin = new MenuItem(FieldValue.CUSTOMER_LOGIN_LABEL);
+        customerLogin.setOnAction(e -> controller.eventLaunchLogin(ui_loginContainer()));
+    
+        final MenuItem newCustomer = new MenuItem(FieldValue.NEW_CUST_LABEL);
+        newCustomer.setOnAction(e -> controller.eventLaunchNewCustomer(ui_newCustomerContainer()));
         
         final MenuItem airport1 = new MenuItem(FieldValue.AIRPORT1);
         airport1.setOnAction(e -> controller.eventHelp());
@@ -101,23 +103,13 @@ public class View extends Application
         
         airlinesMenu.getItems().addAll(airline1, airline2, airline3);
         airportsMenu.getItems().addAll(airport1, airport2, airport3);
-        loginMenu.getItems().add(customerLogin);
+        loginMenu.getItems().addAll(customerLogin, newCustomer);
         menuBar.getMenus().addAll(loginMenu, airportsMenu, airlinesMenu);
         
         return menuBar;
     }
     
-    public BorderPane getHomeSceneContainer()
-    {
-        return homeSceneContainer;
-    }
-    
-    public void setHomeSceneContainer(BorderPane homeSceneContainer)
-    {
-        this.homeSceneContainer = homeSceneContainer;
-    }
-    
-    public GridPane createLoginContainer()
+    public GridPane ui_newCustomerContainer()
     {
         GridPane gridPane = new GridPane();
         
@@ -149,7 +141,7 @@ public class View extends Application
         
         TextField firstField = new TextField();
         firstField.setPrefHeight(40);
-        gridPane.add(firstField, 1,1);
+        gridPane.add(firstField, FieldValue.CUST_FIRST_COL,FieldValue.CUST_FIRST_ROW);
     
         Label lastLabel= new Label(FieldValue.LASTNAME);
         gridPane.add(lastLabel, 0,2);
@@ -157,7 +149,7 @@ public class View extends Application
     
         TextField lastField = new TextField();
         lastField.setPrefHeight(40);
-        gridPane.add(lastField, 1,2);
+        gridPane.add(lastField, FieldValue.CUST_LAST_COL, FieldValue.CUST_LAST_ROW);
         
         Label emailLabel = new Label(FieldValue.EMAIL);
         gridPane.add(emailLabel, 0, 3);
@@ -165,7 +157,7 @@ public class View extends Application
         
         TextField emailField = new TextField();
         emailField.setPrefHeight(40);
-        gridPane.add(emailField, 1, 3);
+        gridPane.add(emailField, FieldValue.CUST_EMAIL_COL, FieldValue.CUST_EMAIL_ROW);
         
         Label passwordLabel = new Label(FieldValue.PASSWORD);
         gridPane.add(passwordLabel, 0, 4);
@@ -173,23 +165,23 @@ public class View extends Application
         
         PasswordField passwordField = new PasswordField();
         passwordField.setPrefHeight(40);
-        gridPane.add(passwordField, 1, 4);
+        gridPane.add(passwordField, FieldValue.CUST_PASS_COL, FieldValue.CUST_PASS_ROW);
         
         Button submitButton = new Button(FieldValue.SUBMIT);
         submitButton.setPrefHeight(40);
         submitButton.setDefaultButton(true);
         submitButton.setPrefWidth(100);
-        gridPane.add(submitButton, 0, 5, 2, 1);
+        gridPane.add(submitButton, FieldValue.NEW_CUST_SUB_COL, FieldValue.NEW_CUST_SUB_ROW, 2, 1);
         GridPane.setHalignment(submitButton, HPos.CENTER);
         GridPane.setMargin(submitButton, new Insets(20, 0,20,0));
         
-        submitButton.setOnAction(e -> controller.eventInsertCustomer
-                        (firstField.getText(), lastField.getText(), emailField.getText(), passwordField.getText()));
-    
+//        submitButton.setOnAction(e -> controller.eventInsertCustomer
+//                        (firstField.getText(), lastField.getText(), emailField.getText(), passwordField.getText()));
+//
         return gridPane;
     }
     
-    public GridPane ui_searchBar()
+    public GridPane ui_searchBarContainer()
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -227,19 +219,48 @@ public class View extends Application
         return gridPane;
     }
     
-    private Node getNodeByRowColumnIndex (int row, int column, GridPane gridPane) {
-        Node result = null;
-        ObservableList <Node> childrens = gridPane.getChildren();
+    public GridPane ui_loginContainer()
+    {
+        GridPane grid = new GridPane();
         
-        for (Node node : childrens)
-        {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column)
-            {
-                result = node;
-                break;
-            }
-        }
-        return result;
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+    
+        Label custLabel = new Label(FieldValue.LOGIN_LABEL);
+        custLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.NORMAL, 20));
+        grid.add(custLabel, 0, 0, 2, 1);
+    
+        Label userName = new Label(FieldValue.USERNAME);
+        grid.add(userName, 0, 1);
+    
+        TextField userTextField = new TextField();
+        grid.add(userTextField, 1, 1);
+    
+        Label pw = new Label(FieldValue.PASSWORD);
+        grid.add(pw, 0, 2);
+    
+        PasswordField pwBox = new PasswordField();
+        grid.add(pwBox, 1, 2);
+    
+        Button btn = new Button(FieldValue.SUBMIT);
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 1, 4);
+        
+        return grid;
+    }
+    
+    public BorderPane getHomeSceneContainer()
+    {
+        return homeSceneContainer;
+    }
+    
+    public void setHomeSceneContainer(BorderPane homeSceneContainer)
+    {
+        this.homeSceneContainer = homeSceneContainer;
     }
     
     //    private VBox initialize_leftSide()
