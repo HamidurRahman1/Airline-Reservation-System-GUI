@@ -15,12 +15,15 @@ public class FieldValue
     public static final String AIRLINE2 = "Airline 2";
     public static final String AIRLINE3 = "Airline 3";
     
-    public static final String AIRPORT1 = "Airport 1";
-    public static final String AIRPORT2 = "Airport 2";
-    public static final String AIRPORT3 = "Airport 3";
+    public static final String AIRPORT1 = "Airport : NY";
+    public static final String AIRPORT2 = "Airport : LA";
+    public static final String AIRPORT3 = "Airport : DC";
     
     public static final String CUST_REG_FORM = "New Customer Registration Form";
     public static final String CUST_LABEL = "Customer Login";
+    
+    public static final String SELECT_DATE = "Please select a date: ";
+    public static final String DATE_TITLE = "A future date for reservations";
     
     public static final String NEW_CUST_LABEL = "New Customer";
     
@@ -79,4 +82,22 @@ public class FieldValue
     
     public static final Double HOME_SCENE_WIDTH = 1000.0;
     public static final Double HOME_SCENE_HEIGHT = 900.0;
+    
+    public static final String ARRIVAL_CONTAINER_ID = "arrivalContainer";
+    public static final String ARRIVAL_LABEL = "arrival";
+    
+    public static final String DEPARTURE_LABEL = "departure";
+    public static final String DEPARTURE_CONTAINER_ID = "departureContainer";
+    
+    public static final String TABLE_FLIGHT = "FLIGHT";
+    public static final String TABLE_AIRLINE = "AIRLINE";
+    public static final String TABLE_STATUS = "STATUS";
+    public static final String TABLE_TIME = "TIME";
+    
+    public static final String TABLE_ARRIVAL_SOURCE = "FROM";
+    public static final String TABLE_DEPARTURE_DESTINATION = "TO";
+    
+    public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
+    public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
+    
 }

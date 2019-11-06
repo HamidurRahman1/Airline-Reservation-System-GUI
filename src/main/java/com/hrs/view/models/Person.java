@@ -5,10 +5,7 @@ public class Person
     private String firstName;
     private String lastName;
     
-    public Person()
-    {
-        this(null, null);
-    }
+    public Person() {}
     
     public Person(String firstName, String lastName)
     {
