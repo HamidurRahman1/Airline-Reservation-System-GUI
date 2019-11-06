@@ -9,4 +9,6 @@ public interface Service
     public void getAllFlightsByAirline(String airlineName);
     public void validateCustomerLogin(String username, String password);
     public void validateAirlineAdminLogin(String username, String password);
+    
+    public void insertNewCustomer(String firstName, String lastName, String email, String password);
 }

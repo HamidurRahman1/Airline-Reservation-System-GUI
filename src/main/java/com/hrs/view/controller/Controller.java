@@ -123,6 +123,15 @@ public class Controller
             TextField pass = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.PASSWORD_RAW, FieldValue.PASSWORD_COL, gridPane);
     
             System.out.println(usernname.getText() + ' ' + pass.getText());
+            
+            if(true)
+            {
+                // set customer scene
+            }
+            else
+            {
+                // catch exceptions based on the
+            }
         });
         stage.setScene(scene);
         stage.setTitle(FieldValue.LOGIN_LABEL);

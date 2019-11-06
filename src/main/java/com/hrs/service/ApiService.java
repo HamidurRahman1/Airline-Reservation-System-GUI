@@ -29,4 +29,10 @@ public class ApiService implements Service
     {
     
     }
+    
+    @Override
+    public void insertNewCustomer(String firstName, String lastName, String email, String password)
+    {
+    
+    }
 }
