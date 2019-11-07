@@ -6,6 +6,7 @@
 .idea/
 *.iml
 *.iws
+*.xml
 
 .DS_Store
 
