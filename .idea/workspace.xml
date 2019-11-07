@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="65" column="89" selection-start-line="65" selection-start-column="89" selection-end-line="65" selection-end-column="89" />
+            <state relative-caret-position="122">
+              <caret line="53" column="4" lean-forward="true" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#departureScreen#0;class#Controller#0" />
@@ -27,15 +27,6 @@
                 <element signature="method#eventLaunchLogin#0;class#Controller#0" />
                 <element signature="method#populateTable#0;class#Controller#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="64" column="21" lean-forward="true" selection-start-line="64" selection-start-column="21" selection-end-line="64" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -127,11 +118,6 @@
             <path>
               <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
               <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Project--Airline-Reservation-System-GUI" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="AirlineReservationSystem" type="b2602c69:ProjectViewProjectNode" />
@@ -265,7 +251,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2002442" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -623,8 +608,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hrs/view/controller/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="65" column="89" selection-start-line="65" selection-start-column="89" selection-end-line="65" selection-end-column="89" />
+        <state relative-caret-position="122">
+          <caret line="53" column="4" lean-forward="true" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#departureScreen#0;class#Controller#0" />
