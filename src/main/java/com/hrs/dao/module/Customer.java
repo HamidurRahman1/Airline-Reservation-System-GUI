@@ -1,9 +1,10 @@
 package com.hrs.dao.module;
 
-public class Customer {
-
+public class Customer
+{
     String name;
     String address;
     int id;
     int age;
+    int newlyadded;
 }
