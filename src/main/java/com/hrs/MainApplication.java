@@ -14,6 +14,7 @@ public class MainApplication extends View
         try
         {
             View.launch();
+            System.out.println("TEST-Desktop");
         }
         catch (RuntimeException ex)
         {
