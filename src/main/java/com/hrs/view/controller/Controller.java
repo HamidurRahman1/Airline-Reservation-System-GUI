@@ -63,7 +63,7 @@ public class Controller
         Double x1 = primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 840;
         Double y1 = primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 770;
     
-        Double x2 = primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 1200;
+        Double x2 = (primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth()) - 4000;
         
         arrivalScreen(airportName, x1, y1);
         departureScreen(airportName, x2, y1);
@@ -167,7 +167,6 @@ public class Controller
         }
         
         return gridPane;
-        
     }
     
     public void eventLaunchDatePicker()
