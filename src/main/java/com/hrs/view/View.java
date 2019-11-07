@@ -3,6 +3,7 @@ package com.hrs.view;
 import com.hrs.configs.Configuration;
 import com.hrs.util.Utility;
 import com.hrs.view.controller.Controller;
+import com.hrs.view.models.Customer;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
@@ -21,8 +22,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -260,6 +263,28 @@ public class View extends Application
         return grid;
     }
     
+    public void ui_customerHome(MenuBar menuBar, VBox center)
+    {
+        Scene scene = null;
+        BorderPane borderPane = new BorderPane();
+        
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(center);
+        
+        scene = new Scene(borderPane);
+        primaryStage.setScene(scene);
+    }
+    
+    public MenuBar getMenuBarUI()
+    {
+        return menuBarUI;
+    }
+    
+    public void setMenuBarUI(MenuBar menuBarUI)
+    {
+        this.menuBarUI = menuBarUI;
+    }
+    
     public BorderPane getHomeSceneContainer()
     {
         return homeSceneContainer;
@@ -268,6 +293,11 @@ public class View extends Application
     public void setHomeSceneContainer(BorderPane homeSceneContainer)
     {
         this.homeSceneContainer = homeSceneContainer;
+    }
+    
+    public void switchToMainScreen()
+    {
+        this.primaryStage.setScene(homeScene);
     }
     
     //    private VBox initialize_leftSide()

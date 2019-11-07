@@ -1,24 +1,30 @@
 package com.hrs.view.models;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A model to represent customer.
  */
-public class Customer extends Person implements Serializable {
+public class Customer extends Person implements Serializable
+{
     private Integer customerId;
     private Login login;
+    private List<Reservation> reservations = new LinkedList <>();
 
-    public Customer() {
+    public Customer()
+    {
         this(null, null, null);
     }
 
-    public Customer(String firstName, String lastName) {
+    public Customer(String firstName, String lastName)
+    {
         this(null, firstName, lastName);
     }
 
-    public Customer(Integer customerId, String firstName, String lastName) {
+    public Customer(Integer customerId, String firstName, String lastName)
+    {
         super(firstName, lastName);
         this.customerId = customerId;
     }

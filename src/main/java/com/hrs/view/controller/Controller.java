@@ -5,11 +5,10 @@ import com.hrs.view.models.Arrival;
 import com.hrs.test.Tester;
 import com.hrs.util.Utility;
 import com.hrs.view.View;
+import com.hrs.view.models.Customer;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
-import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -18,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,12 +25,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,7 +62,7 @@ public class Controller
         Double x1 = primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 840;
         Double y1 = primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 770;
     
-        Double x2 = (primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth()) - 4000;
+        Double x2 = primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 2000;
         
         arrivalScreen(airportName, x1, y1);
         departureScreen(airportName, x2, y1);
@@ -143,15 +142,15 @@ public class Controller
         gridPane.setHgap(10);
         gridPane.setVgap(10);
     
-        Label flight = new Label(FieldValue.TABLE_FLIGHT);
+        Label flight = new Label(FieldValue.FLIGHT);
         gridPane.add(flight, 0,0);
-        Label airline = new Label(FieldValue.TABLE_AIRLINE);
+        Label airline = new Label(FieldValue.AIRLINE);
         gridPane.add(airline, 1,0);
         Label airport = new Label(airportHeader);
         gridPane.add(airport, 2,0);
-        Label time = new Label(FieldValue.TABLE_TIME);
+        Label time = new Label(FieldValue.DATE_TIME);
         gridPane.add(time, 3,0);
-        Label status = new Label(FieldValue.TABLE_STATUS);
+        Label status = new Label(FieldValue.STATUS);
         gridPane.add(status, 4,0);
         
         int row = 1;
@@ -252,7 +251,9 @@ public class Controller
             
             if(true)
             {
-                // set customer scene
+                stage.close();
+                
+                view.ui_customerHome(menuBar(), customerCenterContainer());
             }
             else
             {
@@ -263,6 +264,118 @@ public class Controller
         stage.setTitle(FieldValue.LOGIN_LABEL);
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
+    }
+    
+    private VBox customerCenterContainer()
+    {
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+    
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(customerNameHBox(new Customer("first name", "last name")));
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label("Flight Histories"));
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(populateGridForCustomer(new Customer()));
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(logoutHBox());
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label());
+        
+        return vBox;
+    }
+    
+    private GridPane populateGridForCustomer(Customer customer)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        gridPane.setHgap(10);
+        gridPane.setVgap(5);
+        
+        List<Arrival> arrivals = Tester.arrivals();
+        
+        // headers
+        for(int i = 0; i < reservationHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(reservationHeaders().getChildren().get(i), i, 0);
+        }
+        
+        // actual table data
+        int j = 1;
+        for(int i = 0; i < arrivals.size(); i++)
+        {
+            gridPane.add(button("todfdfafasf"), 0, j);
+            gridPane.add(button("todfdfafasf"), 1, j);
+            gridPane.add(button(arrivals.get(i).sourceName), 2, j);
+            gridPane.add(button(arrivals.get(i).airlineName), 3, j);
+            gridPane.add(button(arrivals.get(i).time), 4, j);
+            gridPane.add(button(arrivals.get(i).status), 5, j);
+            j++;
+        }
+        
+        return gridPane;
+    }
+    
+    private static Button button(String label)
+    {
+        Button button = new Button(label);
+        button.setMinHeight(30);
+        button.setMinWidth(100);
+        button.setMaxHeight(70);
+        button.setMaxWidth(500);
+        return button;
+    }
+    
+    private HBox reservationHeaders()
+    {
+        HBox hBox = new HBox();
+    
+        hBox.getChildren().add(button(FieldValue.FLIGHT));
+        hBox.getChildren().add(button(FieldValue.TO));
+        hBox.getChildren().add(button(FieldValue.FROM));
+        hBox.getChildren().add(button(FieldValue.AIRLINE));
+        hBox.getChildren().add(button(FieldValue.DATE_TIME));
+        hBox.getChildren().add(button(FieldValue.STATUS));
+    
+        System.out.println(hBox.getChildren().size());
+    
+        return hBox;
+    }
+    
+    private HBox customerNameHBox(Customer customer)
+    {
+        HBox name = new HBox();
+        name.setAlignment(Pos.TOP_CENTER);
+        
+        name.getChildren().add(new Label(customer.getFirstName() + " " + customer.getLastName()));
+        
+        return name;
+    }
+    
+    private MenuBar menuBar()
+    {
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().add(view.getMenuBarUI().getMenus().get(1));
+        menuBar.getMenus().add(view.getMenuBarUI().getMenus().get(2));
+        return menuBar;
+    }
+    
+    private HBox logoutHBox()
+    {
+        HBox outContainer = new HBox();
+        outContainer.setAlignment(Pos.BOTTOM_CENTER);
+        Button logout = new Button("Logout");
+        logout.setOnAction(e ->
+        {
+            if(Configuration.getSession().deleteFromSession(new Customer()))
+            {
+                view.switchToMainScreen();
+            }
+        });
+        outContainer.getChildren().add(logout);
+        return outContainer;
     }
     
     public void eventSearchBar(String query)

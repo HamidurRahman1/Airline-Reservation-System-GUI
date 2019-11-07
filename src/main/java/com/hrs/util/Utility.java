@@ -50,8 +50,8 @@ public class Utility
     
     public static List<Label> arrivalHeaders()
     {
-        return Arrays.asList(new Label(FieldValue.TABLE_FLIGHT), new Label(FieldValue.TABLE_AIRLINE),
+        return Arrays.asList(new Label(FieldValue.FLIGHT), new Label(FieldValue.AIRLINE),
                 new Label(FieldValue.TABLE_ARRIVAL_SOURCE),
-                new Label(FieldValue.TABLE_TIME), new Label(FieldValue.TABLE_STATUS));
+                new Label(FieldValue.DATE_TIME), new Label(FieldValue.STATUS));
     }
 }

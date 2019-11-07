@@ -3,7 +3,8 @@ package com.hrs.view.util;
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
-    
+    public static final String TO = "To";
+    public static final String FROM = "From";
     public static final String CURRENT_DATE = "Search Date";
     
     public static final String LOGIN_LABEL = "Login";
@@ -89,10 +90,10 @@ public class FieldValue
     public static final String DEPARTURE_LABEL = "departure";
     public static final String DEPARTURE_CONTAINER_ID = "departureContainer";
     
-    public static final String TABLE_FLIGHT = "FLIGHT";
-    public static final String TABLE_AIRLINE = "AIRLINE";
-    public static final String TABLE_STATUS = "STATUS";
-    public static final String TABLE_TIME = "TIME";
+    public static final String FLIGHT = "FLIGHT";
+    public static final String AIRLINE = "AIRLINE";
+    public static final String STATUS = "STATUS";
+    public static final String DATE_TIME = "TIME";
     
     public static final String TABLE_ARRIVAL_SOURCE = "FROM";
     public static final String TABLE_DEPARTURE_DESTINATION = "TO";
