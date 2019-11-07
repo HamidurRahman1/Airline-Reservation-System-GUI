@@ -19,6 +19,7 @@ public class MainApplication extends View
         {
             System.out.println(ex.getMessage());
             Platform.exit();
+            System.out.println("asdasdas");
         }
     }
 }
