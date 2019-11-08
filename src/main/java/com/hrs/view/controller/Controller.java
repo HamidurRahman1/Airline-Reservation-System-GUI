@@ -12,6 +12,7 @@ import com.hrs.view.models.Flight;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -25,6 +26,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,7 +36,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,6 +59,34 @@ public class Controller
     public void setView(View view)
     {
         this.view = view;
+    }
+    
+    public void eventLaunchAirline(String airlineName)
+    {
+        Scene scene = null;
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(view.ui_menuBar());
+        GridPane gridPane = view.Ui_searchBarContainer("asdasd", "asdasd");
+        
+//        TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
+//                FieldValue.SEARCH_BAR_COL, gridPane);
+//        searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
+//        {
+//            @Override
+//            public void handle(KeyEvent ke)
+//            {
+//                if (ke.getCode().equals(KeyCode.ENTER))
+//                {
+//                    apiService.getAllFlightsByAirline(searchBar.getText());
+//                    System.out.println(searchBar.getText());
+////                    gridPane.requestFocus();
+//                }
+//            }
+//        });
+        
+        borderPane.setCenter(gridPane);
+        scene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
+        view.switchScene(scene);
     }
     
     public void eventLaunchAirport(String airportName)
@@ -227,9 +258,17 @@ public class Controller
         
         submit.setOnAction(e ->
         {
+            if(apiService.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
+            {
+                stage.close();
+                AlertBox.DisplayInformation("New Customer Successfully added",
+                                "A customer has successfully been added.\nName: "
+                                        + firstName.getText() + " " + lastName.getText());
+            }
             System.out.println(firstName.getText() + ' ' + lastName.getText() + ' ' + email.getText() + " " +
                     password.getText());
         });
+    
         stage.setScene(scene);
         stage.setTitle(FieldValue.NEW_CUST_LABEL);
         stage.setAlwaysOnTop(true);
@@ -268,21 +307,6 @@ public class Controller
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
     }
-    
-//    private void processCustomerLogin(String username, String password)
-//    {
-//        Customer customer = apiService.getCustomerByLogin(username, password);
-//
-//        if(customer != null)
-//        {
-//            stage.close();
-//            view.ui_customerHome(menuBar(), customerCenterContainer(customer));
-//        }
-//        else
-//        {
-//            System.out.println();
-//        }
-//    }
     
     private VBox customerCenterContainer(Customer customer)
     {
@@ -385,8 +409,8 @@ public class Controller
     private MenuBar menuBar()
     {
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(view.getMenuBarUI().getMenus().get(1));
-        menuBar.getMenus().add(view.getMenuBarUI().getMenus().get(2));
+        menuBar.getMenus().add(view.getMenuBar().getMenus().get(1));
+        menuBar.getMenus().add(view.getMenuBar().getMenus().get(2));
         return menuBar;
     }
     

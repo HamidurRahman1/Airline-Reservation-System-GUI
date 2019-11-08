@@ -3,7 +3,6 @@ package com.hrs.view;
 import com.hrs.configs.Configuration;
 import com.hrs.util.Utility;
 import com.hrs.view.controller.Controller;
-import com.hrs.view.models.Customer;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
@@ -11,7 +10,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,17 +20,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class View extends Application
@@ -42,14 +37,12 @@ public class View extends Application
     private Stage primaryStage;
     private Stage arrivalStage;
     private Stage departureStage;
-    private Stage loginStage;
-    private Stage insertStage;
     
     private Scene homeScene;
     private BorderPane homeSceneContainer;
     
-    private MenuBar menuBarUI;
-    private GridPane searchBarUI;
+    private MenuBar menuBar;
+    private GridPane searchBar;
     
     public void start(Stage primaryStage) throws Exception
     {
@@ -76,11 +69,11 @@ public class View extends Application
     {
         homeSceneContainer = new BorderPane();
         
-        menuBarUI = ui_menuBar();
-        homeSceneContainer.setTop(menuBarUI);
+        menuBar = ui_menuBar();
+        homeSceneContainer.setTop(menuBar);
     
-        searchBarUI = ui_searchBarContainer();
-        homeSceneContainer.setCenter(searchBarUI);
+        searchBar = ui_searchBarContainer();
+        homeSceneContainer.setCenter(searchBar);
         
         homeSceneContainer.setLeft(new VBox());
         homeSceneContainer.setRight(new VBox());
@@ -90,7 +83,7 @@ public class View extends Application
         controller.setView(this);
     }
     
-    private MenuBar ui_menuBar()
+    public MenuBar ui_menuBar()
     {
         MenuBar menuBar = new MenuBar();
     
@@ -114,11 +107,11 @@ public class View extends Application
         airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
         
         final MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
-        airline1.setOnAction(e -> controller.eventHelp());
+        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split("")[2]));
         final MenuItem airline2 = new MenuItem(FieldValue.AIRLINE2);
-        airline2.setOnAction(e -> controller.eventHelp());
+        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split("")[2]));
         final MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
-        airline3.setOnAction(e -> controller.eventHelp());
+        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split("")[2]));
         
         airlinesMenu.getItems().addAll(airline1, airline2, airline3);
         airportsMenu.getItems().addAll(airport1, airport2, airport3);
@@ -193,6 +186,30 @@ public class View extends Application
         gridPane.add(submitButton, FieldValue.NEW_CUST_SUB_COL, FieldValue.NEW_CUST_SUB_ROW, 2, 1);
         GridPane.setHalignment(submitButton, HPos.CENTER);
         GridPane.setMargin(submitButton, new Insets(20, 0,20,0));
+        
+        return gridPane;
+    }
+    
+    public GridPane Ui_searchBarContainer(String sLabel, String adminLabel)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
+    
+        gridPane.setPadding(new Insets(40, 40, 40, 40));
+        gridPane.setHgap(10);
+        gridPane.setVgap(5);
+        
+        Button admin = new Button(adminLabel);
+        admin.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, 13));
+        gridPane.add(admin, 0,0);
+        GridPane.setHalignment(admin, HPos.RIGHT);
+        GridPane.setMargin(admin, new Insets(20, 0,20,0));
+        
+        Label searchLabel = new Label(sLabel);
+        searchLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, FieldValue.FONT_SIZE_17));
+        gridPane.add(searchLabel, 1,1,2,1);
+        GridPane.setHalignment(searchLabel, HPos.CENTER);
+        GridPane.setMargin(searchLabel, new Insets(20, 0,20,0));
         
         return gridPane;
     }
@@ -281,14 +298,14 @@ public class View extends Application
         primaryStage.setScene(scene);
     }
     
-    public MenuBar getMenuBarUI()
+    public MenuBar getMenuBar()
     {
-        return menuBarUI;
+        return menuBar;
     }
     
-    public void setMenuBarUI(MenuBar menuBarUI)
+    public void setMenuBar(MenuBar menuBar)
     {
-        this.menuBarUI = menuBarUI;
+        this.menuBar = menuBar;
     }
     
     public BorderPane getHomeSceneContainer()
@@ -303,6 +320,10 @@ public class View extends Application
     
     public void switchToMainScreen()
     {
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(ui_menuBar());
+        borderPane.setCenter(ui_searchBarContainer());
+        this.homeScene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
         this.primaryStage.setScene(homeScene);
     }
     
@@ -318,6 +339,11 @@ public class View extends Application
         if(this.departureStage != null) this.departureStage.close();
         this.departureStage = stage;
         this.departureStage.show();
+    }
+    
+    public void switchScene(Scene scene)
+    {
+        this.primaryStage.setScene(scene);
     }
     
     //    private VBox initialize_leftSide()

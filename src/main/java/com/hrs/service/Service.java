@@ -16,7 +16,7 @@ public interface Service
     public Customer getCustomerByLogin(String username, String password);
     public void validateAirlineAdminLogin(String username, String password);
     
-    public void insertNewCustomer(String firstName, String lastName, String email, String password);
+    public boolean insertNewCustomer(String firstName, String lastName, String email, String password);
     public void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
     
     public void cancelReservation2testFunc(Integer customerId);

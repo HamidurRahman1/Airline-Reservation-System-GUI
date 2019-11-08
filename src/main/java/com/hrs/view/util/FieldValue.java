@@ -12,9 +12,9 @@ public class FieldValue
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AIRLINE1 = "Airline 1";
-    public static final String AIRLINE2 = "Airline 2";
-    public static final String AIRLINE3 = "Airline 3";
+    public static final String AIRLINE1 = "Airline : SH10";
+    public static final String AIRLINE2 = "Airline : AR7";
+    public static final String AIRLINE3 = "Airline : HR11";
     
     public static final String AIRPORT1 = "Airport : NY";
     public static final String AIRPORT2 = "Airport : LA";
