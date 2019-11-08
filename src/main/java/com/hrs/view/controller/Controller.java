@@ -1,11 +1,14 @@
 package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
+import com.hrs.service.ApiService;
+import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Arrival;
 import com.hrs.test.Tester;
 import com.hrs.util.Utility;
 import com.hrs.view.View;
 import com.hrs.view.models.Customer;
+import com.hrs.view.models.Flight;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
@@ -38,12 +41,11 @@ import java.util.List;
 public class Controller
 {
     private View view;
+    private ApiService apiService;
     
-    public Controller() {}
-
-    public Controller(View view)
+    public Controller()
     {
-        this.view = view;
+        apiService = Configuration.getApiService();
     }
     
     public View getView()
@@ -128,7 +130,8 @@ public class Controller
         
         stage.setX(x);
         stage.setY(y);
-        stage.show();
+        if(label.equalsIgnoreCase("arrival")) view.ui_arrivalWindow(stage);
+        else view.ui_departureWindow(stage);
         
         return container;
     }
@@ -244,20 +247,20 @@ public class Controller
         
         submit.setOnAction(e ->
         {
-            TextField usernname = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.USERNAME_RAW, FieldValue.USERNAME_COL, gridPane);
+            TextField username = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.USERNAME_RAW, FieldValue.USERNAME_COL, gridPane);
             TextField pass = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.PASSWORD_RAW, FieldValue.PASSWORD_COL, gridPane);
     
-            System.out.println(usernname.getText() + ' ' + pass.getText());
-            
-            if(true)
+            System.out.println(username.getText() + ' ' + pass.getText());
+            Customer customer = apiService.getCustomerByLogin(username.getText(), pass.getText());
+    
+            if(customer != null)
             {
                 stage.close();
-                
-                view.ui_customerHome(menuBar(), customerCenterContainer());
+                view.ui_customerHome(menuBar(), customerCenterContainer(customer));
             }
             else
             {
-                // catch exceptions based on the
+                System.out.println();
             }
         });
         stage.setScene(scene);
@@ -266,18 +269,33 @@ public class Controller
         stage.showAndWait();
     }
     
-    private VBox customerCenterContainer()
+//    private void processCustomerLogin(String username, String password)
+//    {
+//        Customer customer = apiService.getCustomerByLogin(username, password);
+//
+//        if(customer != null)
+//        {
+//            stage.close();
+//            view.ui_customerHome(menuBar(), customerCenterContainer(customer));
+//        }
+//        else
+//        {
+//            System.out.println();
+//        }
+//    }
+    
+    private VBox customerCenterContainer(Customer customer)
     {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);
     
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label());
-        vBox.getChildren().add(customerNameHBox(new Customer("first name", "last name")));
+        vBox.getChildren().add(customerNameHBox(customer));
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label("Flight Histories"));
         vBox.getChildren().add(new Label());
-        vBox.getChildren().add(populateGridForCustomer(new Customer()));
+        vBox.getChildren().add(populateGridForCustomer(customer));
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(logoutHBox());
@@ -294,24 +312,36 @@ public class Controller
         gridPane.setHgap(10);
         gridPane.setVgap(5);
         
-        List<Arrival> arrivals = Tester.arrivals();
-        
-        // headers
         for(int i = 0; i < reservationHeaders().getChildren().size(); i++)
-        {
             gridPane.add(reservationHeaders().getChildren().get(i), i, 0);
-        }
         
-        // actual table data
         int j = 1;
-        for(int i = 0; i < arrivals.size(); i++)
+        
+        List<Flight> flights = customer.getFlights();
+        
+        for(int i = 0; i < flights.size(); i++)
         {
-            gridPane.add(button("todfdfafasf"), 0, j);
-            gridPane.add(button("todfdfafasf"), 1, j);
-            gridPane.add(button(arrivals.get(i).sourceName), 2, j);
-            gridPane.add(button(arrivals.get(i).airlineName), 3, j);
-            gridPane.add(button(arrivals.get(i).time), 4, j);
-            gridPane.add(button(arrivals.get(i).status), 5, j);
+            gridPane.add(button(flights.get(i).flightName), 0, j);
+            gridPane.add(button(flights.get(i).source), 1, j);
+            gridPane.add(button(flights.get(i).destination), 2, j);
+            gridPane.add(button(flights.get(i).airline), 3, j);
+            gridPane.add(button(flights.get(i).date), 4, j);
+            Button cancel = button(flights.get(i).status);
+            gridPane.add(cancel, 5, j);
+            if("a".equalsIgnoreCase(flights.get(i).status))
+            {
+                cancel.setOnAction(e ->
+                {
+                    if(AlertBox.displayConfirmation("Canceling this flight?", "Do you really want " +
+                        "to cancel this flight?"))
+                    {
+                        apiService.cancelReservation2testFunc(customer.getCustomerId());
+                        //List<Flight> flightList = apiService.getAllFlightsByCustomerId(customer.getCustomerId());
+                        customer.setFlights(Tester.testFlights2());
+                        view.ui_customerHome(menuBar(), customerCenterContainer(customer));
+                    }
+                });
+            }
             j++;
         }
         
@@ -338,8 +368,6 @@ public class Controller
         hBox.getChildren().add(button(FieldValue.AIRLINE));
         hBox.getChildren().add(button(FieldValue.DATE_TIME));
         hBox.getChildren().add(button(FieldValue.STATUS));
-    
-        System.out.println(hBox.getChildren().size());
     
         return hBox;
     }

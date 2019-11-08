@@ -38,7 +38,13 @@ import javafx.stage.Stage;
 public class View extends Application
 {
     private Controller controller;
+    
     private Stage primaryStage;
+    private Stage arrivalStage;
+    private Stage departureStage;
+    private Stage loginStage;
+    private Stage insertStage;
+    
     private Scene homeScene;
     private BorderPane homeSceneContainer;
     
@@ -298,6 +304,20 @@ public class View extends Application
     public void switchToMainScreen()
     {
         this.primaryStage.setScene(homeScene);
+    }
+    
+    public void ui_arrivalWindow(Stage stage)
+    {
+        if(this.arrivalStage != null) this.arrivalStage.close();
+        this.arrivalStage = stage;
+        this.arrivalStage.show();
+    }
+    
+    public void ui_departureWindow(Stage stage)
+    {
+        if(this.departureStage != null) this.departureStage.close();
+        this.departureStage = stage;
+        this.departureStage.show();
     }
     
     //    private VBox initialize_leftSide()

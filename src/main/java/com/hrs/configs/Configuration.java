@@ -15,8 +15,14 @@ public class Configuration
     
     static
     {
+        initializeApiService();
         initializeController();
         initializeSession();
+    }
+    
+    private static void initializeApiService()
+    {
+        apiService = new ApiService();
     }
     
     private static void initializeSession()
@@ -47,5 +53,10 @@ public class Configuration
     public static Session getSession()
     {
         return session;
+    }
+    
+    public static ApiService getApiService()
+    {
+        return apiService;
     }
 }
