@@ -1,6 +1,7 @@
 package com.hrs.service;
 
 
+import com.hrs.exceptions.InvalidUserName;
 import com.hrs.test.Tester;
 import com.hrs.view.models.Customer;
 
@@ -63,6 +64,24 @@ public class ApiService implements Service
     
     @Override
     public void getAdminByAirline(String airlineName)
+    {
+    
+    }
+    
+    @Override
+    public boolean makeReservation(Integer flightIdPk, String username) throws InvalidUserName
+    {
+        return true;
+    }
+    
+    @Override
+    public boolean makeReservation(Integer flightIdPk, Integer customerId)
+    {
+        return true;
+    }
+    
+    @Override
+    public void insertGlobalReservation(Integer flightIdPk)
     {
     
     }

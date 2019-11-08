@@ -14,13 +14,14 @@ public class Flight
     public String date;
     public String status;
     public String airline;
+    public String fare;
     
     public Flight()
     {
     
     }
     
-    public Flight(String flightName, String airline, String source, String destination, String date, String status)
+    public Flight(String flightName, String airline, String source, String destination, String date, String fare, String status)
     {
         this.flightName = flightName;
         this.airline = airline;
@@ -28,6 +29,7 @@ public class Flight
         this.destination = destination;
         this.date = date;
         this.status = status;
+        this.fare = fare;
     }
     
     public Flight(Integer flightId, String flightName, String airline, String source, String destination, String date, String status)

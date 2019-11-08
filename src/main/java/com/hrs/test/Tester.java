@@ -50,17 +50,17 @@ public class Tester
     public static List<Flight> testFlights()
     {
         List<Flight> flights = new LinkedList <>();
-        flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "a"));
-        flights.add(new Flight("f3", "f3", "f3", "f3", "f3", "c"));
-        flights.add(new Flight("f2", "f2", "f3", "f2", "f2", "c"));
+        flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "10", "open"));
+        flights.add(new Flight("f3", "f3", "f3", "f3", "f3", "20", "c"));
+        flights.add(new Flight("f2", "f2", "f3", "f2", "f2", "5", "c"));
         return flights;
     }
     
     public static List<Flight> testFlights2()
     {
         List<Flight> flights = new LinkedList <>();
-        flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "c"));
-        flights.add(new Flight("f2", "f2", "f2", "f2", "f2", "c"));
+        flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"));
+        flights.add(new Flight("f2", "f2", "f2", "f2", "f2", "5", "c"));
         return flights;
     }
 }

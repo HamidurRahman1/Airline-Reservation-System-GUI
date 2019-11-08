@@ -10,7 +10,7 @@ public class Session
     
     public boolean isInSession(Customer customer)
     {
-        return false;
+        return true;
     }
     
     public boolean addInSession(Customer customer)

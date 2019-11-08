@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
@@ -36,12 +37,12 @@ public class Utility
         return result;
     }
     
-    public static void setOnCenter(Stage stage)
-    {
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-    }
+//    public static void setOnCenter(Stage stage)
+//    {
+//        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+//        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+//        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+//    }
     
     public static ObservableList<Arrival> toObservableList(List<Arrival> arrivals)
     {
@@ -51,7 +52,17 @@ public class Utility
     public static List<Label> arrivalHeaders()
     {
         return Arrays.asList(new Label(FieldValue.FLIGHT), new Label(FieldValue.AIRLINE),
-                new Label(FieldValue.TABLE_ARRIVAL_SOURCE),
+                new Label(FieldValue.SOURCE),
                 new Label(FieldValue.DATE_TIME), new Label(FieldValue.STATUS));
+    }
+    
+    public static Button button(String label)
+    {
+        Button button = new Button(label);
+        button.setMinHeight(30);
+        button.setMinWidth(130);
+        button.setMaxHeight(70);
+        button.setMaxWidth(500);
+        return button;
     }
 }

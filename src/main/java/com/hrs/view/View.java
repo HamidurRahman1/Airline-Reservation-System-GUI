@@ -1,8 +1,11 @@
 package com.hrs.view;
 
 import com.hrs.configs.Configuration;
+import com.hrs.test.Tester;
 import com.hrs.util.Utility;
+import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.controller.Controller;
+import com.hrs.view.models.Flight;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
@@ -29,6 +32,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
+import java.util.List;
+
+import static com.hrs.util.Utility.button;
 
 public class View extends Application
 {
@@ -60,7 +67,7 @@ public class View extends Application
         primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
         primaryStage.setScene(this.homeScene);
     
-        Utility.setOnCenter(primaryStage);
+//        Utility.setOnCenter(primaryStage);
         
         primaryStage.show();
     }
@@ -262,9 +269,7 @@ public class View extends Application
             {
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                    controller.eventSearchBar(searchBar.getText());
-                    searchBar.clear();
-                    gridPane.requestFocus();
+                    controller.eventGlobalSearchBar();
                 }
             }
         });
@@ -366,30 +371,47 @@ public class View extends Application
         this.primaryStage.setScene(scene);
     }
     
-    //    private VBox initialize_leftSide()
-    //    {
-    //        VBox leftSide = new VBox();
-    //
-    //        Button customerLogin = new Button(FieldValue.LOGIN_LABEL);
-    //        customerLogin.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //        customerLogin.setOnAction(e -> controller.eventLaunchCustomerLogin());
-    //
-    //        Button airlines = new Button(FieldValue.AIRPORT_LABEL+"s");
-    //        airlines.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //
-    //        Button airports = new Button(FieldValue.AIRLINE_LABEL+"s");
-    //        airports.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //
-    //        Button currentDate = new Button(FieldValue.CURRENT_DATE);
-    //        currentDate.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //        currentDate.setOnAction(e -> controller.eventGetDate());
-    //
-    //        leftSide.getChildren().addAll(new Label(), customerLogin, airlines, airports, currentDate);
-    //
-    //        leftSide.setSpacing(20.0);
-    //        leftSide.setAlignment(Pos.TOP_CENTER);
-    //
-    //        return leftSide;
-    //    }
+    public GridPane ui_globalSearchResults(List<Flight> flights)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(8);
+        gridPane.setVgap(5);
+        
+        for(int i = 0; i < Controller.reservationHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(Controller.reservationHeaders().getChildren().get(i), i, 0);
+        }
+    
+        int j = 1;
+    
+        for(int i = 0; i < flights.size(); i++)
+        {
+            gridPane.add(button(flights.get(i).flightName), 0, j);
+            gridPane.add(button(flights.get(i).source), 1, j);
+            gridPane.add(button(flights.get(i).destination), 2, j);
+            gridPane.add(button(flights.get(i).airline), 3, j);
+            gridPane.add(button(flights.get(i).date), 4, j);
+            gridPane.add(button(flights.get(i).fare), 5, j);
+            Button status = button(flights.get(i).status);
+            gridPane.add(status, 6, j);
+            if("open".equalsIgnoreCase(flights.get(i).status))
+            {
+                final Integer id = flights.get(i).flightId;
+                status.setOnAction(e ->
+                {
+                    controller.eventMakeReservation(id);
+                });
+            }
+            j++;
+        }
+        
+        return gridPane;
+    }
+    
+    public void setSearchResultsInCenter(GridPane gridPane)
+    {
+        this.homeSceneContainer.setCenter(gridPane);
+    }
     
 }
