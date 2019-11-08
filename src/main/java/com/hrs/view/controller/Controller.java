@@ -4,12 +4,14 @@ import com.hrs.configs.Configuration;
 import com.hrs.exceptions.InvalidUserName;
 import com.hrs.service.ApiService;
 import com.hrs.view.alerts.AlertBox;
+import com.hrs.view.models.Admin;
 import com.hrs.view.models.Arrival;
 import com.hrs.test.Tester;
 import com.hrs.util.Utility;
 import com.hrs.view.View;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
+import com.hrs.view.models.Reservation;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
@@ -375,6 +377,86 @@ public class Controller
         stage.showAndWait();
     }
     
+    public void launchLoginForGlobalAdmin(GridPane gridPane)
+    {
+        launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_GLOBAL);
+    }
+    
+    public void launchLoginForAirlineAdmin(GridPane gridPane)
+    {
+        launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_AIRLINE);
+    }
+    
+    public void launchLoginForCustomer(GridPane gridPane)
+    {
+        launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_CUSTOMER);
+    }
+    
+    private void launchLoginForAllByKey(GridPane gridPane, String loginViewKey)
+    {
+        Stage stage = new Stage();
+        Scene scene = new Scene(gridPane, FieldValue.LOGIN_WINDOW_WIDTH, FieldValue.LOGIN_WINDOW_HEIGHT);
+    
+        HBox hBox = (HBox)Utility.getNodeByRowColumnIndex
+                (FieldValue.LOGIN_SUBMIT_RAW, FieldValue.LOGIN_SUBMIT_COL, gridPane);
+        Button submit = (Button) hBox.getChildren().get(0);
+    
+        submit.setOnAction(e ->
+        {
+            TextField username = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.USERNAME_RAW, FieldValue.USERNAME_COL, gridPane);
+            TextField pass = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.PASSWORD_RAW, FieldValue.PASSWORD_COL, gridPane);
+            
+            if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_GLOBAL))
+            {
+//                Admin admin = apiService.getGlobalAdminByLogin(username.getText(), pass.getText());
+//                List<Reservation> reservations = apiService.getGlobalReservations();
+            
+                stage.close();
+                view.setTop(view.menuBar(view.airports(), view.airlines()));
+                VBox center = globalReservations(Tester.admin(), Tester.testReservation());
+                view.setCenter(center);
+            }
+            else if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_CUSTOMER))
+            {
+                // process for customer
+                System.out.println("cust");
+            }
+            else
+            {
+                System.out.println("airline");
+                // process for airline admin
+            }
+        });
+        stage.setScene(scene);
+        stage.setTitle(FieldValue.LOGIN_LABEL);
+        stage.setAlwaysOnTop(true);
+        stage.showAndWait();
+    }
+    
+    private VBox globalReservations(Admin admin, List<Reservation> reservations)
+    {
+        VBox superV = new VBox();
+        superV.setAlignment(Pos.TOP_CENTER);
+        
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label(admin.getFirstName() + " " + admin.getLastName()));
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label("Displaying all reservations made using SE"));
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(view.ui_reservationResults(reservations));
+        superV.getChildren().add(new Label());
+        HBox logout = logout();
+        logout.setAlignment(Pos.BASELINE_CENTER);
+        superV.getChildren().add(logout);
+        Button out = (Button) logout.getChildren().get(0);
+        out.setOnAction(e ->
+        {
+            view.setTop(view.homeMenuBar());
+            view.setCenter(view.ui_searchBarContainer());
+        });
+        return superV;
+    }
+    
     private VBox customerCenterContainer(Customer customer)
     {
         VBox vBox = new VBox();
@@ -484,10 +566,15 @@ public class Controller
         return outContainer;
     }
     
+    public HBox logout()
+    {
+        return new HBox(new Button("Logout"));
+    }
+    
     public void eventGlobalSearchBar()
     {
 //        List<Flight> flights = apiService.getAllFlights();
-        System.out.println("f - u");
+        
         List<Flight> flights = Tester.testFlights();
         GridPane center = view.ui_globalSearchResults(flights);
         view.setSearchResultsInCenter(center);

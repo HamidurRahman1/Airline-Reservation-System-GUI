@@ -99,4 +99,13 @@ public class FieldValue
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
     
+    public static final String SE_ADMIN_LABEL = "SE Admin Login";
+    public static final String AIR_ADMIN_LABEL = "Admin Login";
+    
+    public static final String LOGIN_VIEW_KEY_GLOBAL = "global";
+    public static final String LOGIN_VIEW_KEY_AIRLINE = "airline";
+    public static final String LOGIN_VIEW_KEY_CUSTOMER = "customer";
+    
+    public static final String RV_DATE = "RV. DATE";
+    
 }

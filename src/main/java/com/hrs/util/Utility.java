@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -64,5 +65,17 @@ public class Utility
         button.setMaxHeight(70);
         button.setMaxWidth(500);
         return button;
+    }
+    
+    public static HBox reservationHeaders()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
+                button(FieldValue.AIRLINE), button(FieldValue.DATE_TIME), button(FieldValue.FARE),
+                        button(FieldValue.RV_DATE));
+        
+        return hBox;
     }
 }

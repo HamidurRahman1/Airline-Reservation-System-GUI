@@ -1,8 +1,10 @@
 package com.hrs.test;
 
+import com.hrs.view.models.Admin;
 import com.hrs.view.models.Arrival;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
+import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
 
 import java.util.LinkedList;
@@ -62,5 +64,18 @@ public class Tester
         flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"));
         flights.add(new Flight("f2", "f2", "f2", "f2", "f2", "5", "c"));
         return flights;
+    }
+    
+    public static List<Reservation> testReservation()
+    {
+        List<Reservation> reservations = new LinkedList <>();
+        reservations.add(new Reservation(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"), "r d", "ca"));
+        reservations.add(new Reservation(new Flight("f2", "f2", "f2", "f2", "f2", "5", "c"), "r d", "a"));
+        return reservations;
+    }
+    
+    public static Admin admin()
+    {
+        return new Admin("Hamidur", "Rahman");
     }
 }
