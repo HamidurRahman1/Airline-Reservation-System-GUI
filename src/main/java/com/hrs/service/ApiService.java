@@ -60,4 +60,10 @@ public class ApiService implements Service
     {
     
     }
+    
+    @Override
+    public void getAdminByAirline(String airlineName)
+    {
+    
+    }
 }

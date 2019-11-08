@@ -107,11 +107,11 @@ public class View extends Application
         airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
         
         final MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
-        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split("")[2]));
+        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split(" ")[2]));
         final MenuItem airline2 = new MenuItem(FieldValue.AIRLINE2);
-        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split("")[2]));
+        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split(" ")[2]));
         final MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
-        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split("")[2]));
+        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split(" ")[2]));
         
         airlinesMenu.getItems().addAll(airline1, airline2, airline3);
         airportsMenu.getItems().addAll(airport1, airport2, airport3);
@@ -190,8 +190,12 @@ public class View extends Application
         return gridPane;
     }
     
-    public GridPane Ui_searchBarContainer(String sLabel, String adminLabel)
+    public VBox Ui_searchBarContainer(String airlineName, String adminLabel)
     {
+        VBox superV = new VBox();
+        
+        VBox admin = getAdminVBox(airlineName, adminLabel);
+        
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
     
@@ -199,19 +203,35 @@ public class View extends Application
         gridPane.setHgap(10);
         gridPane.setVgap(5);
         
-        Button admin = new Button(adminLabel);
-        admin.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, 13));
-        gridPane.add(admin, 0,0);
-        GridPane.setHalignment(admin, HPos.RIGHT);
-        GridPane.setMargin(admin, new Insets(20, 0,20,0));
-        
-        Label searchLabel = new Label(sLabel);
+        Label searchLabel = new Label("Find Flights for ".concat(airlineName.toUpperCase()));
         searchLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, FieldValue.FONT_SIZE_17));
-        gridPane.add(searchLabel, 1,1,2,1);
+        gridPane.add(searchLabel, 0,0,2,1);
         GridPane.setHalignment(searchLabel, HPos.CENTER);
         GridPane.setMargin(searchLabel, new Insets(20, 0,20,0));
+    
+        TextField searchBar = new TextField();
+        gridPane.add(searchBar, 1,1);
+        GridPane.setHalignment(searchBar, HPos.CENTER);
+        searchBar.setMinHeight(FieldValue.SEARCH_BAR_HEIGHT);
+        searchBar.setMinWidth(FieldValue.SEARCH_BAR_WIDTH);
         
-        return gridPane;
+        superV.getChildren().addAll(admin, gridPane, new GridPane());
+        superV.setAlignment(Pos.TOP_CENTER);
+        
+        return superV;
+    }
+    
+    private VBox getAdminVBox(String airline, String adminLabel)
+    {
+        VBox admin = new VBox();
+        admin.setAlignment(Pos.TOP_CENTER);
+        Button button = new Button(adminLabel);
+        admin.getChildren().addAll(new Label(), new Label(), button);
+        button.setOnAction(e ->
+        {
+            controller.adminLogin(airline);
+        });
+        return admin;
     }
     
     public GridPane ui_searchBarContainer()

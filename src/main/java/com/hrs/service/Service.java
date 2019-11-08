@@ -20,4 +20,5 @@ public interface Service
     public void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
     
     public void cancelReservation2testFunc(Integer customerId);
+    public void getAdminByAirline(String airlineName);
 }
