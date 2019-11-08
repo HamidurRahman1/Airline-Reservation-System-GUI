@@ -61,28 +61,34 @@ public class Controller
         this.view = view;
     }
     
+    public void adminLogin(String airline)
+    {
+        // apiService.getAdminByAirline(airline);
+        
+    }
+    
     public void eventLaunchAirline(String airlineName)
     {
         Scene scene = null;
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(view.ui_menuBar());
-        GridPane gridPane = view.Ui_searchBarContainer("asdasd", "asdasd");
+        VBox gridPane = view.Ui_searchBarContainer(airlineName, "Admin");
         
-//        TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
-//                FieldValue.SEARCH_BAR_COL, gridPane);
-//        searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
-//        {
-//            @Override
-//            public void handle(KeyEvent ke)
-//            {
-//                if (ke.getCode().equals(KeyCode.ENTER))
-//                {
-//                    apiService.getAllFlightsByAirline(searchBar.getText());
-//                    System.out.println(searchBar.getText());
-////                    gridPane.requestFocus();
-//                }
-//            }
-//        });
+        TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
+                FieldValue.SEARCH_BAR_COL, (GridPane) gridPane.getChildren().get(1));
+        
+        searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent ke)
+            {
+                if (ke.getCode().equals(KeyCode.ENTER))
+                {
+                    apiService.getAllFlightsByAirline(searchBar.getText());
+                    System.out.println(searchBar.getText());
+                }
+            }
+        });
         
         borderPane.setCenter(gridPane);
         scene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
