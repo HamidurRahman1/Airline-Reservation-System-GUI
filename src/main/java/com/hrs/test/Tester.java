@@ -61,7 +61,7 @@ public class Tester
     public static List<Flight> testFlights2()
     {
         List<Flight> flights = new LinkedList <>();
-        flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"));
+        flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "8", "c"));
         flights.add(new Flight("f2", "f2", "f2", "f2", "f2", "5", "c"));
         return flights;
     }

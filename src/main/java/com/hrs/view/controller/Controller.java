@@ -135,7 +135,7 @@ public class Controller
     {
         Scene scene = null;
         BorderPane borderPane = new BorderPane();
-        borderPane.setTop(view.ui_menuBar());
+        borderPane.setTop(view.ui_homeMenuBar());
         VBox gridPane = view.Ui_searchBarContainer(airlineName, "Admin");
         
         TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
@@ -418,13 +418,12 @@ public class Controller
             }
             else if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_CUSTOMER))
             {
-                // process for customer
-                System.out.println("cust");
+                stage.close();
+                
             }
             else
             {
                 System.out.println("airline");
-                // process for airline admin
             }
         });
         stage.setScene(scene);
@@ -451,7 +450,7 @@ public class Controller
         Button out = (Button) logout.getChildren().get(0);
         out.setOnAction(e ->
         {
-            view.setTop(view.homeMenuBar());
+            view.setTop(view.ui_homeMenuBar());
             view.setCenter(view.ui_searchBarContainer());
         });
         return superV;
@@ -485,8 +484,8 @@ public class Controller
         gridPane.setHgap(10);
         gridPane.setVgap(5);
         
-        for(int i = 0; i < reservationHeaders().getChildren().size(); i++)
-            gridPane.add(reservationHeaders().getChildren().get(i), i, 0);
+        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
+            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 0);
         
         int j = 1;
         
@@ -519,17 +518,6 @@ public class Controller
         }
         
         return gridPane;
-    }
-    
-    public static HBox reservationHeaders()
-    {
-        HBox hBox = new HBox();
-    
-        hBox.getChildren().addAll(button(FieldValue.FLIGHT), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                button(FieldValue.AIRLINE), button(FieldValue.DATE_TIME), button(FieldValue.FARE),
-                button(FieldValue.STATUS));
-        
-        return hBox;
     }
     
     private HBox customerNameHBox(Customer customer)

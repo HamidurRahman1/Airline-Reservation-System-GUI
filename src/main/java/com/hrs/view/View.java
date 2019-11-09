@@ -1,9 +1,7 @@
 package com.hrs.view;
 
 import com.hrs.configs.Configuration;
-import com.hrs.test.Tester;
 import com.hrs.util.Utility;
-import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
@@ -22,7 +20,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -35,6 +35,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static com.hrs.util.Utility.button;
@@ -78,14 +79,8 @@ public class View extends Application
     {
         homeSceneContainer = new BorderPane();
         
-//        menuBar = ui_menuBar();
-//        homeSceneContainer.setTop(menuBar);
-        
         homeSceneContainer.setTop(menuBar(logins(customerLoginItem(), newCustomerItem(), globalAdminLoginItem()),
                 airports(), airlines()));
-        
-//        searchBar = ui_searchBarContainer();
-//        homeSceneContainer.setCenter(searchBar);
         
         homeSceneContainer.setCenter(ui_searchBarContainer());
         
@@ -105,44 +100,6 @@ public class View extends Application
     public void setCenter(Node node)
     {
         this.homeSceneContainer.setCenter(node);
-    }
-    
-    public MenuBar ui_menuBar()
-    {
-        MenuBar menuBar = new MenuBar();
-    
-        final Menu loginMenu = new Menu(FieldValue.LOGIN_LABEL);
-        final Menu airportsMenu = new Menu(FieldValue.AIRPORT_LABEL);
-        final Menu airlinesMenu = new Menu(FieldValue.AIRLINE_LABEL);
-    
-        final MenuItem customerLogin = new MenuItem(FieldValue.CUSTOMER_LOGIN_LABEL);
-        customerLogin.setOnAction(e -> controller.eventLaunchLogin(ui_loginContainer()));
-    
-        final MenuItem newCustomer = new MenuItem(FieldValue.NEW_CUST_LABEL);
-        newCustomer.setOnAction(e -> controller.eventLaunchNewCustomer(ui_newCustomerContainer()));
-        
-        final MenuItem airport1 = new MenuItem(FieldValue.AIRPORT1);
-        airport1.setOnAction(e -> controller.eventLaunchAirport(airport1.getText().split(" ")[2]));
-        
-        final MenuItem airport2 = new MenuItem(FieldValue.AIRPORT2);
-        airport2.setOnAction(e -> controller.eventLaunchAirport(airport2.getText().split(" ")[2]));
-        
-        final MenuItem airport3 = new MenuItem(FieldValue.AIRPORT3);
-        airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
-        
-        final MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
-        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split(" ")[2]));
-        final MenuItem airline2 = new MenuItem(FieldValue.AIRLINE2);
-        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split(" ")[2]));
-        final MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
-        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split(" ")[2]));
-        
-        airlinesMenu.getItems().addAll(airline1, airline2, airline3);
-        airportsMenu.getItems().addAll(airport1, airport2, airport3);
-        loginMenu.getItems().addAll(customerLogin, newCustomer);
-        menuBar.getMenus().addAll(loginMenu, airportsMenu, airlinesMenu);
-        
-        return menuBar;
     }
     
     public GridPane ui_newCustomerContainer()
@@ -345,25 +302,10 @@ public class View extends Application
         return menuBar;
     }
     
-    public void setMenuBar(MenuBar menuBar)
-    {
-        this.menuBar = menuBar;
-    }
-    
-    public BorderPane getHomeSceneContainer()
-    {
-        return homeSceneContainer;
-    }
-    
-    public void setHomeSceneContainer(BorderPane homeSceneContainer)
-    {
-        this.homeSceneContainer = homeSceneContainer;
-    }
-    
     public void switchToMainScreen()
     {
         BorderPane borderPane = new BorderPane();
-        borderPane.setTop(ui_menuBar());
+        borderPane.setTop(ui_homeMenuBar());
         borderPane.setCenter(ui_searchBarContainer());
         this.homeScene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
         this.primaryStage.setScene(homeScene);
@@ -394,13 +336,30 @@ public class View extends Application
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
-        
-        for(int i = 0; i < Controller.reservationHeaders().getChildren().size(); i++)
-        {
-            gridPane.add(Controller.reservationHeaders().getChildren().get(i), i, 0);
-        }
     
-        int j = 1;
+        HBox hBox = sortSection();
+        RadioButton fare = (RadioButton) hBox.getChildren().get(1);
+        RadioButton airline = (RadioButton) hBox.getChildren().get(3);
+    
+        fare.setOnAction(e ->
+        {
+            flights.sort(Comparator.comparing(Flight::getFare));
+            ui_globalSearchResults(flights);
+        });
+        airline.setOnAction(e ->
+        {
+            flights.sort(Comparator.comparing(Flight::getAirline));
+            ui_globalSearchResults(flights);
+        });
+    
+        gridPane.add(hBox, 0, 0);
+        gridPane.add(new Label(), 0, 1);
+        
+        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 2);
+        }
+        int j = 3;
     
         for(int i = 0; i < flights.size(); i++)
         {
@@ -424,6 +383,23 @@ public class View extends Application
         }
         
         return gridPane;
+    }
+    
+    public HBox sortSection()
+    {
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER);
+        
+        RadioButton fare = new RadioButton("Fare");
+        RadioButton airline = new RadioButton("Airline");
+        
+        ToggleGroup toggleGroup = new ToggleGroup();
+        fare.setToggleGroup(toggleGroup);
+        airline.setToggleGroup(toggleGroup);
+        
+        hBox.getChildren().addAll(new Label("Sort results by: "), fare, airline);
+        
+        return hBox;
     }
     
     public GridPane ui_reservationResults(List<Reservation> reservations)
@@ -543,7 +519,7 @@ public class View extends Application
         return menuBar;
     }
     
-    public MenuBar homeMenuBar()
+    public MenuBar ui_homeMenuBar()
     {
         return menuBar(logins(customerLoginItem(), newCustomerItem(), globalAdminLoginItem()), airports(), airlines());
     }
