@@ -1,10 +1,14 @@
 package com.hrs.service;
 
 
+import com.hrs.exceptions.InvalidUserName;
 import com.hrs.test.Tester;
+import com.hrs.view.models.Admin;
 import com.hrs.view.models.Customer;
+import com.hrs.view.models.Reservation;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * A service class that provides database access
@@ -65,5 +69,35 @@ public class ApiService implements Service
     public void getAdminByAirline(String airlineName)
     {
     
+    }
+    
+    @Override
+    public boolean makeReservation(Integer flightIdPk, String username) throws InvalidUserName
+    {
+        return true;
+    }
+    
+    @Override
+    public boolean makeReservation(Integer flightIdPk, Integer customerId)
+    {
+        return true;
+    }
+    
+    @Override
+    public void insertGlobalReservation(Integer flightIdPk)
+    {
+    
+    }
+    
+    @Override
+    public Admin getGlobalAdminByLogin(String username, String password)
+    {
+        return new Admin("Hamidur", "Rahman");
+    }
+    
+    @Override
+    public List <Reservation> getGlobalReservations()
+    {
+        return null;
     }
 }

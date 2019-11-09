@@ -14,13 +14,14 @@ public class Flight
     public String date;
     public String status;
     public String airline;
+    public String fare;
     
     public Flight()
     {
     
     }
     
-    public Flight(String flightName, String airline, String source, String destination, String date, String status)
+    public Flight(String flightName, String source, String destination, String airline, String date, String fare, String status)
     {
         this.flightName = flightName;
         this.airline = airline;
@@ -28,6 +29,7 @@ public class Flight
         this.destination = destination;
         this.date = date;
         this.status = status;
+        this.fare = fare;
     }
     
     public Flight(Integer flightId, String flightName, String airline, String source, String destination, String date, String status)
@@ -49,5 +51,75 @@ public class Flight
     public void setStatus(String status)
     {
         this.status = status;
+    }
+    
+    public Integer getFlightId()
+    {
+        return flightId;
+    }
+    
+    public void setFlightId(Integer flightId)
+    {
+        this.flightId = flightId;
+    }
+    
+    public String getFlightName()
+    {
+        return flightName;
+    }
+    
+    public void setFlightName(String flightName)
+    {
+        this.flightName = flightName;
+    }
+    
+    public String getSource()
+    {
+        return source;
+    }
+    
+    public void setSource(String source)
+    {
+        this.source = source;
+    }
+    
+    public String getDestination()
+    {
+        return destination;
+    }
+    
+    public void setDestination(String destination)
+    {
+        this.destination = destination;
+    }
+    
+    public String getDate()
+    {
+        return date;
+    }
+    
+    public void setDate(String date)
+    {
+        this.date = date;
+    }
+    
+    public String getAirline()
+    {
+        return airline;
+    }
+    
+    public void setAirline(String airline)
+    {
+        this.airline = airline;
+    }
+    
+    public String getFare()
+    {
+        return fare;
+    }
+    
+    public void setFare(String fare)
+    {
+        this.fare = fare;
     }
 }
