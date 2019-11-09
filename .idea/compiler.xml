@@ -10,5 +10,8 @@
         <module name="Project--Airline-Reservation-System-GUI" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Airline-Reservation-System" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

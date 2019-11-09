@@ -3,7 +3,6 @@ package com.hrs.view.util;
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
-    
     public static final String CURRENT_DATE = "Search Date";
     
     public static final String LOGIN_LABEL = "Login";
@@ -11,9 +10,9 @@ public class FieldValue
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AIRLINE1 = "Airline 1";
-    public static final String AIRLINE2 = "Airline 2";
-    public static final String AIRLINE3 = "Airline 3";
+    public static final String AIRLINE1 = "Airline : SH10";
+    public static final String AIRLINE2 = "Airline : AR7";
+    public static final String AIRLINE3 = "Airline : HR11";
     
     public static final String AIRPORT1 = "Airport : NY";
     public static final String AIRPORT2 = "Airport : LA";
@@ -77,11 +76,11 @@ public class FieldValue
     public static final Integer FONT_SIZE_17 = 17;
     public static final Integer FONT_PADDING_7 = 7;
     
-    public static final Double HOME_WINDOW_WIDTH = 750.0;
-    public static final Double HOME_WINDOW_HEIGHT = 700.0;
+    public static final Double HOME_WINDOW_WIDTH = 1300.0;
+    public static final Double HOME_WINDOW_HEIGHT = 1000.0;
     
-    public static final Double HOME_SCENE_WIDTH = 1000.0;
-    public static final Double HOME_SCENE_HEIGHT = 900.0;
+    public static final Double HOME_SCENE_WIDTH = 1300.0;
+    public static final Double HOME_SCENE_HEIGHT = 1000.0;
     
     public static final String ARRIVAL_CONTAINER_ID = "arrivalContainer";
     public static final String ARRIVAL_LABEL = "arrival";
@@ -89,15 +88,24 @@ public class FieldValue
     public static final String DEPARTURE_LABEL = "departure";
     public static final String DEPARTURE_CONTAINER_ID = "departureContainer";
     
-    public static final String TABLE_FLIGHT = "FLIGHT";
-    public static final String TABLE_AIRLINE = "AIRLINE";
-    public static final String TABLE_STATUS = "STATUS";
-    public static final String TABLE_TIME = "TIME";
-    
-    public static final String TABLE_ARRIVAL_SOURCE = "FROM";
-    public static final String TABLE_DEPARTURE_DESTINATION = "TO";
+    public static final String FLIGHT = "FLIGHT";
+    public static final String AIRLINE = "AIRLINE";
+    public static final String STATUS = "STATUS";
+    public static final String DATE_TIME = "DATE";
+    public static final String FARE = "FARE";
+    public static final String SOURCE = "SOURCE";
+    public static final String DESTINATION = "DESTINA";
     
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
+    
+    public static final String SE_ADMIN_LABEL = "SE Admin Login";
+    public static final String AIR_ADMIN_LABEL = "Admin Login";
+    
+    public static final String LOGIN_VIEW_KEY_GLOBAL = "global";
+    public static final String LOGIN_VIEW_KEY_AIRLINE = "airline";
+    public static final String LOGIN_VIEW_KEY_CUSTOMER = "customer";
+    
+    public static final String RV_DATE = "RV. DATE";
     
 }

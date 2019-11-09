@@ -14,12 +14,12 @@ public class MainApplication extends View
         try
         {
             View.launch();
+            System.out.println("TEST-Desktop");
         }
         catch (RuntimeException ex)
         {
             System.out.println(ex.getMessage());
             Platform.exit();
-            System.out.println("in local");
         }
     }
 }

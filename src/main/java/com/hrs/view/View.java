@@ -1,8 +1,12 @@
 package com.hrs.view;
 
 import com.hrs.configs.Configuration;
+import com.hrs.test.Tester;
 import com.hrs.util.Utility;
+import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.controller.Controller;
+import com.hrs.view.models.Flight;
+import com.hrs.view.models.Reservation;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
@@ -10,7 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,18 +33,25 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.util.List;
+
+import static com.hrs.util.Utility.button;
 
 public class View extends Application
 {
     private Controller controller;
+    
     private Stage primaryStage;
+    private Stage arrivalStage;
+    private Stage departureStage;
+    
     private Scene homeScene;
     private BorderPane homeSceneContainer;
     
-    private MenuBar menuBarUI;
-    private GridPane searchBarUI;
+    private MenuBar menuBar;
+    private GridPane searchBar;
     
     public void start(Stage primaryStage) throws Exception
     {
@@ -58,7 +69,7 @@ public class View extends Application
         primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
         primaryStage.setScene(this.homeScene);
     
-        Utility.setOnCenter(primaryStage);
+//        Utility.setOnCenter(primaryStage);
         
         primaryStage.show();
     }
@@ -67,11 +78,16 @@ public class View extends Application
     {
         homeSceneContainer = new BorderPane();
         
-        menuBarUI = ui_menuBar();
-        homeSceneContainer.setTop(menuBarUI);
-    
-        searchBarUI = ui_searchBarContainer();
-        homeSceneContainer.setCenter(searchBarUI);
+//        menuBar = ui_menuBar();
+//        homeSceneContainer.setTop(menuBar);
+        
+        homeSceneContainer.setTop(menuBar(logins(customerLoginItem(), newCustomerItem(), globalAdminLoginItem()),
+                airports(), airlines()));
+        
+//        searchBar = ui_searchBarContainer();
+//        homeSceneContainer.setCenter(searchBar);
+        
+        homeSceneContainer.setCenter(ui_searchBarContainer());
         
         homeSceneContainer.setLeft(new VBox());
         homeSceneContainer.setRight(new VBox());
@@ -81,7 +97,17 @@ public class View extends Application
         controller.setView(this);
     }
     
-    private MenuBar ui_menuBar()
+    public void setTop(MenuBar menuBar)
+    {
+        this.homeSceneContainer.setTop(menuBar);
+    }
+    
+    public void setCenter(Node node)
+    {
+        this.homeSceneContainer.setCenter(node);
+    }
+    
+    public MenuBar ui_menuBar()
     {
         MenuBar menuBar = new MenuBar();
     
@@ -105,11 +131,11 @@ public class View extends Application
         airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
         
         final MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
-        airline1.setOnAction(e -> controller.eventHelp());
+        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split(" ")[2]));
         final MenuItem airline2 = new MenuItem(FieldValue.AIRLINE2);
-        airline2.setOnAction(e -> controller.eventHelp());
+        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split(" ")[2]));
         final MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
-        airline3.setOnAction(e -> controller.eventHelp());
+        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split(" ")[2]));
         
         airlinesMenu.getItems().addAll(airline1, airline2, airline3);
         airportsMenu.getItems().addAll(airport1, airport2, airport3);
@@ -188,6 +214,50 @@ public class View extends Application
         return gridPane;
     }
     
+    public VBox Ui_searchBarContainer(String airlineName, String adminLabel)
+    {
+        VBox superV = new VBox();
+        
+        VBox admin = getAdminVBox(airlineName, adminLabel);
+        
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
+    
+        gridPane.setPadding(new Insets(40, 40, 40, 40));
+        gridPane.setHgap(10);
+        gridPane.setVgap(5);
+        
+        Label searchLabel = new Label("Find Flights for ".concat(airlineName.toUpperCase()));
+        searchLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, FieldValue.FONT_SIZE_17));
+        gridPane.add(searchLabel, 0,0,2,1);
+        GridPane.setHalignment(searchLabel, HPos.CENTER);
+        GridPane.setMargin(searchLabel, new Insets(20, 0,20,0));
+    
+        TextField searchBar = new TextField();
+        gridPane.add(searchBar, 1,1);
+        GridPane.setHalignment(searchBar, HPos.CENTER);
+        searchBar.setMinHeight(FieldValue.SEARCH_BAR_HEIGHT);
+        searchBar.setMinWidth(FieldValue.SEARCH_BAR_WIDTH);
+        
+        superV.getChildren().addAll(admin, gridPane, new GridPane());
+        superV.setAlignment(Pos.TOP_CENTER);
+        
+        return superV;
+    }
+    
+    private VBox getAdminVBox(String airline, String adminLabel)
+    {
+        VBox admin = new VBox();
+        admin.setAlignment(Pos.TOP_CENTER);
+        Button button = new Button(adminLabel);
+        admin.getChildren().addAll(new Label(), new Label(), button);
+        button.setOnAction(e ->
+        {
+            controller.adminLogin(airline);
+        });
+        return admin;
+    }
+    
     public GridPane ui_searchBarContainer()
     {
         GridPane gridPane = new GridPane();
@@ -216,9 +286,7 @@ public class View extends Application
             {
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                    controller.eventSearchBar(searchBar.getText());
-                    searchBar.clear();
-                    gridPane.requestFocus();
+                    controller.eventGlobalSearchBar();
                 }
             }
         });
@@ -260,6 +328,28 @@ public class View extends Application
         return grid;
     }
     
+    public void ui_customerHome(MenuBar menuBar, VBox center)
+    {
+        Scene scene = null;
+        BorderPane borderPane = new BorderPane();
+        
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(center);
+        
+        scene = new Scene(borderPane);
+        primaryStage.setScene(scene);
+    }
+    
+    public MenuBar getMenuBar()
+    {
+        return menuBar;
+    }
+    
+    public void setMenuBar(MenuBar menuBar)
+    {
+        this.menuBar = menuBar;
+    }
+    
     public BorderPane getHomeSceneContainer()
     {
         return homeSceneContainer;
@@ -270,30 +360,191 @@ public class View extends Application
         this.homeSceneContainer = homeSceneContainer;
     }
     
-    //    private VBox initialize_leftSide()
-    //    {
-    //        VBox leftSide = new VBox();
-    //
-    //        Button customerLogin = new Button(FieldValue.LOGIN_LABEL);
-    //        customerLogin.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //        customerLogin.setOnAction(e -> controller.eventLaunchCustomerLogin());
-    //
-    //        Button airlines = new Button(FieldValue.AIRPORT_LABEL+"s");
-    //        airlines.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //
-    //        Button airports = new Button(FieldValue.AIRLINE_LABEL+"s");
-    //        airports.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //
-    //        Button currentDate = new Button(FieldValue.CURRENT_DATE);
-    //        currentDate.setMaxSize(FieldValue.BUTTON_HEIGHT_D, FieldValue.BUTTON_WIDTH_D);
-    //        currentDate.setOnAction(e -> controller.eventGetDate());
-    //
-    //        leftSide.getChildren().addAll(new Label(), customerLogin, airlines, airports, currentDate);
-    //
-    //        leftSide.setSpacing(20.0);
-    //        leftSide.setAlignment(Pos.TOP_CENTER);
-    //
-    //        return leftSide;
-    //    }
+    public void switchToMainScreen()
+    {
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(ui_menuBar());
+        borderPane.setCenter(ui_searchBarContainer());
+        this.homeScene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
+        this.primaryStage.setScene(homeScene);
+    }
     
+    public void ui_arrivalWindow(Stage stage)
+    {
+        if(this.arrivalStage != null) this.arrivalStage.close();
+        this.arrivalStage = stage;
+        this.arrivalStage.show();
+    }
+    
+    public void ui_departureWindow(Stage stage)
+    {
+        if(this.departureStage != null) this.departureStage.close();
+        this.departureStage = stage;
+        this.departureStage.show();
+    }
+    
+    public void switchScene(Scene scene)
+    {
+        this.primaryStage.setScene(scene);
+    }
+    
+    public GridPane ui_globalSearchResults(List<Flight> flights)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(8);
+        gridPane.setVgap(5);
+        
+        for(int i = 0; i < Controller.reservationHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(Controller.reservationHeaders().getChildren().get(i), i, 0);
+        }
+    
+        int j = 1;
+    
+        for(int i = 0; i < flights.size(); i++)
+        {
+            gridPane.add(button(flights.get(i).flightName), 0, j);
+            gridPane.add(button(flights.get(i).source), 1, j);
+            gridPane.add(button(flights.get(i).destination), 2, j);
+            gridPane.add(button(flights.get(i).airline), 3, j);
+            gridPane.add(button(flights.get(i).date), 4, j);
+            gridPane.add(button(flights.get(i).fare), 5, j);
+            Button status = button(flights.get(i).status);
+            gridPane.add(status, 6, j);
+            if("open".equalsIgnoreCase(flights.get(i).status))
+            {
+                final Integer id = flights.get(i).flightId;
+                status.setOnAction(e ->
+                {
+                    controller.eventMakeReservation(id);
+                });
+            }
+            j++;
+        }
+        
+        return gridPane;
+    }
+    
+    public GridPane ui_reservationResults(List<Reservation> reservations)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        gridPane.setHgap(8);
+        gridPane.setVgap(5);
+        
+        for(int i = 0; i < Utility.reservationHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(Utility.reservationHeaders().getChildren().get(i), i, 0);
+        }
+    
+        for(int i = 0; i < Utility.reservationHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(new Label("-"), i, 1);
+        }
+        
+        int j = 2;
+        
+        for(int i = 0; i < reservations.size(); i++)
+        {
+            gridPane.add(button(reservations.get(i).getFlight().getFlightName()), 0, j);
+            gridPane.add(button(reservations.get(i).getFlight().getSource()), 1, j);
+            gridPane.add(button(reservations.get(i).getFlight().getDestination()), 2, j);
+            gridPane.add(button(reservations.get(i).getFlight().getAirline()), 3, j);
+            gridPane.add(button(reservations.get(i).getFlight().getDate()), 4, j);
+            gridPane.add(button(reservations.get(i).getFlight().getFare()), 5, j);
+            gridPane.add(button(reservations.get(i).getLocalDate()), 6, j);
+            j++;
+        }
+        
+        return gridPane;
+    }
+    
+    public void setSearchResultsInCenter(GridPane gridPane)
+    {
+        this.homeSceneContainer.setCenter(gridPane);
+    }
+    
+    public Menu airports()
+    {
+        Menu airportsMenu = new Menu(FieldValue.AIRPORT_LABEL);
+        
+        MenuItem airport1 = new MenuItem(FieldValue.AIRPORT1);
+        airport1.setOnAction(e -> controller.eventLaunchAirport(airport1.getText().split(" ")[2]));
+    
+        MenuItem airport2 = new MenuItem(FieldValue.AIRPORT2);
+        airport2.setOnAction(e -> controller.eventLaunchAirport(airport2.getText().split(" ")[2]));
+    
+        MenuItem airport3 = new MenuItem(FieldValue.AIRPORT3);
+        airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
+    
+        airportsMenu.getItems().addAll(airport1, airport2, airport3);
+        
+        return airportsMenu;
+    }
+    
+    public Menu airlines()
+    {
+        Menu airlineMenu = new Menu(FieldValue.AIRLINE_LABEL);
+        
+        MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
+        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split(" ")[2]));
+        
+        MenuItem airline2 = new MenuItem(FieldValue.AIRLINE2);
+        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split(" ")[2]));
+        
+        MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
+        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split(" ")[2]));
+    
+        airlineMenu.getItems().addAll(airline1, airline2, airline3);
+        
+        return airlineMenu;
+    }
+    
+    public Menu logins(MenuItem... menuItems)
+    {
+        Menu loginMenu = new Menu(FieldValue.LOGIN_LABEL);
+        loginMenu.getItems().addAll(menuItems);
+        return loginMenu;
+    }
+    
+    public MenuItem globalAdminLoginItem()
+    {
+        MenuItem global = new MenuItem(FieldValue.SE_ADMIN_LABEL);
+        global.setOnAction(e -> controller.launchLoginForGlobalAdmin(ui_loginContainer()));
+        return global;
+    }
+    
+    public MenuItem customerLoginItem()
+    {
+        MenuItem customerLogin = new MenuItem(FieldValue.CUSTOMER_LOGIN_LABEL);
+        customerLogin.setOnAction(e -> controller.launchLoginForCustomer(ui_loginContainer()));
+        return customerLogin;
+    }
+    
+    public MenuItem airlineAdminLoginItem()
+    {
+        MenuItem customerLogin = new MenuItem(FieldValue.AIR_ADMIN_LABEL);
+        customerLogin.setOnAction(e -> controller.launchLoginForAirlineAdmin(ui_loginContainer()));
+        return customerLogin;
+    }
+    
+    public MenuItem newCustomerItem()
+    {
+        final MenuItem newCustomerMenu = new MenuItem(FieldValue.NEW_CUST_LABEL);
+        newCustomerMenu.setOnAction(e -> controller.eventLaunchNewCustomer(ui_newCustomerContainer()));
+        return newCustomerMenu;
+    }
+    
+    public MenuBar menuBar(Menu... menus)
+    {
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(menus);
+        return menuBar;
+    }
+    
+    public MenuBar homeMenuBar()
+    {
+        return menuBar(logins(customerLoginItem(), newCustomerItem(), globalAdminLoginItem()), airports(), airlines());
+    }
 }
