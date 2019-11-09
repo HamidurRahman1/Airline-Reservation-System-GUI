@@ -5,14 +5,14 @@ public class FieldValue
     public static final String APP_TITLE = "Airline Reservation System";
     public static final String CURRENT_DATE = "Search Date";
     
-    public static final String LOGIN_LABEL = "Login";
+    public static final String CUSTOMER = "Customer";
     public static final String CUSTOMER_LOGIN_LABEL = "Customer Login";
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AIRLINE1 = "Airline : SH10";
-    public static final String AIRLINE2 = "Airline : AR7";
-    public static final String AIRLINE3 = "Airline : HR11";
+    public static final String AIRLINE1 = "Airline : SH";
+    public static final String AIRLINE2 = "Airline : AR";
+    public static final String AIRLINE3 = "Airline : HR";
     
     public static final String AIRPORT1 = "Airport : NY";
     public static final String AIRPORT2 = "Airport : LA";
@@ -45,6 +45,8 @@ public class FieldValue
     public static final String LASTNAME = "Last Name : ";
     
     public static final String USERNAME = "User Name : ";
+    
+    public static final String ADMINS = "Admins";
     
     public static final String SEARCH = "Search Engine for Flights Reservation (SEFR)";
     
@@ -99,8 +101,9 @@ public class FieldValue
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
     
-    public static final String SE_ADMIN_LABEL = "SE Admin Login";
-    public static final String AIR_ADMIN_LABEL = "Admin Login";
+    public static final String SE_ADMIN_LABEL = "Global Admin";
+    public static final String SE_ADMIN_LOGIN_LABEL = "Global Admin Login";
+    public static final String AIR_ADMIN_LABEL = "Admin";
     
     public static final String LOGIN_VIEW_KEY_GLOBAL = "global";
     public static final String LOGIN_VIEW_KEY_AIRLINE = "airline";
@@ -109,5 +112,6 @@ public class FieldValue
     public static final String RV_DATE = "RV. DATE";
     
     public static final String RESULTS1 = "Displaying all search results from SE";
+    public static final String RESULTS = "Displaying all search results for";
     
 }

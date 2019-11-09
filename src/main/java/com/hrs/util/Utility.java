@@ -122,17 +122,18 @@ public class Utility
         return hBox;
     }
     
-//    gridPane.add(new Label(), 0, ++j);
-//
-//    Button button = new Button("Back/Home");
-//        button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.SEARCH)));
-//
-//        gridPane.add(button, 0, ++j);
-//
-    
     public static Label SE_HEADER()
     {
         Label l = new Label(FieldValue.RESULTS1);
+        l.setAlignment(Pos.CENTER);
+        l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
+                           .concat(CSSStyle.fontSize(15)));
+        return l;
+    }
+    
+    public static Label AIRLINE_HEADER(String airline)
+    {
+        Label l = new Label(FieldValue.RESULTS.concat(" ").concat(airline));
         l.setAlignment(Pos.CENTER);
         l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
                            .concat(CSSStyle.fontSize(15)));

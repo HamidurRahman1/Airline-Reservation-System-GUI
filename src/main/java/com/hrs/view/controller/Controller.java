@@ -24,15 +24,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -40,11 +34,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.hrs.util.Utility.button;
-import static com.hrs.util.Utility.label;
 
 /**
  * A class that navigates views and talk to database
@@ -99,16 +91,15 @@ public class Controller
         {
             if(apiService.makeReservation(flightId, 101))
             {
-                apiService.insertGlobalReservation(flightId);
+                System.out.println("in cust session");
                 AlertBox.displayConfirmation("Reservation Successful",
-                        "successfully reserved a seat for user="+"customer.getUsername()"+"." + " Please check your " +
-                                "account to verify.");
-                eventGlobalSearchBar();
+                        "successfully reserved a seat for user="+"customer.getUsername()"+"."
+                                + " Please check your account to verify.");
             }
         }
         else
         {
-            reservationWithUsernameAndPass(flightId);
+            reservationWithUsernameAndPass2(flightId, 1);
         }
     }
     
@@ -130,7 +121,7 @@ public class Controller
             String username = textField.getText();
             try
             {
-                if(apiService.makeReservation(flightIdPk, username))
+                if(apiService.makeReservation(flightIdPk, username, ""))
                 {
                     apiService.insertGlobalReservation(flightIdPk);
                     stage.close();
@@ -147,7 +138,60 @@ public class Controller
             }
         });
         stage.setScene(scene);
-        stage.setTitle(FieldValue.LOGIN_LABEL);
+        stage.setTitle(FieldValue.CUSTOMER);
+        stage.setAlwaysOnTop(true);
+        stage.showAndWait();
+    }
+    
+    public void reservationWithUsernameAndPass2(Integer flightIdPk, Integer key)
+    {
+        Stage stage = new Stage();
+        stage.setTitle("Express Reservation");
+    
+        GridPane gridPane = view.ui_loginContainer(FieldValue.CUSTOMER_LOGIN_LABEL);
+        
+        HBox hBox = (HBox)Utility.getNodeByRowColumnIndex
+                (FieldValue.LOGIN_SUBMIT_RAW, FieldValue.LOGIN_SUBMIT_COL, gridPane);
+        Button submit = (Button) hBox.getChildren().get(0);
+    
+        TextField username = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.USERNAME_RAW, FieldValue.USERNAME_COL, gridPane);
+        TextField pass = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.PASSWORD_RAW, FieldValue.PASSWORD_COL, gridPane);
+        
+        Scene scene = new Scene(gridPane, FieldValue.LOGIN_WINDOW_WIDTH, FieldValue.LOGIN_WINDOW_HEIGHT);
+        
+        submit.setOnAction(e ->
+        {
+            stage.close();
+            try
+            {
+                if(key == 0)
+                {
+                    if(apiService.makeReservation(flightIdPk, username.getText(), pass.getText()))
+                    {
+                        apiService.insertGlobalReservation(flightIdPk);
+                        AlertBox.displayConfirmation("Reservation Successful",
+                                "successfully reserved a seat for user="+username.getText()
+                                        +"." + " Please check your account to verify.");
+                        eventGlobalSearchBar();
+                    }
+                }
+                else
+                {
+                    if(apiService.makeReservation(flightIdPk, username.getText(), pass.getText()))
+                    {
+                        AlertBox.displayConfirmation("Reservation Successful",
+                                "successfully reserved a seat for user="+username.getText()
+                                        +"." + " Please check your account to verify.");
+                    }
+                }
+            }
+            catch(InvalidUserName ex)
+            {
+                AlertBox.displayError("Incorrect username", "No user found with username="+username);
+            }
+        });
+        stage.setScene(scene);
+        stage.setTitle(FieldValue.CUSTOMER);
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
     }
@@ -156,26 +200,39 @@ public class Controller
     {
         view.setTop(view.ui_homeMenuBar());
         
-        GridPane gridPane = view.ui_searchBarContainer(airlineName);
+        GridPane gridPane = view.ui_searchBarContainer("Find Flights for "+airlineName);
         
         TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
-                FieldValue.SEARCH_BAR_COL, (GridPane) gridPane.getChildren().get(1));
+                FieldValue.SEARCH_BAR_COL, gridPane);
         
-        searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
+        searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
         {
             @Override
             public void handle(KeyEvent ke)
             {
+                final String query = searchBar.getText();
+                
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                    // apiService.getAllFlightsByAirline(searchBar.getText());
+                    // apiService.getAllFlightsByAirline(airline);
                     
-                    System.out.println(searchBar.getText());
-                    
-                    view.setCenter(view.ui_searchResultsByAirline(Tester.testFlights()));
+                    view.setCenter(view.ui_searchResultsByAirline(airlineName, Tester.testFlights()));
                 }
             }
         });
+        
+        HBox hBox = new HBox();
+        Button button = button("Home");
+        button.setAlignment(Pos.CENTER);
+        button.setOnAction(e ->
+        {
+            view.setHome();
+        });
+        
+        hBox.getChildren().add(button);
+        gridPane.add(hBox, 1, 8);
+        
+        view.setCenter(gridPane);
     }
     
     public void eventLaunchAirport(String airportName)
@@ -368,9 +425,9 @@ public class Controller
         launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_GLOBAL);
     }
     
-    public void launchLoginForAirlineAdmin(GridPane gridPane)
+    public void launchLoginForAirlineAdmin(GridPane gridPane, String airlineAdmin)
     {
-        launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_AIRLINE);
+        launchLoginForAllByKey(gridPane, airlineAdmin);
     }
     
     public void launchLoginForCustomer(GridPane gridPane)
@@ -396,7 +453,8 @@ public class Controller
             {
 //                Admin admin = apiService.getGlobalAdminByLogin(username.getText(), pass.getText());
 //                List<Reservation> reservations = apiService.getGlobalReservations();
-            
+//                Configuration.getSession().addGlobalAdmin(Tester.admin());
+                
                 stage.close();
                 view.setTop(view.menuBar(view.airports(), view.airlines()));
                 VBox center = globalReservations(Tester.admin(), Tester.testReservation());
@@ -412,13 +470,21 @@ public class Controller
                 VBox center = customerCenterContainer(Tester.testCustomer());
                 view.setCenter(center);
             }
-            else
+            else if(loginViewKey.equalsIgnoreCase("SH"))
+            {
+                System.out.println("airline");
+            }
+            else if(loginViewKey.equalsIgnoreCase("AR"))
+            {
+                System.out.println("airline");
+            }
+            else if(loginViewKey.equalsIgnoreCase("HR"))
             {
                 System.out.println("airline");
             }
         });
         stage.setScene(scene);
-        stage.setTitle(FieldValue.LOGIN_LABEL);
+        stage.setTitle(FieldValue.CUSTOMER);
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
     }
@@ -441,12 +507,13 @@ public class Controller
         superV.getChildren().add(view.ui_reservationResults(reservations));
         superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
-        HBox logout = logout();
+        HBox logout = logoutHBox();
         logout.setAlignment(Pos.BASELINE_CENTER);
         superV.getChildren().add(logout);
         Button out = (Button) logout.getChildren().get(0);
         out.setOnAction(e ->
         {
+            Configuration.getSession().deleteGlobalAdminFromSession();
             view.setTop(view.ui_homeMenuBar());
             view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
         });
@@ -467,7 +534,19 @@ public class Controller
         vBox.getChildren().add(populateGridForCustomer(customer));
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label());
-        vBox.getChildren().add(logoutHBox());
+        
+        HBox hBox = logoutHBox();
+        Button logout = (Button)hBox.getChildren().get(0);
+        logout.setOnAction(e ->
+        {
+            if(Configuration.getSession().deleteFromSession(new Customer()))
+            {
+                view.setTop(view.ui_homeMenuBar());
+                view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+            }
+        });
+        
+        vBox.getChildren().add(hBox);
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label());
 
@@ -552,23 +631,8 @@ public class Controller
         HBox outContainer = new HBox();
         outContainer.setAlignment(Pos.BOTTOM_CENTER);
         Button logout = new Button("Logout");
-        logout.setOnAction(e ->
-        {
-            if(Configuration.getSession().deleteFromSession(new Customer()))
-            {
-                view.setTop(view.menuBar(
-                        view.logins(view.customerLoginItem(), view.newCustomerItem(), view.globalAdminLoginItem()),
-                        view.airlines(), view.airports()));
-                view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
-            }
-        });
         outContainer.getChildren().add(logout);
         return outContainer;
-    }
-    
-    public HBox logout()
-    {
-        return new HBox(button("Logout"));
     }
     
     public void eventGlobalSearchBar()

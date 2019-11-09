@@ -22,4 +22,14 @@ public class Session
     {
         return true;
     }
+    
+    public void deleteGlobalAdminFromSession()
+    {
+        return;
+    }
+    
+    public boolean isCustomerInSession()
+    {
+        return true;
+    }
 }

@@ -25,7 +25,7 @@ public interface Service
     public void cancelReservation2testFunc(Integer customerId);
     public void getAdminByAirline(String airlineName);
     
-    public boolean makeReservation(Integer flightIdPk, String username) throws InvalidUserName;
+    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserName;
     public boolean makeReservation(Integer flightIdPk, Integer customerId);
     
     public void insertGlobalReservation(Integer flightIdPk);

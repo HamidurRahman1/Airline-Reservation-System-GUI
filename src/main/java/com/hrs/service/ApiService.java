@@ -72,7 +72,7 @@ public class ApiService implements Service
     }
     
     @Override
-    public boolean makeReservation(Integer flightIdPk, String username) throws InvalidUserName
+    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserName
     {
         return true;
     }

@@ -9,8 +9,6 @@ import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -23,10 +21,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -43,7 +38,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.hrs.util.Utility.button;
-import static com.hrs.util.Utility.label;
 
 public class View extends Application
 {
@@ -82,8 +76,7 @@ public class View extends Application
     {
         homeSceneContainer = new BorderPane();
         
-        homeSceneContainer.setTop(menuBar(logins(customerLoginItem(), newCustomerItem(), globalAdminLoginItem()),
-                airports(), airlines()));
+        homeSceneContainer.setTop(ui_homeMenuBar());
         
         homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
         
@@ -103,6 +96,12 @@ public class View extends Application
     public void setCenter(Node node)
     {
         this.homeSceneContainer.setCenter(node);
+    }
+    
+    public void setHome()
+    {
+        this.homeSceneContainer.setTop(ui_homeMenuBar());
+        this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
     }
     
     public GridPane ui_newCustomerContainer()
@@ -254,7 +253,7 @@ public class View extends Application
         return gridPane;
     }
     
-    public GridPane ui_loginContainer()
+    public GridPane ui_loginContainer(String label)
     {
         GridPane grid = new GridPane();
         
@@ -263,7 +262,7 @@ public class View extends Application
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
     
-        Label custLabel = new Label(FieldValue.LOGIN_LABEL);
+        Label custLabel = new Label(label);
         custLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.NORMAL, 20));
         grid.add(custLabel, 0, 0, 2, 1);
     
@@ -365,7 +364,7 @@ public class View extends Application
         return gridPane;
     }
     
-    public GridPane ui_searchResultsByAirline(List<Flight> flights)
+    public GridPane ui_searchResultsByAirline(String airline, List<Flight> flights)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -374,9 +373,11 @@ public class View extends Application
         
         gridPane.add(new Label(), 0, 0);
         gridPane.add(new Label(), 0, 1);
+    
+        gridPane.add(Utility.AIRLINE_HEADER(airline), 2, 2, 7, 1);
         
-        gridPane.add(new Label(), 0, 2);
         gridPane.add(new Label(), 0, 3);
+        gridPane.add(new Label(), 0, 4);
         
         for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
         {
@@ -400,16 +401,25 @@ public class View extends Application
             gridPane.add(button(flights.get(i).fare), 5, j);
             Button status = button(flights.get(i).status);
             gridPane.add(status, 6, j);
+            
             if("open".equalsIgnoreCase(flights.get(i).status))
             {
                 final Integer id = flights.get(i).flightId;
+                
                 status.setOnAction(e ->
                 {
-//                    controller.makeReservation(id);
+                    controller.makeReservationByAirline(id);
                 });
             }
             j++;
         }
+    
+        gridPane.add(new Label(), 0, ++j);
+    
+        Button button = new Button("Back/Home");
+        button.setOnAction(e -> controller.eventLaunchAirline(airline));
+    
+        gridPane.add(button, 3, ++j, 7, 1);
         
         return gridPane;
     }
@@ -523,29 +533,39 @@ public class View extends Application
     
     public Menu logins(MenuItem... menuItems)
     {
-        Menu loginMenu = new Menu(FieldValue.LOGIN_LABEL);
+        Menu loginMenu = new Menu(FieldValue.CUSTOMER);
         loginMenu.getItems().addAll(menuItems);
         return loginMenu;
+    }
+    
+    public Menu admins(MenuItem... menuItems)
+    {
+        Menu menu = new Menu(FieldValue.ADMINS);
+        menu.getItems().addAll(menuItems);
+        return menu;
     }
     
     public MenuItem globalAdminLoginItem()
     {
         MenuItem global = new MenuItem(FieldValue.SE_ADMIN_LABEL);
-        global.setOnAction(e -> controller.launchLoginForGlobalAdmin(ui_loginContainer()));
+        global.setOnAction(e -> controller.launchLoginForGlobalAdmin
+                (ui_loginContainer(FieldValue.SE_ADMIN_LOGIN_LABEL)));
         return global;
     }
     
     public MenuItem customerLoginItem()
     {
         MenuItem customerLogin = new MenuItem(FieldValue.CUSTOMER_LOGIN_LABEL);
-        customerLogin.setOnAction(e -> controller.launchLoginForCustomer(ui_loginContainer()));
+        customerLogin.setOnAction(e -> controller.launchLoginForCustomer(ui_loginContainer(FieldValue.CUSTOMER_LOGIN_LABEL)));
         return customerLogin;
     }
     
-    public MenuItem airlineAdminLoginItem()
+    public MenuItem airlineAdminLoginItem(String label)
     {
-        MenuItem customerLogin = new MenuItem(FieldValue.AIR_ADMIN_LABEL);
-        customerLogin.setOnAction(e -> controller.launchLoginForAirlineAdmin(ui_loginContainer()));
+        MenuItem customerLogin = new MenuItem(label);
+        customerLogin.setOnAction(e -> controller.launchLoginForAirlineAdmin
+                (ui_loginContainer("Admin Login for ".concat(label.split(" ")[2])),
+                label.split(" ")[2]));
         return customerLogin;
     }
     
@@ -565,15 +585,12 @@ public class View extends Application
     
     public MenuBar ui_homeMenuBar()
     {
-        return menuBar(logins(customerLoginItem(), newCustomerItem(), globalAdminLoginItem()), airports(), airlines());
-    }
-    
-    public HBox headerLabel(String label)
-    {
-        HBox hBox = new HBox();
-        hBox.getChildren().addAll(new Label(), label(label), new Label());
-        hBox.setAlignment(Pos.TOP_CENTER);
-        
-        return hBox;
+        return menuBar(
+                logins(customerLoginItem(), newCustomerItem()),
+                airports(), airlines(),
+                admins(globalAdminLoginItem(),
+                        airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : SH")),
+                        airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : AR")),
+                        airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : HR"))));
     }
 }
