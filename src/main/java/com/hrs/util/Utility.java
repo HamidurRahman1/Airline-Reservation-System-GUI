@@ -1,13 +1,16 @@
 package com.hrs.util;
 
 import com.hrs.view.models.Arrival;
+import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
@@ -67,6 +70,11 @@ public class Utility
         return button;
     }
     
+    public static Label label(String label)
+    {
+        return new Label(label);
+    }
+    
     public static HBox reservationHeaders()
     {
         HBox hBox = new HBox();
@@ -91,6 +99,17 @@ public class Utility
         return hBox;
     }
     
+    public static HBox airlineSpecificHeaders()
+    {
+        HBox hBox = new HBox();
+    
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT), button(FieldValue.DESTINATION), button(FieldValue.AIRLINE),
+                        button(FieldValue.DATE_TIME), button(FieldValue.FARE), button(FieldValue.RV_DATE));
+    
+        return hBox;
+    }
+    
     public static HBox flightHeaders()
     {
         HBox hBox = new HBox();
@@ -101,5 +120,22 @@ public class Utility
                         button(FieldValue.STATUS));
         
         return hBox;
+    }
+    
+//    gridPane.add(new Label(), 0, ++j);
+//
+//    Button button = new Button("Back/Home");
+//        button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.SEARCH)));
+//
+//        gridPane.add(button, 0, ++j);
+//
+    
+    public static Label SE_HEADER()
+    {
+        Label l = new Label(FieldValue.RESULTS1);
+        l.setAlignment(Pos.CENTER);
+        l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
+                           .concat(CSSStyle.fontSize(15)));
+        return l;
     }
 }

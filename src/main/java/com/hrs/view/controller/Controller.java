@@ -44,6 +44,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.hrs.util.Utility.button;
+import static com.hrs.util.Utility.label;
 
 /**
  * A class that navigates views and talk to database
@@ -68,13 +69,31 @@ public class Controller
         this.view = view;
     }
     
-    public void adminLogin(String airline)
-    {
+    public void adminLogin(String airline) {
         // apiService.getAdminByAirline(airline);
         
     }
     
-    public void eventMakeReservation(Integer flightId)
+    public void makeReservationFromSE(Integer flightId)
+    {
+        if(!Configuration.getSession().isInSession(new Customer()))
+        {
+            if(apiService.makeReservation(flightId, 101))
+            {
+                apiService.insertGlobalReservation(flightId);
+                AlertBox.displayConfirmation("Reservation Successful",
+                        "successfully reserved a seat for user="+"customer.getUsername()"+"." + " Please check your " +
+                                "account to verify.");
+                eventGlobalSearchBar();
+            }
+        }
+        else
+        {
+            reservationWithUsernameAndPass(flightId);
+        }
+    }
+    
+    public void makeReservationByAirline(Integer flightId)
     {
         if(Configuration.getSession().isInSession(new Customer()))
         {
@@ -89,11 +108,11 @@ public class Controller
         }
         else
         {
-            reservationWithUsername(flightId);
+            reservationWithUsernameAndPass(flightId);
         }
     }
     
-    public void reservationWithUsername(Integer flightIdPk)
+    public void reservationWithUsernameAndPass(Integer flightIdPk)
     {
         Stage stage = new Stage();
         VBox vBox = new VBox();
@@ -135,10 +154,9 @@ public class Controller
     
     public void eventLaunchAirline(String airlineName)
     {
-        Scene scene = null;
-        BorderPane borderPane = new BorderPane();
-        borderPane.setTop(view.ui_homeMenuBar());
-        VBox gridPane = view.Ui_searchBarContainer(airlineName, "Admin");
+        view.setTop(view.ui_homeMenuBar());
+        
+        GridPane gridPane = view.ui_searchBarContainer(airlineName);
         
         TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
                 FieldValue.SEARCH_BAR_COL, (GridPane) gridPane.getChildren().get(1));
@@ -150,15 +168,14 @@ public class Controller
             {
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                    apiService.getAllFlightsByAirline(searchBar.getText());
+                    // apiService.getAllFlightsByAirline(searchBar.getText());
+                    
                     System.out.println(searchBar.getText());
+                    
+                    view.setCenter(view.ui_searchResultsByAirline(Tester.testFlights()));
                 }
             }
         });
-        
-        borderPane.setCenter(gridPane);
-        scene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
-        view.switchScene(scene);
     }
     
     public void eventLaunchAirport(String airportName)
@@ -431,7 +448,7 @@ public class Controller
         out.setOnAction(e ->
         {
             view.setTop(view.ui_homeMenuBar());
-            view.setCenter(view.ui_searchBarContainer());
+            view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
         });
         return superV;
     }
@@ -542,7 +559,7 @@ public class Controller
                 view.setTop(view.menuBar(
                         view.logins(view.customerLoginItem(), view.newCustomerItem(), view.globalAdminLoginItem()),
                         view.airlines(), view.airports()));
-                view.setCenter(view.ui_searchBarContainer());
+                view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
             }
         });
         outContainer.getChildren().add(logout);
@@ -559,7 +576,9 @@ public class Controller
 //        List<Flight> flights = apiService.getAllFlights();
         
         List<Flight> flights = Tester.testFlights();
+    
         GridPane center = view.ui_globalSearchResults(flights);
+        
         view.setSearchResultsInCenter(center);
     }
 }

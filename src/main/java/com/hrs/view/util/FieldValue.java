@@ -108,4 +108,6 @@ public class FieldValue
     
     public static final String RV_DATE = "RV. DATE";
     
+    public static final String RESULTS1 = "Displaying all search results from SE";
+    
 }
