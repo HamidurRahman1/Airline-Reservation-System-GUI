@@ -8,6 +8,8 @@ import com.hrs.view.models.Reservation;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -22,6 +24,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -69,8 +72,6 @@ public class View extends Application
         primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
         primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
         primaryStage.setScene(this.homeScene);
-    
-//        Utility.setOnCenter(primaryStage);
         
         primaryStage.show();
     }
@@ -302,15 +303,6 @@ public class View extends Application
         return menuBar;
     }
     
-    public void switchToMainScreen()
-    {
-        BorderPane borderPane = new BorderPane();
-        borderPane.setTop(ui_homeMenuBar());
-        borderPane.setCenter(ui_searchBarContainer());
-        this.homeScene = new Scene(borderPane, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
-        this.primaryStage.setScene(homeScene);
-    }
-    
     public void ui_arrivalWindow(Stage stage)
     {
         if(this.arrivalStage != null) this.arrivalStage.close();
@@ -333,33 +325,29 @@ public class View extends Application
     public GridPane ui_globalSearchResults(List<Flight> flights)
     {
         GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
     
-        HBox hBox = sortSection();
-        RadioButton fare = (RadioButton) hBox.getChildren().get(1);
-        RadioButton airline = (RadioButton) hBox.getChildren().get(3);
-    
-        fare.setOnAction(e ->
-        {
-            flights.sort(Comparator.comparing(Flight::getFare));
-            ui_globalSearchResults(flights);
-        });
-        airline.setOnAction(e ->
-        {
-            flights.sort(Comparator.comparing(Flight::getAirline));
-            ui_globalSearchResults(flights);
-        });
-    
-        gridPane.add(hBox, 0, 0);
+        gridPane.add(new Label(), 0, 0);
         gridPane.add(new Label(), 0, 1);
+        
+        gridPane.add(sortSection(flights), 0, 2);
+        
+        gridPane.add(new Label(), 0, 3);
+        gridPane.add(new Label(), 0, 4);
         
         for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
         {
-            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 2);
+            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 5);
         }
-        int j = 3;
+    
+        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
+        {
+            gridPane.add(new Label(), i, 6);
+        }
+        
+        int j = 7;
     
         for(int i = 0; i < flights.size(); i++)
         {
@@ -382,13 +370,19 @@ public class View extends Application
             j++;
         }
         
+        gridPane.add(new Label(), 0, ++j);
+        
+        Button button = new Button("Back/Home");
+        button.setOnAction(e -> this.setCenter(ui_searchBarContainer()));
+        
+        gridPane.add(button, 0, ++j);
+        
         return gridPane;
     }
     
-    public HBox sortSection()
+    public HBox sortSection(List<Flight> flights)
     {
         HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER);
         
         RadioButton fare = new RadioButton("Fare");
         RadioButton airline = new RadioButton("Airline");
@@ -397,8 +391,29 @@ public class View extends Application
         fare.setToggleGroup(toggleGroup);
         airline.setToggleGroup(toggleGroup);
         
-        hBox.getChildren().addAll(new Label("Sort results by: "), fare, airline);
-        
+        hBox.getChildren().addAll(new Label("Sort results by: "), fare, new Label(), airline);
+    
+        toggleGroup.selectedToggleProperty().addListener(new ChangeListener <Toggle>()
+        {
+            public void changed(ObservableValue <? extends Toggle> ob, Toggle o, Toggle n)
+            {
+                RadioButton rb = (RadioButton)toggleGroup.getSelectedToggle();
+                if (rb != null)
+                {
+                    if(rb.getText().equalsIgnoreCase("Fare"))
+                    {
+                        flights.sort(Comparator.comparing(Flight::getFare));
+                        setSearchResultsInCenter(ui_globalSearchResults(flights));
+                    }
+                    else
+                    {
+                        flights.sort(Comparator.comparing(Flight::getAirline));
+                        setSearchResultsInCenter(ui_globalSearchResults(flights));
+                    }
+                }
+            }
+        });
+    
         return hBox;
     }
     
@@ -416,7 +431,7 @@ public class View extends Application
     
         for(int i = 0; i < Utility.reservationHeaders().getChildren().size(); i++)
         {
-            gridPane.add(new Label("-"), i, 1);
+            gridPane.add(new Label(), i, 1);
         }
         
         int j = 2;

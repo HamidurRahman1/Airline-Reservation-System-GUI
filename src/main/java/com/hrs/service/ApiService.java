@@ -100,4 +100,10 @@ public class ApiService implements Service
     {
         return null;
     }
+    
+    @Override
+    public List <Reservation> getCustomersReservations(Integer customerId)
+    {
+        return null;
+    }
 }

@@ -12,6 +12,7 @@ public class Customer extends Person implements Serializable
 {
     private Integer customerId;
     private Login login;
+    
     private List<Reservation> reservations = new LinkedList <>();
     private List<Flight> flights = new LinkedList <>();
 
@@ -57,6 +58,16 @@ public class Customer extends Person implements Serializable
     public void setFlights(List <Flight> flights)
     {
         this.flights = flights;
+    }
+    
+    public List <Reservation> getReservations()
+    {
+        return reservations;
+    }
+    
+    public void setReservations(List <Reservation> reservations)
+    {
+        this.reservations = reservations;
     }
     
     @Override

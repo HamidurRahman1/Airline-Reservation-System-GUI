@@ -32,4 +32,5 @@ public interface Service
     public Admin getGlobalAdminByLogin(String username, String password);
     
     public List<Reservation> getGlobalReservations();
+    public List<Reservation> getCustomersReservations(Integer customerId);
 }

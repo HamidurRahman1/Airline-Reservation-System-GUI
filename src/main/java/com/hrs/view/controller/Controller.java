@@ -25,6 +25,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,6 +40,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.hrs.util.Utility.button;
@@ -344,39 +346,6 @@ public class Controller
         stage.showAndWait();
     }
     
-    public void eventLaunchLogin(GridPane gridPane)
-    {
-        Stage stage = new Stage();
-        Scene scene = new Scene(gridPane, FieldValue.LOGIN_WINDOW_WIDTH, FieldValue.LOGIN_WINDOW_HEIGHT);
-        
-        HBox hBox = (HBox)Utility.getNodeByRowColumnIndex
-                (FieldValue.LOGIN_SUBMIT_RAW, FieldValue.LOGIN_SUBMIT_COL, gridPane);
-        Button submit = (Button) hBox.getChildren().get(0);
-        
-        submit.setOnAction(e ->
-        {
-            TextField username = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.USERNAME_RAW, FieldValue.USERNAME_COL, gridPane);
-            TextField pass = (TextField) Utility.getNodeByRowColumnIndex(FieldValue.PASSWORD_RAW, FieldValue.PASSWORD_COL, gridPane);
-    
-            System.out.println(username.getText() + ' ' + pass.getText());
-            Customer customer = apiService.getCustomerByLogin(username.getText(), pass.getText());
-    
-            if(customer != null)
-            {
-                stage.close();
-                view.ui_customerHome(menuBar(), customerCenterContainer(customer));
-            }
-            else
-            {
-                System.out.println();
-            }
-        });
-        stage.setScene(scene);
-        stage.setTitle(FieldValue.LOGIN_LABEL);
-        stage.setAlwaysOnTop(true);
-        stage.showAndWait();
-    }
-    
     public void launchLoginForGlobalAdmin(GridPane gridPane)
     {
         launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_GLOBAL);
@@ -420,6 +389,11 @@ public class Controller
             {
                 stage.close();
                 
+//                Customer customer = apiService.getCustomerByLogin(username.getText(), pass.getText());
+                
+                view.setTop(view.menuBar(view.airports(), view.airlines()));
+                VBox center = customerCenterContainer(Tester.testCustomer());
+                view.setCenter(center);
             }
             else
             {
@@ -438,11 +412,17 @@ public class Controller
         superV.setAlignment(Pos.TOP_CENTER);
         
         superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
         superV.getChildren().add(new Label(admin.getFirstName() + " " + admin.getLastName()));
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
         superV.getChildren().add(new Label("Displaying all reservations made using SE"));
         superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
         superV.getChildren().add(view.ui_reservationResults(reservations));
+        superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
         HBox logout = logout();
         logout.setAlignment(Pos.BASELINE_CENTER);
@@ -460,7 +440,7 @@ public class Controller
     {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_CENTER);
-    
+
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(customerNameHBox(customer));
@@ -473,7 +453,7 @@ public class Controller
         vBox.getChildren().add(logoutHBox());
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(new Label());
-        
+
         return vBox;
     }
     
@@ -481,42 +461,64 @@ public class Controller
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
-        gridPane.setHgap(10);
-        gridPane.setVgap(5);
-        
-        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
-            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 0);
-        
-        int j = 1;
-        
+        gridPane.setHgap(12);
+        gridPane.setVgap(8);
+
+        for(int i = 0; i < Utility.customerHistoryHeaders().getChildren().size(); i++)
+            gridPane.add(Utility.customerHistoryHeaders().getChildren().get(i), i, 0);
+    
+        for(int i = 0; i < Utility.customerHistoryHeaders().getChildren().size(); i++)
+            gridPane.add(new Label(), i, 1);
+    
+        int k = 2;
+
         List<Flight> flights = customer.getFlights();
+        List<Reservation> reservations = customer.getReservations();
         
-        for(int i = 0; i < flights.size(); i++)
+        for(int i = 0; i < reservations.size(); i++)
         {
-            gridPane.add(button(flights.get(i).flightName), 0, j);
-            gridPane.add(button(flights.get(i).source), 1, j);
-            gridPane.add(button(flights.get(i).destination), 2, j);
-            gridPane.add(button(flights.get(i).airline), 3, j);
-            gridPane.add(button(flights.get(i).date), 4, j);
-            Button cancel = button(flights.get(i).status);
-            gridPane.add(cancel, 5, j);
-            if("a".equalsIgnoreCase(flights.get(i).status))
+            Reservation reservation = reservations.get(i);
+            gridPane.add(button(reservation.getFlight().getFlightName()), 0, k);
+            gridPane.add(button(reservation.getFlight().getSource()), 1, k);
+            gridPane.add(button(reservation.getFlight().getDestination()), 2, k);
+            gridPane.add(button(reservation.getFlight().getAirline()), 3, k);
+            gridPane.add(button(reservation.getLocalDate()), 4, k);
+            gridPane.add(button(reservation.getFlight().getFare()), 5, k);
+            Button cancel = button(reservation.getStatus());
+            gridPane.add(cancel, 6, k);
+            k++;
+            
+            if("a".equalsIgnoreCase(reservation.getStatus()))
             {
                 cancel.setOnAction(e ->
                 {
                     if(AlertBox.displayConfirmation("Canceling this flight?", "Do you really want " +
-                        "to cancel this flight?"))
+                            "to cancel this flight?"))
                     {
                         apiService.cancelReservation2testFunc(customer.getCustomerId());
+                        
                         //List<Flight> flightList = apiService.getAllFlightsByCustomerId(customer.getCustomerId());
-                        customer.setFlights(Tester.testFlights2());
-                        view.ui_customerHome(menuBar(), customerCenterContainer(customer));
+                        
+                        customer.setReservations(Tester.testReservation2());
+                        VBox center = customerCenterContainer(customer);
+                        view.setCenter(center);
                     }
                 });
             }
+        }
+
+        int j = k+reservations.size();
+        for(int i = 0; i < flights.size(); i++)
+        {
+            gridPane.add(button(flights.get(i).getFlightName()), 0, j);
+            gridPane.add(button(flights.get(i).getSource()), 1, j);
+            gridPane.add(button(flights.get(i).getDestination()), 2, j);
+            gridPane.add(button(flights.get(i).getAirline()), 3, j);
+            gridPane.add(button(flights.get(i).getDate()), 4, j);
+            gridPane.add(button(flights.get(i).getFare()), 5, j);
             j++;
         }
-        
+
         return gridPane;
     }
     
@@ -524,18 +526,8 @@ public class Controller
     {
         HBox name = new HBox();
         name.setAlignment(Pos.TOP_CENTER);
-        
-        name.getChildren().add(new Label(customer.getFirstName() + " " + customer.getLastName()));
-        
+        name.getChildren().add(new Label("Customer Name: " + customer.getFirstName() + " " + customer.getLastName()));
         return name;
-    }
-    
-    private MenuBar menuBar()
-    {
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(view.getMenuBar().getMenus().get(1));
-        menuBar.getMenus().add(view.getMenuBar().getMenus().get(2));
-        return menuBar;
     }
     
     private HBox logoutHBox()
@@ -547,7 +539,10 @@ public class Controller
         {
             if(Configuration.getSession().deleteFromSession(new Customer()))
             {
-                view.switchToMainScreen();
+                view.setTop(view.menuBar(
+                        view.logins(view.customerLoginItem(), view.newCustomerItem(), view.globalAdminLoginItem()),
+                        view.airlines(), view.airports()));
+                view.setCenter(view.ui_searchBarContainer());
             }
         });
         outContainer.getChildren().add(logout);
@@ -556,7 +551,7 @@ public class Controller
     
     public HBox logout()
     {
-        return new HBox(new Button("Logout"));
+        return new HBox(button("Logout"));
     }
     
     public void eventGlobalSearchBar()
@@ -566,43 +561,5 @@ public class Controller
         List<Flight> flights = Tester.testFlights();
         GridPane center = view.ui_globalSearchResults(flights);
         view.setSearchResultsInCenter(center);
-    }
-    
-    public void eventAbout() {}
-    
-    public void eventHelp() {}
-    
-    public TableView populateTable(String flightHeader, String airlineHeader, String airportHeader,
-                                   String timeHeader, String statusHeader, String message, List<Arrival> arrivals)
-    {
-        TableView<Arrival> tableView = new TableView<>();
-        
-        TableColumn flight = new TableColumn(flightHeader);
-        TableColumn airline = new TableColumn(airlineHeader);
-        TableColumn airport = new TableColumn(airportHeader);
-        TableColumn time = new TableColumn(timeHeader);
-        TableColumn status = new TableColumn(statusHeader);
-        
-        flight.setCellValueFactory(new PropertyValueFactory <>("flightName"));
-        airline.setCellValueFactory(new PropertyValueFactory<>("airlineName"));
-        airport.setCellValueFactory(new PropertyValueFactory<>("sourceName"));
-        time.setCellValueFactory(new PropertyValueFactory<>("time"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        
-        tableView.getColumns().add(flight);
-        tableView.getColumns().add(airline);
-        tableView.getColumns().add(airport);
-        tableView.getColumns().add(time);
-        tableView.getColumns().add(status);
-        
-        
-        tableView.getItems().add(new Arrival("a", "b", "c", "d", "e"));
-        
-        //        arrivals.forEach(e ->
-        //        {
-        //            tableView.getItems().add(new Arrival("a", "b", "c", "d", "e"));
-        //        });
-        
-        return tableView;
     }
 }

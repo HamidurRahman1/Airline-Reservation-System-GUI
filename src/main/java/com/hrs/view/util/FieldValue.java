@@ -94,7 +94,7 @@ public class FieldValue
     public static final String DATE_TIME = "DATE";
     public static final String FARE = "FARE";
     public static final String SOURCE = "SOURCE";
-    public static final String DESTINATION = "DESTINA";
+    public static final String DESTINATION = "DESTINATION";
     
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";

@@ -19,7 +19,10 @@ public class Tester
     
     public static Customer testCustomer()
     {
-        return new Customer("Hamidur", "Rahman");
+        Customer customer = new Customer("Hamidur", "Rahman");
+        customer.setFlights(testFlights());
+        customer.setReservations(testReservation());
+        return customer;
     }
     
     public static Source testSource()
@@ -54,7 +57,7 @@ public class Tester
         List<Flight> flights = new LinkedList <>();
         flights.add(new Flight("f1", "f1", "f1", "f1", "f1", "10", "open"));
         flights.add(new Flight("f3", "f3", "f3", "f3", "f3", "20", "c"));
-        flights.add(new Flight("f2", "f2", "f3", "f2", "f2", "5", "c"));
+        flights.add(new Flight("f2", "f2", "f3", "f2", "f2", "50", "c"));
         return flights;
     }
     
@@ -69,8 +72,15 @@ public class Tester
     public static List<Reservation> testReservation()
     {
         List<Reservation> reservations = new LinkedList <>();
-        reservations.add(new Reservation(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"), "r d", "ca"));
+        reservations.add(new Reservation(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"), "r d", "c"));
         reservations.add(new Reservation(new Flight("f2", "f2", "f2", "f2", "f2", "5", "c"), "r d", "a"));
+        return reservations;
+    }
+    
+    public static List<Reservation> testReservation2()
+    {
+        List<Reservation> reservations = new LinkedList <>();
+        reservations.add(new Reservation(new Flight("f1", "f1", "f1", "f1", "f1", "20", "c"), "r d", "c"));
         return reservations;
     }
     

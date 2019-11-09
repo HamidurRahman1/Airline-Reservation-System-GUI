@@ -79,6 +79,18 @@ public class Utility
         return hBox;
     }
     
+    public static HBox customerHistoryHeaders()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
+                        button(FieldValue.AIRLINE), button(FieldValue.DATE_TIME), button(FieldValue.FARE),
+                        button(FieldValue.RV_DATE));
+        
+        return hBox;
+    }
+    
     public static HBox flightHeaders()
     {
         HBox hBox = new HBox();

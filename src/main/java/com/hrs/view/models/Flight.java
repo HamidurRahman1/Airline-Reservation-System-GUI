@@ -12,14 +12,13 @@ public class Flight
     public String source;
     public String destination;
     public String date;
-    public String status;
+    public String status;       // status -> onTime / canceled
     public String airline;
     public String fare;
     
-    public Flight()
-    {
+    public Boolean isFull;
     
-    }
+    public Flight() {}
     
     public Flight(String flightName, String source, String destination, String airline, String date, String fare, String status)
     {
