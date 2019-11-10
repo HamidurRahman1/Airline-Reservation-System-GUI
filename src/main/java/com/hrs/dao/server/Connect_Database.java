@@ -1,18 +1,16 @@
 package com.hrs.dao.server;
 
+import com.hrs.dal.Gateway;
+
 import java.sql.*;
 
 public class Connect_Database {
 
     public static void main(String args[]) {
 
-        String url = "jdbc:mysql://localhost:3306/AirlineReservationDataBase";
-        String user = "root";
-        String pass = "*Codarx1971#";
-
         try {
 
-            Connection connection = DriverManager.getConnection(url, user, pass);
+            Connection connection = Gateway.getDBConnection();
             Statement statement = connection.createStatement();
             String sql = "select * from customer_info";
             ResultSet rs = statement.executeQuery(sql);
