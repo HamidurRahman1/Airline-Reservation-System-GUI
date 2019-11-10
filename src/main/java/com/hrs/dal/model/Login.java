@@ -1,6 +1,6 @@
-package com.hrs.dao.module;
+package com.hrs.dal.model;
 
-public class Login_Info {
+public class Login {
 
     private String username;
 
@@ -21,4 +21,5 @@ public class Login_Info {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
