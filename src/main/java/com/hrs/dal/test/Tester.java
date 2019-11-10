@@ -7,21 +7,29 @@ public class Tester {
 
     public static void main(String args[])throws SQLException{
 
-        try {
+//        try {
+//
+//            Connection connection = Gateway.getDBConnection();
+//            Statement statement = connection.createStatement();
+//            String sql = "select * from customer_info";
+//            ResultSet rs = statement.executeQuery(sql);
+//            while (rs.next()) {
+//
+//                System.out.println(rs.getString("customer_id") + " " + rs.getString("customer_first_name"));
+//
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
-            Connection connection = Gateway.getDBConnection();
-            Statement statement = connection.createStatement();
-            String sql = "select * from customer_info";
-            ResultSet rs = statement.executeQuery(sql);
-            while (rs.next()) {
+        APIservice as = new APIservice();
+        as.getAllFlightsByCustomerId(2);
 
-                System.out.println(rs.getString("customer_id") + " " + rs.getString("customer_first_name"));
+        /*
+        *  Method is tested, it's working for api services.
+        * */
 
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }
