@@ -1,10 +1,15 @@
 package com.hrs.service;
 
 
-import com.hrs.exceptions.InvalidUserName;
+import com.hrs.dao.module.Airplane;
+import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.test.Tester;
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.AirLine;
+import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
+import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 
 import java.time.LocalDate;
@@ -42,12 +47,6 @@ public class ApiService implements Service
     }
     
     @Override
-    public void validateAirlineAdminLogin(String username, String password)
-    {
-    
-    }
-    
-    @Override
     public boolean insertNewCustomer(String firstName, String lastName, String email, String password)
     {
         return true;
@@ -66,13 +65,7 @@ public class ApiService implements Service
     }
     
     @Override
-    public void getAdminByAirline(String airlineName)
-    {
-    
-    }
-    
-    @Override
-    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserName
+    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserNameException
     {
         return true;
     }
@@ -105,5 +98,29 @@ public class ApiService implements Service
     public List <Reservation> getCustomersReservations(Integer customerId)
     {
         return null;
+    }
+    
+    @Override
+    public Admin getAdminByLogin(String airline, String username, String password)
+    {
+        return null;
+    }
+    
+    @Override
+    public List<AirPlane> getAllAirPlaneByAirLine(String airlineName)
+    {
+        return null;
+    }
+    
+    @Override
+    public List<Airport> getAllAirports()
+    {
+        return null;
+    }
+    
+    @Override
+    public boolean addFlightByAirline(AirLine airLine, Flight flight)
+    {
+        return true;
     }
 }

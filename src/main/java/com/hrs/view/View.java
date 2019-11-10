@@ -3,12 +3,18 @@ package com.hrs.view;
 import com.hrs.configs.Configuration;
 import com.hrs.util.Utility;
 import com.hrs.view.controller.Controller;
+import com.hrs.view.models.Admin;
+import com.hrs.view.models.AirLine;
+import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airport;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -16,16 +22,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -38,6 +47,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.hrs.util.Utility.button;
+import static com.hrs.util.Utility.label;
 
 public class View extends Application
 {
@@ -49,9 +59,6 @@ public class View extends Application
     
     private Scene homeScene;
     private BorderPane homeSceneContainer;
-    
-    private MenuBar menuBar;
-    private GridPane searchBar;
     
     public void start(Stage primaryStage) throws Exception
     {
@@ -102,6 +109,33 @@ public class View extends Application
     {
         this.homeSceneContainer.setTop(ui_homeMenuBar());
         this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
+    }
+    
+    public VBox ui_adminAccessByAirline(Admin admin, String airline)
+    {
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.BASELINE_CENTER);
+        
+        Label header = label("Admin Access in ".concat(airline.toUpperCase()));
+        
+        Label name = label("Admin Name: ".concat(admin.getFirstName()).concat(" ").concat(admin.getLastName()));
+    
+        Button addFlight = new Button(FieldValue.ADD_FLIGHT);
+        addFlight.setPrefWidth(130);
+        
+        Button cancelFlight = new Button(FieldValue.CANCEL_FLIGHT);
+        cancelFlight.setPrefWidth(130);
+        
+        Button logout = new Button(FieldValue.LOGOUT_LABEL);
+        logout.setPrefWidth(130);
+        
+        vBox.getChildren().addAll(new Label(), new Label(),
+                header, new Label(), name, new Label(), new Label(),
+                addFlight, new Label(),
+                cancelFlight, new Label(), new Label(),
+                logout);
+        
+        return vBox;
     }
     
     public GridPane ui_newCustomerContainer()
@@ -171,50 +205,6 @@ public class View extends Application
         GridPane.setMargin(submitButton, new Insets(20, 0,20,0));
         
         return gridPane;
-    }
-    
-    public VBox Ui_searchBarContainer(String airlineName, String adminLabel)
-    {
-        VBox superV = new VBox();
-        
-        VBox admin = getAdminVBox(airlineName, adminLabel);
-        
-        GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.BASELINE_CENTER);
-    
-        gridPane.setPadding(new Insets(40, 40, 40, 40));
-        gridPane.setHgap(10);
-        gridPane.setVgap(5);
-        
-        Label searchLabel = new Label("Find Flights for ".concat(airlineName.toUpperCase()));
-        searchLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, FieldValue.FONT_SIZE_17));
-        gridPane.add(searchLabel, 0,0,2,1);
-        GridPane.setHalignment(searchLabel, HPos.CENTER);
-        GridPane.setMargin(searchLabel, new Insets(20, 0,20,0));
-    
-        TextField searchBar = new TextField();
-        gridPane.add(searchBar, 1,1);
-        GridPane.setHalignment(searchBar, HPos.CENTER);
-        searchBar.setMinHeight(FieldValue.SEARCH_BAR_HEIGHT);
-        searchBar.setMinWidth(FieldValue.SEARCH_BAR_WIDTH);
-        
-        superV.getChildren().addAll(admin, gridPane, new GridPane());
-        superV.setAlignment(Pos.TOP_CENTER);
-        
-        return superV;
-    }
-    
-    private VBox getAdminVBox(String airline, String adminLabel)
-    {
-        VBox admin = new VBox();
-        admin.setAlignment(Pos.TOP_CENTER);
-        Button button = new Button(adminLabel);
-        admin.getChildren().addAll(new Label(), new Label(), button);
-        button.setOnAction(e ->
-        {
-            controller.adminLogin(airline);
-        });
-        return admin;
     }
     
     public GridPane ui_searchBarContainer(String label)
@@ -562,11 +552,11 @@ public class View extends Application
     
     public MenuItem airlineAdminLoginItem(String label)
     {
-        MenuItem customerLogin = new MenuItem(label);
-        customerLogin.setOnAction(e -> controller.launchLoginForAirlineAdmin
+        MenuItem admin = new MenuItem(label);
+        admin.setOnAction(e -> controller.launchLoginForAirlineAdmin
                 (ui_loginContainer("Admin Login for ".concat(label.split(" ")[2])),
                 label.split(" ")[2]));
-        return customerLogin;
+        return admin;
     }
     
     public MenuItem newCustomerItem()

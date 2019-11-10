@@ -6,7 +6,7 @@ import java.time.LocalDate;
 /**
  *  A container to represent a complex relationship of Customers-Airports-Airlines into one.
  */
-public class Reservation implements Serializable
+public class Reservation
 {
     private Integer reservationId;
     private Customer customer;

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A model to represent customer.
  */
-public class Customer extends Person implements Serializable
+public class Customer extends Person
 {
     private Integer customerId;
     private Login login;

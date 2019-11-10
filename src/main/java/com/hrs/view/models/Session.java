@@ -1,35 +1,27 @@
 package com.hrs.view.models;
 
-import java.util.Set;
-
 public class Session
 {
-    private static Set<Customer> customer = null;
+    private static Customer customer = null;
+    private static Admin admin = null;
     
     public Session() {}
-    
-    public boolean isInSession(Customer customer)
-    {
-        return true;
-    }
-    
-    public boolean addInSession(Customer customer)
-    {
-        return true;
-    }
-    
-    public boolean deleteFromSession(Customer customer)
-    {
-        return true;
-    }
-    
-    public void deleteGlobalAdminFromSession()
-    {
-        return;
-    }
     
     public boolean isCustomerInSession()
     {
         return true;
     }
+    
+    public void addCustomerToSession(Customer customer) {}
+    
+    public void deleteCustomerFromSession() {}
+    
+    public boolean isAdminInSession()
+    {
+        return true;
+    }
+    
+    public void addAdminToSession(Admin admin) {}
+    
+    public void deleteAdminFromSession() {}
 }

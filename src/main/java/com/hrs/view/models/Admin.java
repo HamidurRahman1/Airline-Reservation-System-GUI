@@ -9,12 +9,6 @@ public class Admin extends Person
         super();
     }
     
-    public Admin(Login login)
-    {
-        super();
-        this.login = login;
-    }
-    
     public Admin(String firstName, String lastName)
     {
         super(firstName, lastName);
@@ -23,6 +17,12 @@ public class Admin extends Person
     public Admin(String firstName, String lastName, Login login)
     {
         super(firstName, lastName);
+        this.login = login;
+    }
+    
+    public Admin(Login login)
+    {
+        super();
         this.login = login;
     }
     
@@ -35,4 +35,6 @@ public class Admin extends Person
     {
         this.login = login;
     }
+    
+    
 }

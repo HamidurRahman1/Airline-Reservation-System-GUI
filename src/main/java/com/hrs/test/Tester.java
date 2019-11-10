@@ -1,20 +1,82 @@
 package com.hrs.test;
 
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airport;
 import com.hrs.view.models.Arrival;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Tester
+public class Tester extends Application
 {
+    @Override
+    public void start(Stage stage) throws Exception
+    {// Set title for the stage
+        stage.setTitle("creating combo box ");
+    
+        // Create a tile pane
+        TilePane r = new TilePane();
+    
+        // Create a label
+        Label description_label =
+                new Label("This is a combo box example ");
+    
+        // Weekdays
+        List<String> week_days = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thrusday", "Friday");
+    
+        // Create a combo box
+        ChoiceBox <String> combo_box = new ChoiceBox <>(FXCollections.observableArrayList(week_days));
+    
+        ChoiceBox<String> combo_box2 = new ChoiceBox<>(FXCollections.observableArrayList(week_days));
+    
+        // Label to display the selected menuitem
+        Label selected = new Label("default item selected");
+    
+        // Create action event
+        EventHandler<ActionEvent> event = new EventHandler <ActionEvent>()
+        {
+            public void handle(ActionEvent e)
+            {
+                selected.setText(combo_box.getValue() + " selected");
+                System.out.println(week_days.size());
+                combo_box2.setItems(FXCollections.observableList(Arrays.asList("a", "as")));
+            }
+        };
+    
+        // Set on action
+        combo_box.setOnAction(event);
+    
+        // Create a tile pane
+        TilePane tile_pane = new TilePane(combo_box, combo_box2, selected);
+    
+        // Create a scene
+        Scene scene = new Scene(tile_pane, 200, 200);
+    
+        // Set the scene
+        stage.setScene(scene);
+    
+        stage.show();
+    }
+    
     public static void main(String[] args)
     {
-        System.out.println(testSource());
+        launch();
     }
     
     public static Customer testCustomer()
@@ -27,7 +89,7 @@ public class Tester
     
     public static Source testSource()
     {
-        return new Source(101, "NY");
+        return new Source();
     }
     
     public static List<Arrival> arrivals()
@@ -87,5 +149,29 @@ public class Tester
     public static Admin admin()
     {
         return new Admin("Hamidur", "Rahman");
+    }
+    
+    public static List<Airport> airports()
+    {
+        List<Airport> airports = new LinkedList <>();
+        
+        airports.add(new Airport(101, "A1"));
+        airports.add(new Airport(102, "A2"));
+        airports.add(new Airport(103, "A3"));
+        airports.add(new Airport(104, "A4"));
+        
+        return airports;
+    }
+    
+    public static List<AirPlane> airPlanes()
+    {
+        List<AirPlane> airports = new LinkedList <>();
+        
+        airports.add(new AirPlane(11, "AP1"));
+        airports.add(new AirPlane(12, "AP2"));
+        airports.add(new AirPlane(13, "AP3"));
+        airports.add(new AirPlane(14, "AP4"));
+        
+        return airports;
     }
 }

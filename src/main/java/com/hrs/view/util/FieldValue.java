@@ -19,7 +19,6 @@ public class FieldValue
     public static final String AIRPORT3 = "Airport : DC";
     
     public static final String CUST_REG_FORM = "New Customer Registration Form";
-    public static final String CUST_LABEL = "Customer Login";
     
     public static final String SELECT_DATE = "Please select a date: ";
     public static final String DATE_TITLE = "A future date for reservations";
@@ -106,7 +105,6 @@ public class FieldValue
     public static final String AIR_ADMIN_LABEL = "Admin";
     
     public static final String LOGIN_VIEW_KEY_GLOBAL = "global";
-    public static final String LOGIN_VIEW_KEY_AIRLINE = "airline";
     public static final String LOGIN_VIEW_KEY_CUSTOMER = "customer";
     
     public static final String RV_DATE = "RV. DATE";
@@ -114,4 +112,17 @@ public class FieldValue
     public static final String RESULTS1 = "Displaying all search results from SE";
     public static final String RESULTS = "Displaying all search results for";
     
+    public static final String ADD_FLIGHT = "ADD FLIGHT";
+    public static final String CANCEL_FLIGHT = "CANCEL FLIGHT";
+    
+    public static final String LOGOUT_LABEL = "Logout";
+    
+    public static final Integer ADD_FLIGHT_INDEX = 7;
+    public static final Integer CANCEL_FLIGHT_INDEX = 9;
+    
+    public static final String A1 = "SH";
+    public static final String A2 = "AR";
+    public static final String A3 = "HR";
+    
+    public static final String SELECT = "Select One";
 }

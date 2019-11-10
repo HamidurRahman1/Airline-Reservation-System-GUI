@@ -5,6 +5,7 @@ import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -17,6 +18,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -110,6 +112,19 @@ public class Utility
         return hBox;
     }
     
+    public static HBox addFlightHeaders()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT), label(" "), button(FieldValue.DESTINATION), label(" "),
+                        button(FieldValue.AIRLINE), label(" "),
+                        button(FieldValue.DATE_TIME), label(" "),
+                        button(FieldValue.FARE), label(" "), button(FieldValue.RV_DATE));
+        
+        return hBox;
+    }
+    
     public static HBox flightHeaders()
     {
         HBox hBox = new HBox();
@@ -139,4 +154,26 @@ public class Utility
                            .concat(CSSStyle.fontSize(15)));
         return l;
     }
+    
+    public static Insets FLIGHT_LABEL()
+    {
+        return new Insets(8, 8, 8, 8);
+    }
+    
+    public static List<String> timeList()
+    {
+        List<String> times = new LinkedList <>();
+        
+        times.add("12:00 am");
+        times.add("3:00 am");
+        times.add("6:00 am");
+        times.add("9:00 am");
+        times.add("12:00 pm");
+        times.add("3:00 pm");
+        times.add("6:00 pm");
+        times.add("9:00 pm");
+        
+        return times;
+    }
+    
 }

@@ -1,8 +1,13 @@
 package com.hrs.service;
 
-import com.hrs.exceptions.InvalidUserName;
+import com.hrs.exceptions.InvalidPasswordException;
+import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.AirLine;
+import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
+import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 
 import java.time.LocalDate;
@@ -13,24 +18,35 @@ import java.util.List;
  */
 public interface Service
 {
-    public void getAllFlights();
-    public void getAllFlightsByCustomerId(Integer customerId);
-    public void getAllFlightsByAirline(String airlineName);
-    public Customer getCustomerByLogin(String username, String password);
-    public void validateAirlineAdminLogin(String username, String password);
+    void getAllFlights();
+    void getAllFlightsByCustomerId(Integer customerId);
+    void getAllFlightsByAirline(String airlineName);
+    Customer getCustomerByLogin(String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    public boolean insertNewCustomer(String firstName, String lastName, String email, String password);
-    public void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
+    Admin getGlobalAdminByLogin(String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    public void cancelReservation2testFunc(Integer customerId);
-    public void getAdminByAirline(String airlineName);
+    Admin getAdminByLogin(String airline, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserName;
-    public boolean makeReservation(Integer flightIdPk, Integer customerId);
+    List<Reservation> getGlobalReservations();
+    List<Reservation> getCustomersReservations(Integer customerId);
     
-    public void insertGlobalReservation(Integer flightIdPk);
-    public Admin getGlobalAdminByLogin(String username, String password);
+    List<AirPlane> getAllAirPlaneByAirLine(String airlineName);
+    List<Airport> getAllAirports();
     
-    public List<Reservation> getGlobalReservations();
-    public List<Reservation> getCustomersReservations(Integer customerId);
+    boolean insertNewCustomer(String firstName, String lastName, String email, String password);
+    void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
+    
+    void cancelReservation2testFunc(Integer customerId);
+    
+    boolean makeReservation(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
+    
+    boolean makeReservation(Integer flightIdPk, Integer customerId);
+    
+    void insertGlobalReservation(Integer flightIdPk);
+    
+    boolean addFlightByAirline(AirLine airLine, Flight flight);
 }
