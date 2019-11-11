@@ -4,17 +4,12 @@ import com.hrs.configs.Configuration;
 import com.hrs.util.Utility;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Admin;
-import com.hrs.view.models.AirLine;
-import com.hrs.view.models.AirPlane;
-import com.hrs.view.models.Airport;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -22,19 +17,23 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -43,6 +42,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 
@@ -70,12 +70,19 @@ public class View extends Application
     public void start2()
     {
         this.homeScene = new Scene(this.homeSceneContainer, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
-    
+        
+        BackgroundImage myBI= new BackgroundImage
+                (new Image(new File(new File("")
+                        .getAbsolutePath()+"/src/main/java/com/hrs/resources/home.jpg").toURI().toString(),true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        
+        this.homeSceneContainer.setBackground(new Background(myBI));
+        
         primaryStage.setTitle(FieldValue.APP_TITLE);
         primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
         primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
         primaryStage.setScene(this.homeScene);
-        
         primaryStage.show();
     }
     

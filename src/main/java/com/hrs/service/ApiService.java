@@ -1,9 +1,7 @@
 package com.hrs.service;
 
-
-import com.hrs.dao.module.Airplane;
+import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
-import com.hrs.test.Tester;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.AirLine;
 import com.hrs.view.models.AirPlane;
@@ -16,123 +14,55 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * A service class that provides database access
+ *  A interface defines all the service methods that will be invoked from View to Backend to retrieve data.
  */
-public class ApiService implements Service
+public interface ApiService
 {
-    @Override
-    public void getAllFlightsByCustomerId(Integer customerId)
-    {
+    // Returns list of flights for global reservation, must include flights that are booked as well
+    void getAllFlightsForReservation();
     
-    }
+    void getAllFlightsByCustomerId(Integer customerId);
     
-    @Override
-    public void getAllFlights()
-    {
+    void getAllFlightsByAirlineForReservation(String airlineName);
     
-    }
+    Customer getCustomerByLogin(String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public void getAllFlightsByAirline(String airlineName)
-    {
+    Admin getGlobalAdminByLogin(String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    }
+    Admin getAirlineAdminByLogin(String airline, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public Customer getCustomerByLogin(String username, String password)
-    {
-        Customer customer = new Customer(101, "First", "Last");
-        customer.setFlights(Tester.testFlights());
-        return customer;
-    }
+    // Must include active or canceled reservations
+    List<Reservation> getGlobalReservations();
     
-    @Override
-    public boolean insertNewCustomer(String firstName, String lastName, String email, String password)
-    {
-        return true;
-    }
+    List<Reservation> getCustomerReservations(Integer customerId);
     
-    @Override
-    public void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId)
-    {
+    List<AirPlane> getAllAirPlaneByAirLine(String airlineName);
     
-    }
+    List<Airport> getAllAirports();
     
-    @Override
-    public void cancelReservation2testFunc(Integer customerId)
-    {
+    // Must include active and canceled reservations
+    List<Reservation> getAllReservationsByAirline(String airlineName);
     
-    }
+    boolean insertNewCustomer(String firstName, String lastName, String email, String password);
     
-    @Override
-    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserNameException
-    {
-        return true;
-    }
+    boolean cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
     
-    @Override
-    public boolean makeReservation(Integer flightIdPk, Integer customerId)
-    {
-        return true;
-    }
+    void cancelReservation2testFunc(Integer customerId);
     
-    @Override
-    public void insertGlobalReservation(Integer flightIdPk)
-    {
+    boolean cancelFlight(Integer flightId);
     
-    }
+    boolean makeReservation(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public Admin getGlobalAdminByLogin(String username, String password)
-    {
-        return new Admin("Hamidur", "Rahman");
-    }
+    boolean makeReservation(Integer flightIdPk, Integer customerId);
     
-    @Override
-    public List <Reservation> getGlobalReservations()
-    {
-        return null;
-    }
+    boolean makeReservationBySE(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public List <Reservation> getCustomersReservations(Integer customerId)
-    {
-        return null;
-    }
+    boolean makeReservationBySE(Integer flightIdPk, Integer customerId);
     
-    @Override
-    public Admin getAdminByLogin(String airline, String username, String password)
-    {
-        return null;
-    }
-    
-    @Override
-    public List<AirPlane> getAllAirPlaneByAirLine(String airlineName)
-    {
-        return null;
-    }
-    
-    @Override
-    public List<Airport> getAllAirports()
-    {
-        return null;
-    }
-    
-    @Override
-    public boolean addFlightByAirline(AirLine airLine, Flight flight)
-    {
-        return true;
-    }
-    
-    @Override
-    public List<Reservation> getAllReservationsByAirline(String airlineName)
-    {
-        return null;
-    }
-    
-    @Override
-    public boolean cancelFlight(Integer flightId)
-    {
-        return false;
-    }
+    boolean insertFlightByAirline(AirLine airLine, Flight flight);
 }

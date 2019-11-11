@@ -1,6 +1,6 @@
 package com.hrs.configs;
 
-import com.hrs.service.ApiService;
+import com.hrs.service.ApiApiServiceImpl;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Session;
 
@@ -9,8 +9,8 @@ import java.time.LocalDate;
 public class Configuration
 {
     private static Controller controller = null;
-    private static ApiService apiService = null;
-    private static LocalDate startingDate = null;
+    private static ApiApiServiceImpl apiServiceImpl = null;
+    private static LocalDate currentDate = null;
     private static Session session = null;
     
     static
@@ -22,7 +22,7 @@ public class Configuration
     
     private static void initializeApiService()
     {
-        apiService = new ApiService();
+        apiServiceImpl = new ApiApiServiceImpl();
     }
     
     private static void initializeSession()
@@ -40,14 +40,14 @@ public class Configuration
         return controller;
     }
     
-    public static void setStartingDate(LocalDate localDate)
+    public static void setCurrentDate(LocalDate localDate)
     {
-        startingDate = localDate;
+        currentDate = localDate;
     }
     
-    public static LocalDate getStartingDate()
+    public static LocalDate getCurrentDate()
     {
-        return startingDate;
+        return currentDate;
     }
     
     public static Session getSession()
@@ -55,8 +55,8 @@ public class Configuration
         return session;
     }
     
-    public static ApiService getApiService()
+    public static ApiApiServiceImpl getApiServiceImpl()
     {
-        return apiService;
+        return apiServiceImpl;
     }
 }

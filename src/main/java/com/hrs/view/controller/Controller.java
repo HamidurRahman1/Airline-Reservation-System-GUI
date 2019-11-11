@@ -1,8 +1,9 @@
 package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
+import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
-import com.hrs.service.ApiService;
+import com.hrs.service.ApiApiServiceImpl;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.AirLine;
@@ -55,11 +56,11 @@ import static com.hrs.util.Utility.label;
 public class Controller
 {
     private View view;
-    private ApiService apiService;
+    private ApiApiServiceImpl apiServiceImpl;
     
     public Controller()
     {
-        apiService = Configuration.getApiService();
+        apiServiceImpl = Configuration.getApiServiceImpl();
     }
     
     public View getView()
@@ -76,9 +77,9 @@ public class Controller
     {
         if(!Configuration.getSession().isCustomerInSession())
         {
-            if(apiService.makeReservation(flightId, 101))
+            if(apiServiceImpl.makeReservation(flightId, 101))
             {
-                apiService.insertGlobalReservation(flightId);
+                apiServiceImpl.makeReservationBySE(flightId, 101);
                 AlertBox.DisplayConfirmation("Reservation Successful",
                         "successfully reserved a seat for user="+"customer.getUsername()"+"." + " Please check your " +
                                 "account to verify.");
@@ -95,7 +96,7 @@ public class Controller
     {
         if(Configuration.getSession().isCustomerInSession())
         {
-            if(apiService.makeReservation(flightId, 101))
+            if(apiServiceImpl.makeReservation(flightId, 101))
             {
                 System.out.println("in cust session");
                 AlertBox.DisplayConfirmation("Reservation Successful",
@@ -127,9 +128,9 @@ public class Controller
             String username = textField.getText();
             try
             {
-                if(apiService.makeReservation(flightIdPk, username, ""))
+                if(apiServiceImpl.makeReservation(flightIdPk, username, ""))
                 {
-                    apiService.insertGlobalReservation(flightIdPk);
+                    apiServiceImpl.makeReservationBySE(flightIdPk, username, "");
                     stage.close();
                     AlertBox.DisplayConfirmation("Reservation Successful",
                             "successfully reserved a seat for user="+username+"." + " Please check your " +
@@ -141,6 +142,10 @@ public class Controller
             {
                 stage.close();
                 AlertBox.DisplayError("Incorrect username", "No user found with username="+username);
+            }
+            catch(InvalidPasswordException ex)
+            {
+                stage.close();
             }
         });
         stage.setScene(scene);
@@ -172,9 +177,9 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    if(apiService.makeReservation(flightIdPk, username.getText(), pass.getText()))
+                    if(apiServiceImpl.makeReservation(flightIdPk, username.getText(), pass.getText()))
                     {
-                        apiService.insertGlobalReservation(flightIdPk);
+                        apiServiceImpl.makeReservationBySE(flightIdPk, "", "");
                         AlertBox.DisplayConfirmation("Reservation Successful",
                                 "successfully reserved a seat for user="+username.getText()
                                         +"." + " Please check your account to verify.");
@@ -183,7 +188,7 @@ public class Controller
                 }
                 else
                 {
-                    if(apiService.makeReservation(flightIdPk, username.getText(), pass.getText()))
+                    if(apiServiceImpl.makeReservation(flightIdPk, username.getText(), pass.getText()))
                     {
                         AlertBox.DisplayConfirmation("Reservation Successful",
                                 "successfully reserved a seat for user="+username.getText()
@@ -194,6 +199,10 @@ public class Controller
             catch(InvalidUserNameException ex)
             {
                 AlertBox.DisplayError("Incorrect username", "No user found with username="+username);
+            }
+            catch(InvalidPasswordException ex)
+            {
+            
             }
         });
         stage.setScene(scene);
@@ -220,7 +229,7 @@ public class Controller
                 
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                    // apiService.getAllFlightsByAirline(airline);
+                    // apiServiceImpl.getAllFlightsByAirline(airline);
                     
                     view.setCenter(view.ui_searchResultsByAirline(airlineName, Tester.testFlights()));
                 }
@@ -373,7 +382,7 @@ public class Controller
         
         datePicker.setOnAction(e ->
         {
-            Configuration.setStartingDate(datePicker.getValue());
+            Configuration.setCurrentDate(datePicker.getValue());
             stage.close();
             view.start2();
         });
@@ -409,7 +418,7 @@ public class Controller
         
         submit.setOnAction(e ->
         {
-            if(apiService.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
+            if(apiServiceImpl.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
             {
                 stage.close();
                 AlertBox.DisplayInformation("New Customer Successfully added",
@@ -459,8 +468,8 @@ public class Controller
             
             if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_GLOBAL))
             {
-//                Admin admin = apiService.getGlobalAdminByLogin(username.getText(), pass.getText());
-//                List<Reservation> reservations = apiService.getGlobalReservations();
+//                Admin admin = apiServiceImpl.getGlobalAdminByLogin(username.getText(), pass.getText());
+//                List<Reservation> reservations = apiServiceImpl.getGlobalReservations();
 //                Configuration.getSession().addGlobalAdmin(Tester.admin());
                 view.setTop(view.menuBar(view.airports(), view.airlines()));
                 VBox center = globalReservations(Tester.admin(), Tester.testReservation());
@@ -468,7 +477,7 @@ public class Controller
             }
             else if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_CUSTOMER))
             {
-//                Customer customer = apiService.getCustomerByLogin(username.getText(), pass.getText());
+//                Customer customer = apiServiceImpl.getCustomerByLogin(username.getText(), pass.getText());
                 
                 view.setTop(view.menuBar(view.airports(), view.airlines()));
                 VBox center = customerCenterContainer(Tester.testCustomer());
@@ -478,7 +487,7 @@ public class Controller
                             || loginViewKey.equalsIgnoreCase(FieldValue.A2)
                             || loginViewKey.equalsIgnoreCase(FieldValue.A3))
             {
-//                Admin admin = apiService.getAdminByLogin("", "", "");
+//                Admin admin = apiServiceImpl.getAdminByLogin("", "", "");
 //                Configuration.getSession().addAdminToSession(admin);
                 
                 VBox adminAccessView = view.ui_adminAccessByAirline(Tester.admin(), loginViewKey);
@@ -668,7 +677,7 @@ public class Controller
         {
             try
             {
-                if(apiService.addFlightByAirline(new AirLine(), new Flight()))
+                if(apiServiceImpl.insertFlightByAirline(new AirLine(), new Flight()))
                 {
                     stage.close();
                     AlertBox.DisplayConfirmation("Flight has successfully added",
@@ -788,9 +797,9 @@ public class Controller
                     if(AlertBox.DisplayConfirmation("Canceling this flight?", "Do you really want " +
                             "to cancel this flight?"))
                     {
-                        apiService.cancelReservation2testFunc(customer.getCustomerId());
+                        apiServiceImpl.cancelReservation2testFunc(customer.getCustomerId());
                         
-                        //List<Flight> flightList = apiService.getAllFlightsByCustomerId(customer.getCustomerId());
+                        //List<Flight> flightList = apiServiceImpl.getAllFlightsByCustomerId(customer.getCustomerId());
                         
                         customer.setReservations(Tester.testReservation2());
                         VBox center = customerCenterContainer(customer);
@@ -834,7 +843,7 @@ public class Controller
     
     public void eventGlobalSearchBar()
     {
-//        List<Flight> flights = apiService.getAllFlights();
+//        List<Flight> flights = apiServiceImpl.getAllFlights();
         
         List<Flight> flights = Tester.testFlights();
     
