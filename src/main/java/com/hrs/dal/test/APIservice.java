@@ -27,19 +27,16 @@ public class APIservice implements ServiceModule {
 
             Connection connection = Gateway.getDBConnection();
             Statement statement = connection.createStatement();
-            String sql = "select customer_first_name, reservation_date, airport_name, airport_name\n" +
-                    "from customer_info,airport_info,flight_info,reservation_info,source_info,destination_info\n" +
-                    "where customer_info.customer_id = reservation_info.customer_id and \n" +
-                    "reservation_info.reservation_id = flight_info.reservation_id and\n" +
-                    "flight_info.source_id = source_info.source_id and\n" +
-                    "flight_info.destination_id = destination_info.destination_id and\n" +
-                    "source_info.airport_id = airport_info.airport_id and\n" +
-                    "destination_info.airport_id = airport_info.airport_id";
+            String sql = "select customer_first_name, (flight_date), source_, destination_\n" +
+                    "from customer_info,flight_info,reservation_info\n" +
+                    "where customer_info.customer_id = " + Integer.toString(customerId) + " and\n" +
+                    "customer_info.customer_id = reservation_info.customer_id and \n" +
+                    "reservation_info.reservation_id = flight_info.reservation_id\n";
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
 
-                System.out.println(rs.getString("customer_first_name") + " " + rs.getString("reservation_date")
-                        + " " + rs.getString("airport_name") + " " + rs.getString("airport_name"));
+                System.out.println(rs.getString("customer_first_name") + " " + rs.getString("flight_date")
+                        + " " + rs.getString("source_") + " " + rs.getString("destination_"));
 
             }
 
@@ -51,7 +48,25 @@ public class APIservice implements ServiceModule {
 
     @Override
     public void getAllFlights() {
+        try {
 
+            Connection connection = Gateway.getDBConnection();
+            Statement statement = connection.createStatement();
+            String sql = "select airline_name, airline_flight_name, flight_date, source_, destination_\n" +
+                    "from airline_info, airline_flight_info, flight_info\n" +
+                    "where airline_info.airline_id = airline_flight_info.airline_id and\n" +
+                    "airline_flight_info.airline_flight_id = flight_info.airline_flight_id";
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+
+                System.out.println(rs.getString("airline_name") + " " + rs.getString("airline_flight_name")
+                        + " " + rs.getString("flight_date") + " " + rs.getString("source_") + " " + rs.getString("destination_"));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
