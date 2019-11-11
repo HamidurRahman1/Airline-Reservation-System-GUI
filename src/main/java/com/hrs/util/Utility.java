@@ -7,15 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -57,9 +53,9 @@ public class Utility
     
     public static List<Label> arrivalHeaders()
     {
-        return Arrays.asList(new Label(FieldValue.FLIGHT), new Label(FieldValue.AIRLINE),
+        return Arrays.asList(new Label(FieldValue.FLIGHT_CODE), new Label(FieldValue.AIRLINE),
                 new Label(FieldValue.SOURCE),
-                new Label(FieldValue.DATE_TIME), new Label(FieldValue.STATUS));
+                new Label(FieldValue.DATE), new Label(FieldValue.STATUS));
     }
     
     public static Button button(String label)
@@ -82,8 +78,8 @@ public class Utility
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                button(FieldValue.AIRLINE), button(FieldValue.DATE_TIME), button(FieldValue.FARE),
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
+                button(FieldValue.AIRLINE), button(FieldValue.DATE), button(FieldValue.FARE),
                         button(FieldValue.RV_DATE));
         
         return hBox;
@@ -94,8 +90,8 @@ public class Utility
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                        button(FieldValue.AIRLINE), button(FieldValue.DATE_TIME), button(FieldValue.FARE),
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
+                        button(FieldValue.AIRLINE), button(FieldValue.DATE), button(FieldValue.FARE),
                         button(FieldValue.RV_DATE));
         
         return hBox;
@@ -106,8 +102,8 @@ public class Utility
         HBox hBox = new HBox();
     
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT), button(FieldValue.DESTINATION), button(FieldValue.AIRLINE),
-                        button(FieldValue.DATE_TIME), button(FieldValue.FARE), button(FieldValue.RV_DATE));
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.DESTINATION), button(FieldValue.AIRLINE),
+                        button(FieldValue.DATE), button(FieldValue.FARE), button(FieldValue.RV_DATE));
     
         return hBox;
     }
@@ -117,9 +113,9 @@ public class Utility
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT), label(" "), button(FieldValue.DESTINATION), label(" "),
+                (button(FieldValue.FLIGHT_CODE), label(" "), button(FieldValue.DESTINATION), label(" "),
                         button(FieldValue.AIRLINE), label(" "),
-                        button(FieldValue.DATE_TIME), label(" "),
+                        button(FieldValue.DATE), label(" "),
                         button(FieldValue.FARE), label(" "), button(FieldValue.RV_DATE));
         
         return hBox;
@@ -130,8 +126,8 @@ public class Utility
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                        button(FieldValue.AIRLINE), button(FieldValue.DATE_TIME), button(FieldValue.FARE),
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
+                        button(FieldValue.AIRLINE), button(FieldValue.DATE), button(FieldValue.FARE),
                         button(FieldValue.STATUS));
         
         return hBox;
@@ -176,4 +172,16 @@ public class Utility
         return times;
     }
     
+    public static HBox ADMIN_CANCEL_FLIGHT_HEADERS()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.AIRPLANE), button(FieldValue.SOURCE),
+                        button(FieldValue.DEP_DATE_TIME), button(FieldValue.DESTINATION),
+                        button(FieldValue.ARR_DATE_TIME), button(FieldValue.TOTAL_RSVP),
+                        button(FieldValue.STATUS), button(FieldValue.TO_CANCEL));
+        
+        return hBox;
+    }
 }

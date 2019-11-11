@@ -123,4 +123,16 @@ public class ApiService implements Service
     {
         return true;
     }
+    
+    @Override
+    public List<Reservation> getAllReservationsByAirline(String airlineName)
+    {
+        return null;
+    }
+    
+    @Override
+    public boolean cancelFlight(Integer flightId)
+    {
+        return false;
+    }
 }

@@ -414,6 +414,58 @@ public class View extends Application
         return gridPane;
     }
     
+    public GridPane ui_alightsToBeCanceledByAirline(String airline, List<Flight> flights)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
+        gridPane.setHgap(8);
+        gridPane.setVgap(5);
+        
+        gridPane.add(new Label(), 0, 0);
+        gridPane.add(new Label(), 0, 1);
+        
+        gridPane.add(new Label("Displaying all reservations made for all flights for "), 3, 2, 6, 1);
+        
+        gridPane.add(new Label(), 0, 3);
+        gridPane.add(new Label(), 0, 4);
+        
+        for(int i = 0; i < Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().size(); i++)
+        {
+            gridPane.add(Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().get(i), i, 4);
+        }
+        
+        for(int i = 0; i < Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().size(); i++)
+        {
+            gridPane.add(new Label(), i, 5);
+        }
+        
+        int j = 6;
+        
+        for(int i = 0; i < flights.size(); i++)
+        {
+            gridPane.add(button(flights.get(i).flightName), 0, j);
+            gridPane.add(button(flights.get(i).source), 1, j);
+            gridPane.add(button(flights.get(i).destination), 2, j);
+            gridPane.add(button(flights.get(i).airline), 3, j);
+            gridPane.add(button(flights.get(i).date), 4, j);
+            gridPane.add(button(flights.get(i).fare), 5, j);
+            gridPane.add(button(flights.get(i).fare), 6, j);
+            gridPane.add(button(flights.get(i).fare), 7, j);
+            Button status = button(flights.get(i).status);
+            gridPane.add(status, 8, j);
+            
+            if("open".equalsIgnoreCase(flights.get(i).status))
+            {
+                final Integer id = flights.get(i).flightId;
+                
+                status.setOnAction(e -> controller.cancelFlight(id, airline));
+            }
+            j++;
+        }
+        
+        return gridPane;
+    }
+    
     public HBox sortSection(List<Flight> flights)
     {
         HBox hBox = new HBox();

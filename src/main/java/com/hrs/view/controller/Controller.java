@@ -328,13 +328,13 @@ public class Controller
         gridPane.setHgap(10);
         gridPane.setVgap(10);
     
-        Label flight = new Label(FieldValue.FLIGHT);
+        Label flight = new Label(FieldValue.FLIGHT_CODE);
         gridPane.add(flight, 0,0);
         Label airline = new Label(FieldValue.AIRLINE);
         gridPane.add(airline, 1,0);
         Label airport = new Label(airportHeader);
         gridPane.add(airport, 2,0);
-        Label time = new Label(FieldValue.DATE_TIME);
+        Label time = new Label(FieldValue.DATE);
         gridPane.add(time, 3,0);
         Label status = new Label(FieldValue.STATUS);
         gridPane.add(status, 4,0);
@@ -499,7 +499,7 @@ public class Controller
                 
                 cancel.setOnAction(event ->
                 {
-                    cancelFlightsByAirline(loginViewKey);
+                    cancelFlightsByAirline(loginViewKey, Tester.testFlights());
                 });
                 
                 logout.setOnAction(event ->
@@ -516,6 +516,22 @@ public class Controller
         stage.setTitle(FieldValue.CUSTOMER);
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
+    }
+    
+    private void cancelFlightsByAirline(String loginViewKey, List<Flight> flights)
+    {
+        Stage stage = new Stage();
+        stage.setWidth(FieldValue.HOME_SCENE_WIDTH);
+        stage.setHeight(500);
+        Scene scene = new Scene(view.ui_alightsToBeCanceledByAirline(loginViewKey, flights));
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    public void cancelFlight(Integer flight, String airlineName)
+    {
+        AlertBox.DisplayConfirmation("?", "?");
+        cancelFlightsByAirline(airlineName, Tester.testFlights2());
     }
     
     private void addFlights(String airline)

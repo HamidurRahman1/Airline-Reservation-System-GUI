@@ -18,9 +18,13 @@ import java.util.List;
  */
 public interface Service
 {
+    // Returns list of flights for global reservation, must include flights that are booked as well
     void getAllFlights();
+    
     void getAllFlightsByCustomerId(Integer customerId);
+    
     void getAllFlightsByAirline(String airlineName);
+    
     Customer getCustomerByLogin(String username, String password)
             throws InvalidUserNameException, InvalidPasswordException;
     
@@ -30,16 +34,25 @@ public interface Service
     Admin getAdminByLogin(String airline, String username, String password)
             throws InvalidUserNameException, InvalidPasswordException;
     
+    // Must include active or canceled reservations
     List<Reservation> getGlobalReservations();
+    
     List<Reservation> getCustomersReservations(Integer customerId);
     
     List<AirPlane> getAllAirPlaneByAirLine(String airlineName);
+    
     List<Airport> getAllAirports();
     
+    // Must include active and canceled reservations
+    List<Reservation> getAllReservationsByAirline(String airlineName);
+    
     boolean insertNewCustomer(String firstName, String lastName, String email, String password);
+    
     void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
     
     void cancelReservation2testFunc(Integer customerId);
+    
+    boolean cancelFlight(Integer flightId);
     
     boolean makeReservation(Integer flightIdPk, String username, String password)
             throws InvalidUserNameException, InvalidPasswordException;

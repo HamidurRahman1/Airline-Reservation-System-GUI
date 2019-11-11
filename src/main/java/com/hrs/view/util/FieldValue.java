@@ -89,10 +89,16 @@ public class FieldValue
     public static final String DEPARTURE_LABEL = "departure";
     public static final String DEPARTURE_CONTAINER_ID = "departureContainer";
     
-    public static final String FLIGHT = "FLIGHT";
+    public static final String FLIGHT_CODE = "FLIGHT CODE";
     public static final String AIRLINE = "AIRLINE";
+    public static final String AIRPLANE = "AIRPLANE";
+    
+    public static final String DEP_DATE_TIME = "DEP. DATE-TIME";
+    public static final String ARR_DATE_TIME = "ARR. DATE-TIME";
+    
     public static final String STATUS = "STATUS";
-    public static final String DATE_TIME = "DATE";
+    public static final String TOTAL_RSVP = "TOTAL RSVP";
+    public static final String DATE = "DATE";
     public static final String FARE = "FARE";
     public static final String SOURCE = "SOURCE";
     public static final String DESTINATION = "DESTINATION";
@@ -125,4 +131,5 @@ public class FieldValue
     public static final String A3 = "HR";
     
     public static final String SELECT = "Select One";
+    public static final String TO_CANCEL = "TO CANCEL";
 }
