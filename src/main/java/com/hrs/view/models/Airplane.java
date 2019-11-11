@@ -2,19 +2,19 @@ package com.hrs.view.models;
 
 import java.util.Objects;
 
-public class AirPlane
+public class Airplane
 {
     private Integer airPlaneId;
     private String airPlaneName;
     
-    public AirPlane() {}
+    public Airplane() {}
     
-    public AirPlane(String airPlaneName)
+    public Airplane(String airPlaneName)
     {
         this.airPlaneName = airPlaneName;
     }
     
-    public AirPlane(Integer airPlaneId, String airPlaneName)
+    public Airplane(Integer airPlaneId, String airPlaneName)
     {
         this.airPlaneId = airPlaneId;
         this.airPlaneName = airPlaneName;
@@ -44,8 +44,8 @@ public class AirPlane
     public boolean equals(Object o)
     {
         if(this == o) return true;
-        if(! (o instanceof AirPlane)) return false;
-        AirPlane airPlane = (AirPlane) o;
+        if(! (o instanceof Airplane)) return false;
+        Airplane airPlane = (Airplane) o;
         return Objects.equals(getAirPlaneId(), airPlane.getAirPlaneId())
                 && Objects.equals(getAirPlaneName(), airPlane.getAirPlaneName());
     }

@@ -3,8 +3,8 @@ package com.hrs.service;
 import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.view.models.Admin;
-import com.hrs.view.models.AirLine;
-import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airline;
+import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
@@ -39,7 +39,7 @@ public interface ApiService
     
     List<Reservation> getCustomerReservations(Integer customerId);
     
-    List<AirPlane> getAllAirPlaneByAirLine(String airlineName);
+    List<Airplane> getAllAirPlaneByAirLine(String airlineName);
     
     List<Airport> getAllAirports();
     
@@ -64,5 +64,5 @@ public interface ApiService
     
     boolean makeReservationBySE(Integer flightIdPk, Integer customerId);
     
-    boolean insertFlightByAirline(AirLine airLine, Flight flight);
+    boolean insertFlightByAirline(Airline airLine, Flight flight);
 }

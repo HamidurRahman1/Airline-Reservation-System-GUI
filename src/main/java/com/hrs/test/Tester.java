@@ -1,7 +1,7 @@
 package com.hrs.test;
 
 import com.hrs.view.models.Admin;
-import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Arrival;
 import com.hrs.view.models.Customer;
@@ -14,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -163,14 +162,14 @@ public class Tester extends Application
         return airports;
     }
     
-    public static List<AirPlane> airPlanes()
+    public static List<Airplane> airPlanes()
     {
-        List<AirPlane> airports = new LinkedList <>();
+        List<Airplane> airports = new LinkedList <>();
         
-        airports.add(new AirPlane(11, "AP1"));
-        airports.add(new AirPlane(12, "AP2"));
-        airports.add(new AirPlane(13, "AP3"));
-        airports.add(new AirPlane(14, "AP4"));
+        airports.add(new Airplane(11, "AP1"));
+        airports.add(new Airplane(12, "AP2"));
+        airports.add(new Airplane(13, "AP3"));
+        airports.add(new Airplane(14, "AP4"));
         
         return airports;
     }

@@ -3,8 +3,8 @@ package com.hrs.service;
 import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.view.models.Admin;
-import com.hrs.view.models.AirLine;
-import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airline;
+import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
@@ -67,7 +67,7 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public List <AirPlane> getAllAirPlaneByAirLine(String airlineName)
+    public List <Airplane> getAllAirPlaneByAirLine(String airlineName)
     {
         return null;
     }
@@ -133,7 +133,7 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public boolean insertFlightByAirline(AirLine airLine, Flight flight)
+    public boolean insertFlightByAirline(Airline airLine, Flight flight)
     {
         return false;
     }

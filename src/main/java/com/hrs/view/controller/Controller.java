@@ -6,8 +6,8 @@ import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.service.ApiApiServiceImpl;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
-import com.hrs.view.models.AirLine;
-import com.hrs.view.models.AirPlane;
+import com.hrs.view.models.Airline;
+import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Arrival;
 import com.hrs.test.Tester;
@@ -540,7 +540,7 @@ public class Controller
     {
         Flight flight = new Flight();
         List<Airport> airports = Tester.airports();
-        List<AirPlane> airPlanes = Tester.airPlanes();
+        List<Airplane> airplanes = Tester.airPlanes();
         List<String> times = Utility.timeList();
         
         Stage stage = new Stage();
@@ -585,13 +585,13 @@ public class Controller
         
         TextField codeField = new TextField();
         
-        ChoiceBox<AirPlane> airPlaneChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(airPlanes));
+        ChoiceBox<Airplane> airPlaneChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(airplanes));
         airPlaneChoiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener <Number>()
         {
             @Override
             public void changed(ObservableValue <? extends Number> observableValue, Number number, Number t1)
             {
-                System.out.println(airPlanes.get(t1.intValue()));
+                System.out.println(airplanes.get(t1.intValue()));
             }
         });
     
@@ -677,7 +677,7 @@ public class Controller
         {
             try
             {
-                if(apiServiceImpl.insertFlightByAirline(new AirLine(), new Flight()))
+                if(apiServiceImpl.insertFlightByAirline(new Airline(), new Flight()))
                 {
                     stage.close();
                     AlertBox.DisplayConfirmation("Flight has successfully added",

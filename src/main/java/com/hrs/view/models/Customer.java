@@ -1,9 +1,8 @@
 package com.hrs.view.models;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * A model to represent customer.
@@ -13,30 +12,41 @@ public class Customer extends Person
     private Integer customerId;
     private Login login;
     
-    private List<Reservation> reservations = new LinkedList <>();
-    private List<Flight> flights = new LinkedList <>();
-
+    private Set<Reservation> reservations = new LinkedHashSet<>();
+    private Set<Flight> flights = new LinkedHashSet<>();
+    
     public Customer()
     {
-        this(null, null, null);
+        super();
     }
-
+    
     public Customer(String firstName, String lastName)
     {
-        this(101, firstName, lastName);
+        super(firstName, lastName);
     }
-
+    
     public Customer(Integer customerId, String firstName, String lastName)
     {
         super(firstName, lastName);
         this.customerId = customerId;
     }
-
-    public Integer getCustomerId() {
+    
+    public Customer(Integer customerId, String firstName, String lastName, Login login, Set<Reservation> reservations, Set<Flight> flights)
+    {
+        super(firstName, lastName);
+        this.customerId = customerId;
+        this.login = login;
+        this.reservations = reservations;
+        this.flights = flights;
+    }
+    
+    public Integer getCustomerId()
+    {
         return customerId;
     }
-
-    public void setCustomerId(Integer customerId) {
+    
+    public void setCustomerId(Integer customerId)
+    {
         this.customerId = customerId;
     }
     
@@ -50,28 +60,48 @@ public class Customer extends Person
         this.login = login;
     }
     
-    public List <Flight> getFlights()
-    {
-        return flights;
-    }
-    
-    public void setFlights(List <Flight> flights)
-    {
-        this.flights = flights;
-    }
-    
-    public List <Reservation> getReservations()
+    public Set<Reservation> getReservations()
     {
         return reservations;
     }
     
-    public void setReservations(List <Reservation> reservations)
+    public void setReservations(Set<Reservation> reservations)
     {
         this.reservations = reservations;
     }
     
+    public Set<Flight> getFlights()
+    {
+        return flights;
+    }
+    
+    public void setFlights(Set<Flight> flights)
+    {
+        this.flights = flights;
+    }
+    
     @Override
-    public String toString() {
-        return "[" + customerId + ", " + super.getFirstName() + ", " + super.getLastName() + "]";
+    public boolean equals(Object o)
+    {
+        if(this == o) return true;
+        if(! (o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(getCustomerId(), customer.getCustomerId())
+                && Objects.equals(getLogin(), customer.getLogin())
+                && Objects.equals(getReservations(), customer.getReservations())
+                && Objects.equals(getFlights(), customer.getFlights());
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getCustomerId(), getLogin(), getReservations(), getFlights());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Customer{" + "customerId=" + customerId + ", login=" + login + ", reservations=" + reservations
+                + ", flights=" + flights + '}';
     }
 }

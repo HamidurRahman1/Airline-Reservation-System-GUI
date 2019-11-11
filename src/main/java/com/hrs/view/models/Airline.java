@@ -4,20 +4,20 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class AirLine
+public class Airline
 {
     private Integer airlineId;
     private String airlineName;
-    private Set<AirPlane> airPlanes = new LinkedHashSet <>();
+    private Set<Airplane> airplanes = new LinkedHashSet <>();
     
-    public AirLine() {}
+    public Airline() {}
     
-    public AirLine(String airlineName)
+    public Airline(String airlineName)
     {
         this.airlineName = airlineName;
     }
     
-    public AirLine(Integer airlineId, String airlineName)
+    public Airline(Integer airlineId, String airlineName)
     {
         this.airlineId = airlineId;
         this.airlineName = airlineName;
@@ -43,36 +43,36 @@ public class AirLine
         this.airlineName = airlineName;
     }
     
-    public Set <AirPlane> getAirPlanes()
+    public Set <Airplane> getAirplanes()
     {
-        return airPlanes;
+        return airplanes;
     }
     
-    public void setAirPlanes(Set <AirPlane> airPlanes)
+    public void setAirplanes(Set <Airplane> airplanes)
     {
-        this.airPlanes = airPlanes;
+        this.airplanes = airplanes;
     }
     
     @Override
     public boolean equals(Object o)
     {
         if(this == o) return true;
-        if(! (o instanceof AirLine)) return false;
-        AirLine airLine = (AirLine) o;
+        if(! (o instanceof Airline)) return false;
+        Airline airLine = (Airline) o;
         return Objects.equals(getAirlineId(), airLine.getAirlineId())
                 && Objects.equals(getAirlineName(), airLine.getAirlineName())
-                && Objects.equals(getAirPlanes(), airLine.getAirPlanes());
+                && Objects.equals(getAirplanes(), airLine.getAirplanes());
     }
     
     @Override
     public int hashCode()
     {
-        return Objects.hash(getAirlineId(), getAirlineName(), getAirPlanes());
+        return Objects.hash(getAirlineId(), getAirlineName(), getAirplanes());
     }
     
     @Override
     public String toString()
     {
-        return "AirLine{" + "airlineId=" + airlineId + ", airlineName='" + airlineName + '\'' + '}';
+        return "Airline{" + "airlineId=" + airlineId + ", airlineName='" + airlineName + '\'' + '}';
     }
 }
