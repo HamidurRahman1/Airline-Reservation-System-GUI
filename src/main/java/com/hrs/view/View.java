@@ -126,16 +126,58 @@ public class View extends Application
         Button cancelFlight = new Button(FieldValue.CANCEL_FLIGHT);
         cancelFlight.setPrefWidth(130);
         
+        Button allRSVP = new Button("All RSVPs");
+        allRSVP.setPrefWidth(130);
+        
         Button logout = new Button(FieldValue.LOGOUT_LABEL);
         logout.setPrefWidth(130);
         
         vBox.getChildren().addAll(new Label(), new Label(),
                 header, new Label(), name, new Label(), new Label(),
                 addFlight, new Label(),
-                cancelFlight, new Label(), new Label(),
+                cancelFlight, new Label(),
+                allRSVP, new Label(), new Label(),
                 logout);
         
         return vBox;
+    }
+    
+    public GridPane ui_displayAllRSVPsByAirline(String airline, List<Reservation> reservations)
+    {
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
+        gridPane.setHgap(8);
+        gridPane.setVgap(5);
+    
+        gridPane.add(new Label(), 0, 0);
+        gridPane.add(new Label(), 0, 1);
+    
+        gridPane.add(new Label("Displaying all reservations made for all flights for ".concat(airline)), 2, 2, 4, 1);
+    
+        gridPane.add(new Label(), 0, 3);
+        gridPane.add(new Label(), 0, 4);
+        gridPane.add(new Label(), 0, 5);
+    
+        for(int i = 0; i < Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().size(); i++)
+            gridPane.add(Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().get(i), i, 6);
+    
+        for(int i = 0; i < Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().size(); i++)
+            gridPane.add(new Label(), i, 7);
+    
+        int j = 8;
+    
+        for(int i = 0; i < reservations.size(); i++)
+        {
+            gridPane.add(button(reservations.get(i).getFlight().getFlightName()), 0, j);
+            gridPane.add(button(reservations.get(i).getFlight().getAirline()), 1, j);
+            gridPane.add(button(reservations.get(i).getFlight().getSource()), 2, j);
+            gridPane.add(button(reservations.get(i).getFlight().getDestination()), 3, j);
+            gridPane.add(button(reservations.get(i).getStatus()), 4, j);
+            gridPane.add(button(reservations.get(i).getStatus()), 5, j);
+            j++;
+        }
+    
+        return gridPane;
     }
     
     public GridPane ui_newCustomerContainer()
@@ -414,7 +456,7 @@ public class View extends Application
         return gridPane;
     }
     
-    public GridPane ui_alightsToBeCanceledByAirline(String airline, List<Flight> flights)
+    public GridPane ui_flightsToBeCanceledByAirline(String airline, List<Flight> flights)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -634,5 +676,17 @@ public class View extends Application
                         airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : SH")),
                         airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : AR")),
                         airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : HR"))));
+    }
+    
+    public void RSVPsByAirline(String airlineName, GridPane ui_gridPane)
+    {
+        Stage stage = new Stage();
+        stage.setTitle(FieldValue.RSVP_TITLE.concat(" ").concat(airlineName.toUpperCase()));
+        stage.setHeight(600);
+        stage.setWidth(1300);
+        
+        Scene scene = new Scene(ui_gridPane);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 }

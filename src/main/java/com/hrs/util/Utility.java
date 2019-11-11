@@ -184,4 +184,15 @@ public class Utility
         
         return hBox;
     }
+    
+    public static HBox ADMIN_VIEW_RESERVATION_HEADERS()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.AIRPLANE), button(FieldValue.SOURCE),
+                        button(FieldValue.DESTINATION), button(FieldValue.LAST_NAME), button(FieldValue.RSVP_BY));
+        
+        return hBox;
+    }
 }

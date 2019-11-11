@@ -462,16 +462,12 @@ public class Controller
 //                Admin admin = apiService.getGlobalAdminByLogin(username.getText(), pass.getText());
 //                List<Reservation> reservations = apiService.getGlobalReservations();
 //                Configuration.getSession().addGlobalAdmin(Tester.admin());
-                
-                stage.close();
                 view.setTop(view.menuBar(view.airports(), view.airlines()));
                 VBox center = globalReservations(Tester.admin(), Tester.testReservation());
                 view.setCenter(center);
             }
             else if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_CUSTOMER))
             {
-                stage.close();
-                
 //                Customer customer = apiService.getCustomerByLogin(username.getText(), pass.getText());
                 
                 view.setTop(view.menuBar(view.airports(), view.airlines()));
@@ -485,22 +481,19 @@ public class Controller
 //                Admin admin = apiService.getAdminByLogin("", "", "");
 //                Configuration.getSession().addAdminToSession(admin);
                 
-                
                 VBox adminAccessView = view.ui_adminAccessByAirline(Tester.admin(), loginViewKey);
                 
                 Button add = (Button) adminAccessView.getChildren().get(FieldValue.ADD_FLIGHT_INDEX);
                 Button cancel = (Button) adminAccessView.getChildren().get(FieldValue.CANCEL_FLIGHT_INDEX);
+                Button rsvp = (Button) adminAccessView.getChildren().get(FieldValue.RSVP_FLIGHT_INDEX);
                 Button logout = (Button) adminAccessView.getChildren().get(adminAccessView.getChildren().size()-1);
                 
-                add.setOnAction(event ->
-                {
-                    addFlights(loginViewKey);
-                });
+                add.setOnAction(event -> addFlights(loginViewKey));
                 
-                cancel.setOnAction(event ->
-                {
-                    cancelFlightsByAirline(loginViewKey, Tester.testFlights());
-                });
+                cancel.setOnAction(event -> cancelFlightsByAirline(loginViewKey, Tester.testFlights()));
+                
+                rsvp.setOnAction(event -> view.RSVPsByAirline(loginViewKey,
+                        view.ui_displayAllRSVPsByAirline(loginViewKey, Tester.testReservation())));
                 
                 logout.setOnAction(event ->
                 {
@@ -523,7 +516,7 @@ public class Controller
         Stage stage = new Stage();
         stage.setWidth(FieldValue.HOME_SCENE_WIDTH);
         stage.setHeight(500);
-        Scene scene = new Scene(view.ui_alightsToBeCanceledByAirline(loginViewKey, flights));
+        Scene scene = new Scene(view.ui_flightsToBeCanceledByAirline(loginViewKey, flights));
         stage.setScene(scene);
         stage.show();
     }

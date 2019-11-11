@@ -118,6 +118,8 @@ public class FieldValue
     public static final String RESULTS1 = "Displaying all search results from SE";
     public static final String RESULTS = "Displaying all search results for";
     
+    public static final String RSVP_TITLE = "Displaying all RSVPs for";
+    
     public static final String ADD_FLIGHT = "ADD FLIGHT";
     public static final String CANCEL_FLIGHT = "CANCEL FLIGHT";
     
@@ -125,6 +127,7 @@ public class FieldValue
     
     public static final Integer ADD_FLIGHT_INDEX = 7;
     public static final Integer CANCEL_FLIGHT_INDEX = 9;
+    public static final Integer RSVP_FLIGHT_INDEX = 11;
     
     public static final String A1 = "SH";
     public static final String A2 = "AR";
@@ -132,4 +135,7 @@ public class FieldValue
     
     public static final String SELECT = "Select One";
     public static final String TO_CANCEL = "TO CANCEL";
+    public static final String LAST_NAME = "LAST NAME";
+    
+    public static final String RSVP_BY = "RSVP BY";
 }
