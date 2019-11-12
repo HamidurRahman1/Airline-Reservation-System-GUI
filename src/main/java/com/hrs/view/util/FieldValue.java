@@ -117,7 +117,7 @@ public class FieldValue
     
     public static final String RV_DATE = "RV. DATE";
     
-    public static final String RESULTS1 = "Displaying all search results from SE";
+    public static final String SEARCH_ENGINE_RESULTS = "Displaying all search results from SE";
     public static final String RESULTS = "Displaying all search results for";
     
     public static final String RSVP_TITLE = "Displaying all RSVPs for";
@@ -148,10 +148,19 @@ public class FieldValue
     
     public static final String FULL = "FULL";
     public static final String OPEN = "OPEN";
-    public static final String ON_TIME = "ON TIME";
     
     public static final String FLIGHT_ADDITION_SUCCESS_HEADER = "Flight has successfully been added";
     
     public static final String $ = "$ ";
     
+    public static final String ON_TIME = "ON TIME";
+    public static final String ACTIVE = "ACTIVE";
+    public static final String CANCELED = "CANCELED";
+    public static final String CLICK = "CLICK ME";
+    public static final String SEARCH_FLIGHTS = "Search Flights";
+    
+    public static final String LOGGED_USER = "User";
+    public static final String ACCOUNT = "Account Info";
+    
+    public static final String TO_RSVP = "TO RSVP";
 }

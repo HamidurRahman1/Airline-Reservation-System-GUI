@@ -525,7 +525,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
         
-        gridPane.add(Utility.SE_HEADER(), 2, row++, 7, 1);
+        gridPane.add(Utility.SE_HEADER(), 4, row++, 5, 1);
     
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -556,16 +556,14 @@ public class View extends Application
             gridPane.add(button(flight.getAirplane().getAirPlaneName()), 6, row);
             gridPane.add(button(flight.getFare().toString()), 7, row);
             gridPane.add(button(flight.getAvailableSeat().toString()), 8, row);
+            gridPane.add(button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN), 9, row);
             
-            Button status = button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN);
-            gridPane.add(status, 9, row);
-            status.setOnAction(e ->
+            if(flight.getAvailableSeat() != 0)
             {
-                if(status.getText().equalsIgnoreCase(FieldValue.OPEN))
-                {
-                    controller.makeReservationFromSE(flight.getFlightId());
-                }
-            });
+                Button rsvp = button(FieldValue.CLICK);
+                gridPane.add(rsvp, 10, row);
+                rsvp.setOnAction(e -> controller.makeReservationFromSE(flight.getFlightId()));
+            }
             
             row++;
         }
@@ -575,7 +573,7 @@ public class View extends Application
         Button button = new Button("Back/Home");
         button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.SEARCH)));
         
-        gridPane.add(button, 3, ++row, 7, 1);
+        gridPane.add(button, 4, ++row, 7, 1);
         
         return gridPane;
     }
@@ -843,6 +841,25 @@ public class View extends Application
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menus);
         return menuBar;
+    }
+    
+    public Menu loggedUser()
+    {
+        Menu menu = new Menu(FieldValue.LOGGED_USER);
+        
+        MenuItem menuItem = new MenuItem(FieldValue.ACCOUNT);
+        menu.setOnAction(e -> controller.handleLoggedUser());
+        menu.getItems().addAll(menuItem);
+        return menu;
+    }
+    
+    public Menu searchEngine()
+    {
+        Menu menu = new Menu(FieldValue.SEARCH_FLIGHTS);
+        MenuItem menuItem = new MenuItem("Search Engine");
+        menu.setOnAction(e -> controller.takeLoggedUserToSE());
+        menu.getItems().addAll(menuItem);
+        return menu;
     }
     
     public MenuBar ui_homeMenuBar()

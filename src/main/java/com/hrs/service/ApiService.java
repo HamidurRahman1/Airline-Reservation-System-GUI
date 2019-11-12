@@ -1,5 +1,6 @@
 package com.hrs.service;
 
+import com.hrs.exceptions.InvalidEmailException;
 import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.view.models.Admin;
@@ -20,11 +21,11 @@ import java.util.Set;
 public interface ApiService
 {
     // Returns list of flights for global reservation, must include flights that are booked as well
-    void getAllFlightsForReservation();
+    Set<Flight> getAllFlightsForReservation();
     
     void getAllFlightsByCustomerId(Integer customerId);
     
-    void getAllFlightsByAirlineForReservation(String airlineName);
+    Set<Flight> getAllFlightsByAirlineForReservation(String airlineName);
     
     Set<Flight> getAllFlightsByAirline(String airlineName);
     
@@ -42,6 +43,7 @@ public interface ApiService
     // Must include active or canceled reservations
     Set<Reservation> getGlobalReservations();
     
+    // Must include active and cancelled reservations
     Set<Reservation> getCustomerReservations(Integer customerId);
     
     Set<Airplane> getAllAirPlaneByAirLine(String airlineName);
@@ -51,7 +53,8 @@ public interface ApiService
     // Must include active and canceled reservations
     Set<Reservation> getAllReservationsByAirline(String airlineName);
     
-    boolean insertNewCustomer(String firstName, String lastName, String email, String password);
+    boolean insertNewCustomer(String firstName, String lastName, String email, String password)
+        throws IllegalArgumentException, InvalidEmailException;
     
     boolean cancelReservation(Integer customerId, Integer reservationId);
     
@@ -67,7 +70,7 @@ public interface ApiService
     boolean makeReservationBySE(Integer flightIdPk, String username, String password)
             throws InvalidUserNameException, InvalidPasswordException;
     
-    boolean makeReservationBySE(Integer flightIdPk);
+    boolean makeReservationBySE(Integer flightIdPk, Integer customerId);
     
     boolean insertFlightByAirline(Flight flight);
 }

@@ -23,6 +23,18 @@ public class Flight
     
     public Flight() {}
     
+    public Flight(String flightCode, Source source, Destination destination, String status, Airline airLine, Airplane airplane, Float fare)
+    {
+        this.flightCode = flightCode;
+        this.source = source;
+        this.destination = destination;
+        this.availableSeat = availableSeat;
+        this.status = status;
+        this.airLine = airLine;
+        this.airplane = airplane;
+        this.fare = fare;
+    }
+    
     public Flight(String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane, Float fare)
     {
         this.flightCode = flightCode;

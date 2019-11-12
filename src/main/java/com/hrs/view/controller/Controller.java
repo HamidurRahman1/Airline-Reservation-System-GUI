@@ -31,11 +31,13 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -75,7 +77,7 @@ public class Controller
         if(Configuration.getSession().isCustomerInSession())
         {
             apiServiceImpl.makeReservation(flightId, Configuration.getSession().getCustomer().getCustomerId());
-            apiServiceImpl.makeReservationBySE(flightId);
+            apiServiceImpl.makeReservationBySE(flightId, Configuration.getSession().getCustomer().getCustomerId());
             AlertBox.DisplayConfirmation("Reservation Successful",
                     "successfully reserved a seat for user="+"customer.getUsername()"+"." + " Please check your " +
                             "account to verify.");
@@ -351,7 +353,7 @@ public class Controller
     public void eventLaunchNewCustomer(GridPane gridPane)
     {
         Stage stage = new Stage();
-        Scene scene = new Scene(gridPane, 500, 400);
+        Scene scene = new Scene(gridPane, 600, 450);
         
         TextField firstName = (TextField) Utility.getNodeByRowColumnIndex
                 (FieldValue.CUST_FIRST_ROW, FieldValue.CUST_FIRST_COL, gridPane);
@@ -366,15 +368,28 @@ public class Controller
         
         submit.setOnAction(e ->
         {
-            if(apiServiceImpl.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
+            try
+            {
+                if(apiServiceImpl.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
+                {
+                    stage.close();
+                    AlertBox.DisplayInformation("New Customer Successfully added",
+                            "A customer has successfully been added.\nName: "
+                                    + firstName.getText() + " " + lastName.getText());
+                }
+            }
+            catch(Exception ex)
             {
                 stage.close();
-                AlertBox.DisplayInformation("New Customer Successfully added",
-                                "A customer has successfully been added.\nName: "
-                                        + firstName.getText() + " " + lastName.getText());
+                if(AlertBox.DisplayError("Error Occurred Inserting New Customer", ex.getMessage()))
+                {
+                    firstName.setText(firstName.getText());
+                    lastName.setText(lastName.getText());
+                    email.setText(email.getText());
+                    password.setText(password.getText());
+                    stage.showAndWait();
+                }
             }
-            System.out.println(firstName.getText() + ' ' + lastName.getText() + ' ' + email.getText() + " " +
-                    password.getText());
         });
     
         stage.setScene(scene);
@@ -396,6 +411,12 @@ public class Controller
     public void launchLoginForCustomer(GridPane gridPane)
     {
         launchLoginForAllByKey(gridPane, FieldValue.LOGIN_VIEW_KEY_CUSTOMER);
+    }
+    
+    public void takeLoggedUserToSE()
+    {
+        view.setTop(view.menuBar(view.loggedUser(), view.airlines(), view.airports()));
+        view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
     }
     
     private void launchLoginForAllByKey(GridPane gridPane, String loginViewKey)
@@ -431,9 +452,9 @@ public class Controller
                 try
                 {
                     Customer customer = apiServiceImpl.getCustomerByLogin(username.getText(), pass.getText());
-    
-                    view.setTop(view.menuBar(view.airports(), view.airlines()));
-                    VBox center = customerCenterContainer(Tester.testCustomer());
+                    Configuration.getSession().addCustomerToSession(customer);
+                    view.setTop(view.menuBar(view.searchEngine(), view.airlines(), view.airports()));
+                    VBox center = customerCenterContainer(customer);
                     view.setCenter(center);
                 }
                 catch(InvalidUserNameException ex){}
@@ -545,7 +566,7 @@ public class Controller
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(customerNameHBox(customer));
         vBox.getChildren().add(new Label());
-        vBox.getChildren().add(new Label("Flight Histories"));
+        vBox.getChildren().add(new Label("Reservation and Flight Histories"));
         vBox.getChildren().add(new Label());
         vBox.getChildren().add(populateRSVPsFlightsForCustomer(customer));
         vBox.getChildren().add(new Label());
@@ -579,18 +600,17 @@ public class Controller
         
         int row = 0;
         Label rsvpLabel = new Label("All future reservations");
-        gridPane.add(rsvpLabel, 2, 0, 3, 1);
-        row++;
+        gridPane.add(rsvpLabel, 4, row++, 2, 1);
     
-        for(int i = 0; i < Utility.customerReservationHeaders().getChildren().size(); i++)
+        for(int i = 0; i < Utility.CUSTOMER_RSVP_HEADERS().getChildren().size(); i++)
             gridPane.add(new Label(), i, row);
         row++;
         
-        for(int i = 0; i < Utility.customerReservationHeaders().getChildren().size(); i++)
-            gridPane.add(Utility.customerReservationHeaders().getChildren().get(i), i, row);
+        for(int i = 0; i < Utility.CUSTOMER_RSVP_HEADERS().getChildren().size(); i++)
+            gridPane.add(Utility.CUSTOMER_RSVP_HEADERS().getChildren().get(i), i, row);
         row++;
         
-        for(int i = 0; i < Utility.customerReservationHeaders().getChildren().size(); i++)
+        for(int i = 0; i < Utility.CUSTOMER_RSVP_HEADERS().getChildren().size(); i++)
             gridPane.add(new Label(), i, row);
         row++;
         
@@ -601,18 +621,19 @@ public class Controller
             gridPane.add(button(reservation.getFlight().getFlightCode()), 2, row);
             gridPane.add(button(reservation.getFlight().getSource().getAirportName()), 3, row);
             gridPane.add(button(reservation.getFlight().getDestination().getAirportName()), 4, row);
-            gridPane.add(button(reservation.getFlight().getFare().toString()), 5, row);
+            gridPane.add(button(FieldValue.$.concat(reservation.getFlight().getFare().toString())), 5, row);
             gridPane.add(button(reservation.getRsvpDate().toString()), 6, row);
-            Button status = button(reservation.getStatus());
-            gridPane.add(status, 7, row);
-            row++;
+            gridPane.add(button(reservation.getStatus()), 7, row);
             
-            if("ACTIVE".equalsIgnoreCase(reservation.getStatus()))
+            if(FieldValue.ACTIVE.equalsIgnoreCase(reservation.getStatus()))
             {
-                status.setOnAction(e ->
+                Button cancel = button(FieldValue.CLICK);
+                gridPane.add(cancel, 8, row);
+                cancel.setOnAction(e ->
                 {
                     if(AlertBox.DisplayConfirmation("Canceling this flight?", "Do you really want " +
-                            "to cancel this flight?")){
+                            "to cancel this flight?"))
+                    {
                         apiServiceImpl.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
                         customer.setReservations(apiServiceImpl.getAllReservationsByCustomerId(customer.getCustomerId()));
                         VBox center = customerCenterContainer(customer);
@@ -620,30 +641,45 @@ public class Controller
                     }
                 });
             }
+            row++;
         }
     
-        for(int i = 0; i < Utility.customerReservationHeaders().getChildren().size(); i++)
+        for(int i = 0; i < Utility.CUSTOMER_RSVP_HEADERS().getChildren().size(); i++)
+            gridPane.add(new Label(), i, row);
+        row++;
+    
+        for(int i = 0; i < Utility.CUSTOMER_PAST_FLIGHTS_HEADERS().getChildren().size(); i++)
             gridPane.add(new Label(), i, row);
         row++;
     
         Label flightsLabel = new Label("All past flights");
-        gridPane.add(flightsLabel, 3, row, 3, 1);
+        gridPane.add(flightsLabel, 4, row, 3, 1);
         row++;
     
-        for(int i = 0; i < Utility.customerPastFlightHeaders().getChildren().size(); i++)
+        for(int i = 0; i < Utility.CUSTOMER_PAST_FLIGHTS_HEADERS().getChildren().size(); i++)
+            gridPane.add(new Label(), i, row);
+        row++;
+    
+        int j = 1;
+        for(int i = 0; i < Utility.CUSTOMER_PAST_FLIGHTS_HEADERS().getChildren().size(); i++)
+            gridPane.add(Utility.CUSTOMER_PAST_FLIGHTS_HEADERS().getChildren().get(i), j++, row);
+        row++;
+        
+        for(int i = 0; i < Utility.CUSTOMER_PAST_FLIGHTS_HEADERS().getChildren().size(); i++)
             gridPane.add(new Label(), i, row);
         row++;
         
         for(Flight flight : flights)
         {
-            gridPane.add(button(flight.getAirLine().getAirlineName()), 0, row);
-            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 1, row);
-            gridPane.add(button(flight.getFlightCode()), 2, row);
-            gridPane.add(button(flight.getSource().getAirportName()), 3, row);
-            gridPane.add(button(flight.getDestination().getAirportName()), 4, row);
-            gridPane.add(button(flight.getFare().toString()), 5, row);
+            gridPane.add(button(flight.getAirLine().getAirlineName()), 1, row);
+            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 2, row);
+            gridPane.add(button(flight.getFlightCode()), 3, row);
+            gridPane.add(button(flight.getSource().getAirportName()), 4, row);
+            gridPane.add(button(flight.getDestination().getAirportName()), 5, row);
+            gridPane.add(button(FieldValue.$.concat(flight.getFare().toString())), 6, row);
+            row++;
         }
-
+        
         return gridPane;
     }
     
@@ -666,7 +702,7 @@ public class Controller
     
     public void eventGlobalSearchBar()
     {
-        Set<Flight> flights = Tester.testFlights();
+        Set<Flight> flights = apiServiceImpl.getAllFlightsForReservation();
     
         GridPane center = view.ui_globalSearchResults(flights);
         
@@ -687,18 +723,34 @@ public class Controller
         view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
     }
     
+    public void handleLoggedUser()
+    {
+        if(Configuration.getSession().isCustomerInSession())
+        {
+            Customer customer = Configuration.getSession().getCustomer();
+            view.setTop(view.menuBar(view.searchEngine(), view.airlines(), view.airports()));
+            VBox center = customerCenterContainer(customer);
+            view.setCenter(center);
+        }
+        else
+        {
+            AlertBox.DisplayInformation("User not in Session", "No valid user found in session.\n");
+            view.setTop(view.ui_homeMenuBar());
+            view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+        }
+    }
+    
     public boolean addFlightForAirline(String airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
                                     ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
                                     ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
                                     DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1)
     {
-        System.out.println(sourceChoices.getValue());
         Flight flight = new Flight();
         flight.setAirLine(new Airline(airline));
         flight.setFlightCode(codeField.getText());
         flight.setAirplane(airPlaneChoiceBox.getValue());
-        flight.setSource(new Source(sourceChoices.getValue(), sourceDate.getValue(), sourceTimes.getValue()));
-        flight.setDestination(new Destination(destinationChoices.getValue(), destinationDate.getValue(), destinationTimes.getValue()));
+        flight.setSource(new Source(sourceChoices.getValue().getAirportName(), sourceDate.getValue(), sourceTimes.getValue()));
+        flight.setDestination(new Destination(destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
         flight.setCapacity(Integer.parseInt(capacity1.getText()));
         
         return apiServiceImpl.insertFlightByAirline(flight);

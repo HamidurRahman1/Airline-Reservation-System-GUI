@@ -18,6 +18,15 @@ public class Reservation
     
     public Reservation() {}
     
+    public Reservation(Flight flight, LocalDate rsvpDate, String status, Integer rsvpBy)
+    {
+        this.customer = customer;
+        this.flight = flight;
+        this.rsvpDate = rsvpDate;
+        this.status = status;
+        this.rsvpBy = rsvpBy;
+    }
+    
     public Reservation(Customer customer, Flight flight, LocalDate rsvpDate, String status, Integer rsvpBy)
     {
         this.customer = customer;

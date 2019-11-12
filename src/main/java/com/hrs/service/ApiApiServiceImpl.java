@@ -1,5 +1,7 @@
 package com.hrs.service;
 
+import com.hrs.exceptions.IllegalArgumentException;
+import com.hrs.exceptions.InvalidEmailException;
 import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.test.Tester;
@@ -8,8 +10,10 @@ import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
+import com.hrs.view.models.Destination;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
+import com.hrs.view.models.Source;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -18,6 +22,7 @@ import java.util.Set;
 
 import static com.hrs.test.Tester.STATUS_ACTIVE;
 import static com.hrs.test.Tester.STATUS_CANCELED;
+import static com.hrs.test.Tester.STATUS_ON_TIME;
 import static com.hrs.test.Tester.testCustomer;
 import static com.hrs.test.Tester.testFlight1;
 import static com.hrs.test.Tester.testFlight2;
@@ -28,9 +33,9 @@ import static com.hrs.test.Tester.testFlight2;
 public class ApiApiServiceImpl implements ApiService
 {
     @Override
-    public void getAllFlightsForReservation()
+    public Set<Flight> getAllFlightsForReservation()
     {
-    
+        return Tester.testFlights();
     }
     
     @Override
@@ -40,9 +45,9 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public void getAllFlightsByAirlineForReservation(String airlineName)
+    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName)
     {
-    
+        return Tester.testFlights();
     }
     
     @Override
@@ -54,13 +59,28 @@ public class ApiApiServiceImpl implements ApiService
     @Override
     public Set<Reservation> getAllReservationsByCustomerId(Integer customerId)
     {
-        return null;
+        Set<Reservation> reservations = new LinkedHashSet <>();
+    
+        Flight f2 = new Flight("8PK9",
+                new Source("LGA", LocalDate.of(2019, 11, 12), "3:00 pm"),
+                new Destination("TXD", LocalDate.of(2019, 11, 12), "9:00 pm"),
+                STATUS_ON_TIME(), new Airline("Delta Ar."), new Airplane("D 909P"), 110f);
+    
+        Flight f3 = new Flight("9PU7",
+                new Source("LAC", LocalDate.of(2019, 11, 20), "12:00 pm"),
+                new Destination("JFK", LocalDate.of(2019, 11, 20), "6:00 pm"),
+                STATUS_ON_TIME(), new Airline("Jet Blue"), new Airplane("JB P17B"), 120f);
+    
+        reservations.add(new Reservation(f2, LocalDate.of(2019, 11, 7), STATUS_CANCELED(), 0));
+        reservations.add(new Reservation(f3, LocalDate.now(), STATUS_ACTIVE(), 1));
+    
+        return reservations;
     }
     
     @Override
     public Customer getCustomerByLogin(String username, String password) throws InvalidUserNameException, InvalidPasswordException
     {
-        return null;
+        return Tester.testCustomer();
     }
     
     @Override
@@ -120,14 +140,23 @@ public class ApiApiServiceImpl implements ApiService
     
     @Override
     public boolean insertNewCustomer(String firstName, String lastName, String email, String password)
+//            throws IllegalArgumentException, InvalidEmailException
     {
-        return false;
+        try
+        {
+        
+        }
+        catch(Exception ex)
+        {
+        
+        }
+        return true;
     }
     
     @Override
     public boolean cancelReservation(Integer customerId, Integer reservationId)
     {
-        return false;
+        return true;
     }
     
     @Override
@@ -139,31 +168,31 @@ public class ApiApiServiceImpl implements ApiService
     @Override
     public boolean cancelFlight(Integer flightId)
     {
-        return false;
+        return true;
     }
     
     @Override
     public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserNameException, InvalidPasswordException
     {
-        return false;
+        return true;
     }
     
     @Override
     public boolean makeReservation(Integer flightIdPk, Integer customerId)
     {
-        return false;
+        return true;
     }
     
     @Override
     public boolean makeReservationBySE(Integer flightIdPk, String username, String password) throws InvalidUserNameException, InvalidPasswordException
     {
-        return false;
+        return true;
     }
     
     @Override
-    public boolean makeReservationBySE(Integer flightIdPk)
+    public boolean makeReservationBySE(Integer flightIdPk, Integer customerId)
     {
-        return false;
+        return true;
     }
     
     @Override

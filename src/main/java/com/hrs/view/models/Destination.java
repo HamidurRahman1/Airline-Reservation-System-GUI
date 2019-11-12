@@ -15,16 +15,14 @@ public class Destination extends Airport
         super();
     }
     
+    public Destination(String airportName)
+    {
+        super(airportName);
+    }
+    
     public Destination(String airportName, LocalDate date, String time)
     {
         super(airportName);
-        this.date = date;
-        this.time = time;
-    }
-    
-    public Destination(Airport airportName, LocalDate date, String time)
-    {
-        super(airportName.getAirportName());
         this.date = date;
         this.time = time;
     }

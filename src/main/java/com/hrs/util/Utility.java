@@ -101,25 +101,25 @@ public class Utility
         return hBox;
     }
     
-    public static HBox customerReservationHeaders()
+    public static HBox CUSTOMER_RSVP_HEADERS()
     {
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
                 (button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE), button(FieldValue.FLIGHT_CODE),
                         button(FieldValue.SOURCE), button(FieldValue.DESTINATION), button(FieldValue.FARE),
-                        button(FieldValue.RV_DATE), button(FieldValue.STATUS));
+                        button(FieldValue.RV_DATE), button(FieldValue.STATUS), button(FieldValue.TO_CANCEL));
         
         return hBox;
     }
     
-    public static HBox customerPastFlightHeaders()
+    public static HBox CUSTOMER_PAST_FLIGHTS_HEADERS()
     {
         HBox hBox = new HBox();
         
-        hBox.getChildren().addAll
-                (button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE), button(FieldValue.FLIGHT_CODE),
-                        button(FieldValue.SOURCE), button(FieldValue.DESTINATION), button(FieldValue.FARE));
+        hBox.getChildren().addAll(button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE),
+                button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
+                button(FieldValue.FARE));
         
         return hBox;
     }
@@ -155,7 +155,8 @@ public class Utility
         hBox.getChildren().addAll
                 (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DEP_DATE_TIME),
                         button(FieldValue.DESTINATION), button(FieldValue.ARR_DATE_TIME), button(FieldValue.AIRLINE),
-                        button(FieldValue.AIRPLANE), button(FieldValue.FARE), button(FieldValue.AVAILABLE_SEAT), button(FieldValue.STATUS));
+                        button(FieldValue.AIRPLANE), button(FieldValue.FARE), button(FieldValue.AVAILABLE_SEAT),
+                        button(FieldValue.STATUS), button(FieldValue.TO_RSVP));
         
         return hBox;
     }
@@ -174,7 +175,7 @@ public class Utility
     
     public static Label SE_HEADER()
     {
-        Label l = new Label(FieldValue.RESULTS1);
+        Label l = new Label(FieldValue.SEARCH_ENGINE_RESULTS);
         l.setAlignment(Pos.CENTER);
         l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
                            .concat(CSSStyle.fontSize(15)));
