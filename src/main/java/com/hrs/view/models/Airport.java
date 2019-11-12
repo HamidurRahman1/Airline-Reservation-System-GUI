@@ -34,6 +34,6 @@ public class Airport
     @Override
     public String toString()
     {
-        return "Airport{" + "airportId=" + airportId + ", airportName='" + airportName + '\'' + '}';
+        return this.getAirportName();
     }
 }

@@ -1,103 +1,73 @@
 package com.hrs.service;
 
-
-import com.hrs.exceptions.InvalidUserName;
-import com.hrs.test.Tester;
+import com.hrs.exceptions.InvalidPasswordException;
+import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.Airline;
+import com.hrs.view.models.Airplane;
+import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
+import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
- * A service class that provides database access
+ *  A interface defines all the service methods that will be invoked from View to Backend to retrieve data.
  */
-public class ApiService implements Service
+public interface ApiService
 {
-    @Override
-    public void getAllFlightsByCustomerId(Integer customerId)
-    {
+    // Returns list of flights for global reservation, must include flights that are booked as well
+    void getAllFlightsForReservation();
     
-    }
+    void getAllFlightsByCustomerId(Integer customerId);
     
-    @Override
-    public void getAllFlights()
-    {
+    void getAllFlightsByAirlineForReservation(String airlineName);
     
-    }
+    Set<Flight> getAllFlightsByAirline(String airlineName);
     
-    @Override
-    public void getAllFlightsByAirline(String airlineName)
-    {
+    Set<Reservation> getAllReservationsByCustomerId(Integer customerId);
     
-    }
+    Customer getCustomerByLogin(String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public Customer getCustomerByLogin(String username, String password)
-    {
-        Customer customer = new Customer(101, "First", "Last");
-        customer.setFlights(Tester.testFlights());
-        return customer;
-    }
+    Admin getGlobalAdminByLogin(String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public void validateAirlineAdminLogin(String username, String password)
-    {
+    Admin getAirlineAdminByLogin(String airline, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    }
+    // Must include active or canceled reservations
+    Set<Reservation> getGlobalReservations();
     
-    @Override
-    public boolean insertNewCustomer(String firstName, String lastName, String email, String password)
-    {
-        return true;
-    }
+    Set<Reservation> getCustomerReservations(Integer customerId);
     
-    @Override
-    public void cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId)
-    {
+    Set<Airplane> getAllAirPlaneByAirLine(String airlineName);
     
-    }
+    Set<Airport> getAllAirports();
     
-    @Override
-    public void cancelReservation2testFunc(Integer customerId)
-    {
+    // Must include active and canceled reservations
+    Set<Reservation> getAllReservationsByAirline(String airlineName);
     
-    }
+    boolean insertNewCustomer(String firstName, String lastName, String email, String password);
     
-    @Override
-    public void getAdminByAirline(String airlineName)
-    {
+    boolean cancelReservation(Integer customerId, Integer reservationId);
     
-    }
+    void cancelReservation2testFunc(Integer customerId);
     
-    @Override
-    public boolean makeReservation(Integer flightIdPk, String username) throws InvalidUserName
-    {
-        return true;
-    }
+    boolean cancelFlight(Integer flightId);
     
-    @Override
-    public boolean makeReservation(Integer flightIdPk, Integer customerId)
-    {
-        return true;
-    }
+    boolean makeReservation(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public void insertGlobalReservation(Integer flightIdPk)
-    {
+    boolean makeReservation(Integer flightIdPk, Integer customerId);
     
-    }
+    boolean makeReservationBySE(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException;
     
-    @Override
-    public Admin getGlobalAdminByLogin(String username, String password)
-    {
-        return new Admin("Hamidur", "Rahman");
-    }
+    boolean makeReservationBySE(Integer flightIdPk);
     
-    @Override
-    public List <Reservation> getGlobalReservations()
-    {
-        return null;
-    }
+    boolean insertFlightByAirline(Flight flight);
 }

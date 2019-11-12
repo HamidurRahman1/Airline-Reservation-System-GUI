@@ -1,56 +1,51 @@
 package com.hrs.view.models;
 
-import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  *  A major player in this project.
  */
 public class Flight
 {
-    public Integer flightId;
-    public String flightName;
-    public String source;
-    public String destination;
-    public String date;
-    public String status;
-    public String airline;
-    public String fare;
+    private Integer flightId;
+    private String flightCode;
+    private Source source;
+    private Destination destination;
+    private Integer availableSeat;
+    private String status;
+    private Airline airLine;
+    private Airplane airplane;
+    private Float fare;
+    private Integer capacity;
+    private Set<Customer> customers = new LinkedHashSet <>();
     
-    public Flight()
+    public Flight() {}
+    
+    public Flight(String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane, Float fare)
     {
-    
-    }
-    
-    public Flight(String flightName, String source, String destination, String airline, String date, String fare, String status)
-    {
-        this.flightName = flightName;
-        this.airline = airline;
+        this.flightCode = flightCode;
         this.source = source;
         this.destination = destination;
-        this.date = date;
+        this.availableSeat = availableSeat;
         this.status = status;
+        this.airLine = airLine;
+        this.airplane = airplane;
         this.fare = fare;
     }
     
-    public Flight(Integer flightId, String flightName, String airline, String source, String destination, String date, String status)
+    public Flight(Integer flightId, String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane, Float fare)
     {
         this.flightId = flightId;
-        this.flightName = flightName;
-        this.airline = airline;
+        this.flightCode = flightCode;
         this.source = source;
         this.destination = destination;
-        this.date = date;
+        this.availableSeat = availableSeat;
         this.status = status;
-    }
-    
-    public String getStatus()
-    {
-        return status;
-    }
-    
-    public void setStatus(String status)
-    {
-        this.status = status;
+        this.airLine = airLine;
+        this.airplane = airplane;
+        this.fare = fare;
     }
     
     public Integer getFlightId()
@@ -63,63 +58,135 @@ public class Flight
         this.flightId = flightId;
     }
     
-    public String getFlightName()
+    public String getFlightCode()
     {
-        return flightName;
+        return flightCode;
     }
     
-    public void setFlightName(String flightName)
+    public void setFlightCode(String flightCode)
     {
-        this.flightName = flightName;
+        this.flightCode = flightCode;
     }
     
-    public String getSource()
+    public Source getSource()
     {
         return source;
     }
     
-    public void setSource(String source)
+    public void setSource(Source source)
     {
         this.source = source;
     }
     
-    public String getDestination()
+    public Destination getDestination()
     {
         return destination;
     }
     
-    public void setDestination(String destination)
+    public void setDestination(Destination destination)
     {
         this.destination = destination;
     }
     
-    public String getDate()
+    public Integer getAvailableSeat()
     {
-        return date;
+        return availableSeat;
     }
     
-    public void setDate(String date)
+    public void setAvailableSeat(Integer availableSeat)
     {
-        this.date = date;
+        this.availableSeat = availableSeat;
     }
     
-    public String getAirline()
+    public String getStatus()
     {
-        return airline;
+        return status;
     }
     
-    public void setAirline(String airline)
+    public void setStatus(String status)
     {
-        this.airline = airline;
+        this.status = status;
     }
     
-    public String getFare()
+    public Airline getAirLine()
+    {
+        return airLine;
+    }
+    
+    public void setAirLine(Airline airLine)
+    {
+        this.airLine = airLine;
+    }
+    
+    public Airplane getAirplane()
+    {
+        return airplane;
+    }
+    
+    public void setAirplane(Airplane airplane)
+    {
+        this.airplane = airplane;
+    }
+    
+    public Float getFare()
     {
         return fare;
     }
     
-    public void setFare(String fare)
+    public void setFare(Float fare)
     {
         this.fare = fare;
+    }
+    
+    public Set<Customer> getCustomers()
+    {
+        return customers;
+    }
+    
+    public void setCustomers(Set<Customer> customers)
+    {
+        this.customers = customers;
+    }
+    
+    public Integer getCapacity()
+    {
+        return capacity;
+    }
+    
+    public void setCapacity(Integer capacity)
+    {
+        this.capacity = capacity;
+    }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o) return true;
+        if(! (o instanceof Flight)) return false;
+        Flight flight = (Flight) o;
+        return Objects.equals(getFlightId(), flight.getFlightId())
+                && Objects.equals(getFlightCode(), flight.getFlightCode())
+                && Objects.equals(getSource(), flight.getSource())
+                && Objects.equals(getDestination(), flight.getDestination())
+                && Objects.equals(getAvailableSeat(), flight.getAvailableSeat())
+                && Objects.equals(getStatus(), flight.getStatus())
+                && Objects.equals(getAirLine(), flight.getAirLine())
+                && Objects.equals(getAirplane(), flight.getAirplane())
+                && Objects.equals(fare, flight.fare);
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getFlightId(), getFlightCode(), getSource(),
+                getDestination(), getAvailableSeat(), getStatus(), getAirLine(), getAirplane(), fare);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Flight{" + "flightId=" + flightId + ", flightCode='" + flightCode + '\'' + ", source=" + source
+                + ", destination=" + destination + ", availableSeat=" + availableSeat + ", status='" + status + '\''
+                + ", airLine=" + airLine + ", airplane=" + airplane + ", fare=" + fare + '}';
     }
 }

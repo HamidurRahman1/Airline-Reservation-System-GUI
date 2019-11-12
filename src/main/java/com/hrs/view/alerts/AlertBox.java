@@ -17,12 +17,12 @@ public class AlertBox
         displayAlert(title, content, Alert.AlertType.INFORMATION);
     }
     
-    public static void displayError(String title, String content)
+    public static void DisplayError(String title, String content)
     {
        displayAlert(title, content, Alert.AlertType.ERROR);
     }
     
-    public static boolean displayConfirmation(String title, String content)
+    public static boolean DisplayConfirmation(String title, String content)
     {
         Optional<ButtonType> result = displayAlert(title, content, Alert.AlertType.CONFIRMATION);
         if(result.isPresent() && result.get() == ButtonType.OK) return true;

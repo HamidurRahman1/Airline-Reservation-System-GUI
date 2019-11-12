@@ -1,25 +1,26 @@
 package com.hrs.view.util;
 
+import javafx.scene.Scene;
+
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
     public static final String CURRENT_DATE = "Search Date";
     
-    public static final String LOGIN_LABEL = "Login";
+    public static final String CUSTOMER = "Customer";
     public static final String CUSTOMER_LOGIN_LABEL = "Customer Login";
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AIRLINE1 = "Airline : SH10";
-    public static final String AIRLINE2 = "Airline : AR7";
-    public static final String AIRLINE3 = "Airline : HR11";
+    public static final String AIRLINE1 = "Airline : SH";
+    public static final String AIRLINE2 = "Airline : AR";
+    public static final String AIRLINE3 = "Airline : HR";
     
     public static final String AIRPORT1 = "Airport : NY";
     public static final String AIRPORT2 = "Airport : LA";
     public static final String AIRPORT3 = "Airport : DC";
     
     public static final String CUST_REG_FORM = "New Customer Registration Form";
-    public static final String CUST_LABEL = "Customer Login";
     
     public static final String SELECT_DATE = "Please select a date: ";
     public static final String DATE_TITLE = "A future date for reservations";
@@ -45,6 +46,8 @@ public class FieldValue
     public static final String LASTNAME = "Last Name : ";
     
     public static final String USERNAME = "User Name : ";
+    
+    public static final String ADMINS = "Admins";
     
     public static final String SEARCH = "Search Engine for Flights Reservation (SEFR)";
     
@@ -88,24 +91,67 @@ public class FieldValue
     public static final String DEPARTURE_LABEL = "departure";
     public static final String DEPARTURE_CONTAINER_ID = "departureContainer";
     
-    public static final String FLIGHT = "FLIGHT";
+    public static final String FLIGHT_CODE = "FLIGHT CODE";
     public static final String AIRLINE = "AIRLINE";
+    public static final String AIRPLANE = "AIRPLANE";
+    
+    public static final String DEP_DATE_TIME = "DEP. DATE-TIME";
+    public static final String ARR_DATE_TIME = "ARR. DATE-TIME";
+    
     public static final String STATUS = "STATUS";
-    public static final String DATE_TIME = "DATE";
+    public static final String TOTAL_RSVP = "TOTAL RSVP";
+    public static final String DATE = "DATE";
     public static final String FARE = "FARE";
-    public static final String SOURCE = "SOURCE";
-    public static final String DESTINATION = "DESTINA";
+    public static final String SOURCE = "FROM";
+    public static final String DESTINATION = "TO";
     
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
     
-    public static final String SE_ADMIN_LABEL = "SE Admin Login";
-    public static final String AIR_ADMIN_LABEL = "Admin Login";
+    public static final String SE_ADMIN_LABEL = "Global Admin";
+    public static final String SE_ADMIN_LOGIN_LABEL = "Global Admin Login";
+    public static final String AIR_ADMIN_LABEL = "Admin";
     
     public static final String LOGIN_VIEW_KEY_GLOBAL = "global";
-    public static final String LOGIN_VIEW_KEY_AIRLINE = "airline";
     public static final String LOGIN_VIEW_KEY_CUSTOMER = "customer";
     
     public static final String RV_DATE = "RV. DATE";
+    
+    public static final String RESULTS1 = "Displaying all search results from SE";
+    public static final String RESULTS = "Displaying all search results for";
+    
+    public static final String RSVP_TITLE = "Displaying all RSVPs for";
+    
+    public static final String ADD_FLIGHT = "ADD FLIGHT";
+    public static final String CANCEL_FLIGHT = "CANCEL FLIGHT";
+    
+    public static final String LOGOUT_LABEL = "Logout";
+    
+    public static final Integer ADD_FLIGHT_INDEX = 7;
+    public static final Integer CANCEL_FLIGHT_INDEX = 9;
+    public static final Integer RSVP_FLIGHT_INDEX = 11;
+    
+    public static final String A1 = "SH";
+    public static final String A2 = "AR";
+    public static final String A3 = "HR";
+    
+    public static final String SELECT = "Select One";
+    public static final String TO_CANCEL = "TO CANCEL";
+    public static final String LAST_NAME = "LAST NAME";
+    
+    public static final String RSVP_BY = "RSVP BY";
+    public static final String RSVP_DATE = "RSVP DATE";
+    
+    public static final String SE = "SE";
+    public static final String WP = "WP";
+    public static final String AVAILABLE_SEAT = "AVL. SEAT";
+    
+    public static final String FULL = "FULL";
+    public static final String OPEN = "OPEN";
+    public static final String ON_TIME = "ON TIME";
+    
+    public static final String FLIGHT_ADDITION_SUCCESS_HEADER = "Flight has successfully been added";
+    
+    public static final String $ = "$ ";
     
 }
