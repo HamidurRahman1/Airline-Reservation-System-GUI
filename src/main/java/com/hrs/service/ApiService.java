@@ -12,6 +12,7 @@ import com.hrs.view.models.Reservation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  *  A interface defines all the service methods that will be invoked from View to Backend to retrieve data.
@@ -25,6 +26,10 @@ public interface ApiService
     
     void getAllFlightsByAirlineForReservation(String airlineName);
     
+    Set<Flight> getAllFlightsByAirline(String airlineName);
+    
+    Set<Reservation> getAllReservationsByCustomerId(Integer customerId);
+    
     Customer getCustomerByLogin(String username, String password)
             throws InvalidUserNameException, InvalidPasswordException;
     
@@ -35,20 +40,20 @@ public interface ApiService
             throws InvalidUserNameException, InvalidPasswordException;
     
     // Must include active or canceled reservations
-    List<Reservation> getGlobalReservations();
+    Set<Reservation> getGlobalReservations();
     
-    List<Reservation> getCustomerReservations(Integer customerId);
+    Set<Reservation> getCustomerReservations(Integer customerId);
     
-    List<Airplane> getAllAirPlaneByAirLine(String airlineName);
+    Set<Airplane> getAllAirPlaneByAirLine(String airlineName);
     
-    List<Airport> getAllAirports();
+    Set<Airport> getAllAirports();
     
     // Must include active and canceled reservations
-    List<Reservation> getAllReservationsByAirline(String airlineName);
+    Set<Reservation> getAllReservationsByAirline(String airlineName);
     
     boolean insertNewCustomer(String firstName, String lastName, String email, String password);
     
-    boolean cancelReservation(Integer customerId, LocalDate localDate, Integer flightId, Integer airlineId);
+    boolean cancelReservation(Integer customerId, Integer reservationId);
     
     void cancelReservation2testFunc(Integer customerId);
     
@@ -62,7 +67,7 @@ public interface ApiService
     boolean makeReservationBySE(Integer flightIdPk, String username, String password)
             throws InvalidUserNameException, InvalidPasswordException;
     
-    boolean makeReservationBySE(Integer flightIdPk, Integer customerId);
+    boolean makeReservationBySE(Integer flightIdPk);
     
-    boolean insertFlightByAirline(Airline airLine, Flight flight);
+    boolean insertFlightByAirline(Flight flight);
 }

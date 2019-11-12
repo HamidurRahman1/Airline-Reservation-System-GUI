@@ -14,24 +14,27 @@ public class Reservation
     private Flight flight;
     private LocalDate rsvpDate;
     private String status;
+    private Integer rsvpBy;         // 0 - Search Engine, 1 - Airline web page
     
     public Reservation() {}
     
-    public Reservation(Customer customer, Flight flight, LocalDate rsvpDate, String status)
+    public Reservation(Customer customer, Flight flight, LocalDate rsvpDate, String status, Integer rsvpBy)
     {
         this.customer = customer;
         this.flight = flight;
         this.rsvpDate = rsvpDate;
         this.status = status;
+        this.rsvpBy = rsvpBy;
     }
     
-    public Reservation(Integer reservationId, Customer customer, Flight flight, LocalDate rsvpDate, String status)
+    public Reservation(Integer reservationId, Customer customer, Flight flight, LocalDate rsvpDate, String status, Integer rsvpBy)
     {
         this.reservationId = reservationId;
         this.customer = customer;
         this.flight = flight;
         this.rsvpDate = rsvpDate;
         this.status = status;
+        this.rsvpBy = rsvpBy;
     }
     
     public Customer getCustomer()
@@ -84,6 +87,16 @@ public class Reservation
         this.status = status;
     }
     
+    public Integer getRsvpBy()
+    {
+        return rsvpBy;
+    }
+    
+    public void setRsvpBy(Integer rsvpBy)
+    {
+        this.rsvpBy = rsvpBy;
+    }
+    
     @Override
     public boolean equals(Object o)
     {
@@ -94,12 +107,20 @@ public class Reservation
                 && Objects.equals(getCustomer(), that.getCustomer())
                 && Objects.equals(getFlight(), that.getFlight())
                 && Objects.equals(getRsvpDate(), that.getRsvpDate())
-                && Objects.equals(getStatus(), that.getStatus());
+                && Objects.equals(getStatus(), that.getStatus())
+                && Objects.equals(getRsvpBy(), that.getRsvpBy());
     }
     
     @Override
     public int hashCode()
     {
-        return Objects.hash(getReservationId(), getCustomer(), getFlight(), getRsvpDate(), getStatus());
+        return Objects.hash(getReservationId(), getCustomer(), getFlight(), getRsvpDate(), getStatus(), getRsvpBy());
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Reservation{" + "reservationId=" + reservationId + ", customer=" + customer + ", flight=" +
+                flight + ", rsvpDate=" + rsvpDate + ", status='" + status + '\'' + ", rsvpBy=" + rsvpBy + '}';
     }
 }

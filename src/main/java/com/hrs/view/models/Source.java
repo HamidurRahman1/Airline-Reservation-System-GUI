@@ -23,6 +23,13 @@ public class Source extends Airport
         this.time = time;
     }
     
+    public Source(Airport airport, LocalDate date, String time)
+    {
+        super(airport.getAirportName());
+        this.date = date;
+        this.time = time;
+    }
+    
     public Source(Integer airportId, String airportName, LocalDate date, String time)
     {
         super(airportId, airportName);

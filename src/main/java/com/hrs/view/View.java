@@ -2,14 +2,20 @@ package com.hrs.view;
 
 import com.hrs.configs.Configuration;
 import com.hrs.util.Utility;
+import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.Airplane;
+import com.hrs.view.models.Airport;
+import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -17,6 +23,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -24,7 +33,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -43,8 +51,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.Comparator;
+import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static com.hrs.util.Utility.button;
 import static com.hrs.util.Utility.label;
@@ -118,12 +128,171 @@ public class View extends Application
         this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
     }
     
+    public void ui_addFlightForAirline(Admin admin, String airline, Set<Airport> airports, Set<Airplane> airplanes)
+    {
+        System.out.println(airports);
+        System.out.println(airplanes);
+        
+        Stage stage = new Stage();
+        stage.setWidth(900);
+        stage.setHeight(700);
+        stage.setTitle("Adding a flight for ".concat(airline));
+    
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.BASELINE_CENTER);
+        gridPane.setHgap(12);
+        gridPane.setVgap(8);
+    
+        gridPane.add(new Label(), 0, 0);
+        gridPane.add(new Label(), 0, 1);
+    
+        Label codeLabel = label("Enter a flight code/name: ");
+        codeLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label airplaneLabel = label("Select an airplane: ");
+        airplaneLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label sourceLabel = label("Select departure airport: ");
+        sourceLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label sourceDateLabel = label("Select departure date: ");
+        sourceDateLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label sourceTimeLabel = label("Select departure time: ");
+        sourceTimeLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label destinationLabel = label("Select arrival airport: ");
+        destinationLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label destinationDateLabel = label("Select arrival date: ");
+        destinationDateLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label destinationTimeLabel = label("Select arrival time: ");
+        destinationTimeLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        Label capacityLabel = label("Enter max capacity: ");
+        capacityLabel.setPadding(Utility.FLIGHT_LABEL());
+    
+        TextField codeField = new TextField();
+        
+        ChoiceBox<Airplane> airPlaneChoiceBox = new ChoiceBox<>(Utility.AIRPLANES_LIST(airplanes));
+    
+        ChoiceBox<Airport> sourceChoices = new ChoiceBox<>(Utility.AIRPORTS_LIST(airports));
+        
+        DatePicker sourceDate = new DatePicker();
+        sourceDate.setDayCellFactory(picker -> new DateCell()
+        {
+            public void updateItem(LocalDate date, boolean empty)
+            {
+                super.updateItem(date, empty);
+                LocalDate tomorrow = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
+                        LocalDate.now().getDayOfMonth()+1);
+                setDisable(empty || date.compareTo(tomorrow) < 0 );
+            }
+        });
+        
+        ChoiceBox<String> sourceTimes = new ChoiceBox<>(Utility.TIMES_LIST());
+    
+        ChoiceBox<Airport> destinationChoices = new ChoiceBox<>(Utility.AIRPORTS_LIST(airports));
+        
+        DatePicker destinationDate = new DatePicker();
+        destinationDate.setDayCellFactory(picker -> new DateCell()
+        {
+            public void updateItem(LocalDate date, boolean empty)
+            {
+                super.updateItem(date, empty);
+                LocalDate tomorrow = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
+                        LocalDate.now().getDayOfMonth()+2);
+                setDisable(empty || date.compareTo(tomorrow) < 0 );
+            }
+        });
+        ChoiceBox<String> destinationTimes = new ChoiceBox<>(Utility.TIMES_LIST());
+    
+        TextField capacity1 = new TextField();
+    
+        EventHandler event = new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                Airport airport = sourceChoices.getValue();
+                List<Airport> newAirports = new LinkedList <>();
+            
+                for(Airport airport1 : airports) if(!airport.equals(airport1)) newAirports.add(airport1);
+                destinationChoices.setItems(FXCollections.observableList(newAirports));
+            }
+        };
+    
+        gridPane.add(codeLabel, 0, 2);
+        gridPane.add(codeField, 1, 2);
+    
+        gridPane.add(airplaneLabel, 0, 3);
+        gridPane.add(airPlaneChoiceBox, 1, 3);
+    
+        gridPane.add(sourceLabel, 0, 4);
+        gridPane.add(sourceChoices, 1, 4);
+        sourceChoices.setOnAction(event);
+    
+        gridPane.add(sourceDateLabel, 0, 5);
+        gridPane.add(sourceDate, 1, 5);
+    
+        gridPane.add(sourceTimeLabel, 0, 6);
+        gridPane.add(sourceTimes, 1, 6);
+    
+        gridPane.add(destinationLabel, 0, 7);
+        gridPane.add(destinationChoices, 1, 7);
+    
+        gridPane.add(destinationDateLabel, 0, 8);
+        gridPane.add(destinationDate, 1, 8);
+    
+        gridPane.add(destinationTimeLabel, 0, 9);
+        gridPane.add(destinationTimes, 1, 9);
+    
+        gridPane.add(capacityLabel, 0, 10);
+        gridPane.add(capacity1, 1, 10);
+    
+        gridPane.add(new Label(), 0, 11);
+        gridPane.add(new Label(), 0, 12);
+    
+        Button submit = new Button("Submit");
+        submit.setOnAction(e ->
+        {
+            if(controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
+                    sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1))
+            {
+                stage.close();
+                AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
+                        "A flight has successfully been added by "
+                                + admin.getFirstName() + " for Airline ".concat(airline.toUpperCase()));
+            }
+            else{
+            
+            }
+        });
+    
+        gridPane.add(submit, 1, 13, 1, 1);
+        gridPane.setBackground(Utility.BACKGROUND_IMAGE_BY_AIRLINE(Utility.HOME_PIC_PATH));
+        Scene scene = new Scene(gridPane);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+    
+    public void ui_cancelFlightsByAirlineAdmin(String airline, Set<Flight> flights)
+    {
+        Stage stage = new Stage();
+        stage.setWidth(FieldValue.HOME_SCENE_WIDTH);
+        stage.setHeight(500);
+        Scene scene = new Scene(ui_flightsToBeCanceledByAirline(airline, flights));
+        stage.setScene(scene);
+        stage.show();
+    }
+    
     public VBox ui_adminAccessByAirline(Admin admin, String airline)
     {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.BASELINE_CENTER);
         
-        Label header = label("Admin Access in ".concat(airline.toUpperCase()));
+        Label header = label("Admin Access Enabled for ".concat(airline.toUpperCase()));
         
         Label name = label("Admin Name: ".concat(admin.getFirstName()).concat(" ").concat(admin.getLastName()));
     
@@ -149,39 +318,44 @@ public class View extends Application
         return vBox;
     }
     
-    public GridPane ui_displayAllRSVPsByAirline(String airline, List<Reservation> reservations)
+    public GridPane ui_displayAllRSVPsByAirline(String airline, Set<Reservation> reservations)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
+        
+        int row = 0;
     
-        gridPane.add(new Label(), 0, 0);
-        gridPane.add(new Label(), 0, 1);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(new Label("Displaying all reservations made for all flights for ".concat(airline)), 2, 2, 4, 1);
-    
-        gridPane.add(new Label(), 0, 3);
-        gridPane.add(new Label(), 0, 4);
-        gridPane.add(new Label(), 0, 5);
+        gridPane.add(new Label("Displaying all reservations made for all flights for ".concat(airline)), 2, row++, 4, 1);
+        
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
     
         for(int i = 0; i < Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().size(); i++)
-            gridPane.add(Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().get(i), i, 6);
+            gridPane.add(Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().get(i), i, row);
+        row++;
     
         for(int i = 0; i < Utility.ADMIN_VIEW_RESERVATION_HEADERS().getChildren().size(); i++)
-            gridPane.add(new Label(), i, 7);
-    
-        int j = 8;
-    
-        for(int i = 0; i < reservations.size(); i++)
+            gridPane.add(new Label(), i, row);
+        row++;
+        
+        for(Reservation reservation : reservations)
         {
-            gridPane.add(button(reservations.get(i).getFlight().getFlightName()), 0, j);
-            gridPane.add(button(reservations.get(i).getFlight().getAirline()), 1, j);
-            gridPane.add(button(reservations.get(i).getFlight().getSource()), 2, j);
-            gridPane.add(button(reservations.get(i).getFlight().getDestination()), 3, j);
-            gridPane.add(button(reservations.get(i).getStatus()), 4, j);
-            gridPane.add(button(reservations.get(i).getStatus()), 5, j);
-            j++;
+            gridPane.add(button(reservation.getFlight().getFlightCode()), 0, row);
+            gridPane.add(button(reservation.getFlight().getAirplane().getAirPlaneName()), 1, row);
+            gridPane.add(button(reservation.getFlight().getSource().getAirportName()), 2, row);
+            gridPane.add(button(reservation.getFlight().getDestination().getAirportName()), 3, row);
+            gridPane.add(button(reservation.getCustomer().getLastName()), 4, row);
+            gridPane.add(button(reservation.getStatus()), 5, row);
+            gridPane.add(button(reservation.getRsvpBy() == 0 ? FieldValue.SE : FieldValue.WP), 6, row);
+            gridPane.add(button(reservation.getRsvpDate().toString()), 7, row);
+            
+            row++;
         }
     
         return gridPane;
@@ -340,182 +514,184 @@ public class View extends Application
         this.departureStage.show();
     }
     
-    public GridPane ui_globalSearchResults(List<Flight> flights)
+    public GridPane ui_globalSearchResults(Set<Flight> flights)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
+        int row = 0;
     
-        gridPane.add(new Label(), 0, 0);
-        gridPane.add(new Label(), 0, 1);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
         
-        gridPane.add(Utility.SE_HEADER(), 2, 2, 7, 1);
+        gridPane.add(Utility.SE_HEADER(), 2, row++, 7, 1);
     
-        gridPane.add(new Label(), 0, 3);
-        gridPane.add(new Label(), 0, 4);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
         
-        gridPane.add(sortSection(flights), 0, 5, 3, 1);
+        gridPane.add(sortSection(flights), 0, row++, 3, 1);
         
-        gridPane.add(new Label(), 0, 6);
-        gridPane.add(new Label(), 0, 7);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
         
-        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
+        for(int i = 0; i < Utility.GLOBAL_SEARCH_FLIGHT_HEADERS().getChildren().size(); i++)
+            gridPane.add(Utility.GLOBAL_SEARCH_FLIGHT_HEADERS().getChildren().get(i), i, row);
+        row++;
+    
+        for(int i = 0; i < Utility.GLOBAL_SEARCH_FLIGHT_HEADERS().getChildren().size(); i++)
+            gridPane.add(new Label(), i, row);
+        row++;
+        
+        for(Flight flight : flights)
         {
-            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 8);
-        }
-    
-        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
-        {
-            gridPane.add(new Label(), i, 9);
-        }
-        
-        int j = 10;
-    
-        for(int i = 0; i < flights.size(); i++)
-        {
-            gridPane.add(button(flights.get(i).flightName), 0, j);
-            gridPane.add(button(flights.get(i).source), 1, j);
-            gridPane.add(button(flights.get(i).destination), 2, j);
-            gridPane.add(button(flights.get(i).airline), 3, j);
-            gridPane.add(button(flights.get(i).date), 4, j);
-            gridPane.add(button(flights.get(i).fare), 5, j);
-            Button status = button(flights.get(i).status);
-            gridPane.add(status, 6, j);
-            if("open".equalsIgnoreCase(flights.get(i).status))
+            gridPane.add(button(flight.getFlightCode()), 0, row);
+            gridPane.add(button(flight.getSource().getAirportName()),1, row);
+            gridPane.add(button(flight.getSource().getDate().toString()
+                                      .concat(" ").concat(flight.getSource().getTime())), 2, row);
+            gridPane.add(button(flight.getDestination().getAirportName()), 3, row);
+            gridPane.add(button(flight.getDestination().getDate().toString()
+                                      .concat(" ").concat(flight.getDestination().getTime())), 4, row);
+            gridPane.add(button(flight.getAirLine().getAirlineName()), 5, row);
+            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 6, row);
+            gridPane.add(button(flight.getFare().toString()), 7, row);
+            gridPane.add(button(flight.getAvailableSeat().toString()), 8, row);
+            
+            Button status = button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN);
+            gridPane.add(status, 9, row);
+            status.setOnAction(e ->
             {
-                final Integer id = flights.get(i).flightId;
-                status.setOnAction(e ->
+                if(status.getText().equalsIgnoreCase(FieldValue.OPEN))
                 {
-                    controller.makeReservationFromSE(id);
-                });
-            }
-            j++;
+                    controller.makeReservationFromSE(flight.getFlightId());
+                }
+            });
+            
+            row++;
         }
         
-        gridPane.add(new Label(), 0, ++j);
+        gridPane.add(new Label(), 0, ++row);
         
         Button button = new Button("Back/Home");
         button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.SEARCH)));
         
-        gridPane.add(button, 3, ++j, 7, 1);
+        gridPane.add(button, 3, ++row, 7, 1);
         
         return gridPane;
     }
     
-    public GridPane ui_searchResultsByAirline(String airline, List<Flight> flights)
+    public GridPane ui_searchResultsByAirline(String airline, Set<Flight> flights)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
         
-        gridPane.add(new Label(), 0, 0);
-        gridPane.add(new Label(), 0, 1);
+        int row = 0;
+        
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(Utility.AIRLINE_HEADER(airline), 2, 2, 7, 1);
+        gridPane.add(Utility.AIRLINE_HEADER(airline), 2, row++, 7, 1);
         
-        gridPane.add(new Label(), 0, 3);
-        gridPane.add(new Label(), 0, 4);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
         
-        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
+        for(int i = 0; i < Utility.AIRLINE_SEARCH_FLIGHT_HEADERS().getChildren().size(); i++)
+            gridPane.add(Utility.AIRLINE_SEARCH_FLIGHT_HEADERS().getChildren().get(i), i, row);
+        row++;
+        
+        for(int i = 0; i < Utility.AIRLINE_SEARCH_FLIGHT_HEADERS().getChildren().size(); i++)
+            gridPane.add(new Label(), i, row);
+        row++;
+        
+        for(Flight flight : flights)
         {
-            gridPane.add(Utility.flightHeaders().getChildren().get(i), i, 4);
-        }
-        
-        for(int i = 0; i < Utility.flightHeaders().getChildren().size(); i++)
-        {
-            gridPane.add(new Label(), i, 5);
-        }
-        
-        int j = 6;
-        
-        for(int i = 0; i < flights.size(); i++)
-        {
-            gridPane.add(button(flights.get(i).flightName), 0, j);
-            gridPane.add(button(flights.get(i).source), 1, j);
-            gridPane.add(button(flights.get(i).destination), 2, j);
-            gridPane.add(button(flights.get(i).airline), 3, j);
-            gridPane.add(button(flights.get(i).date), 4, j);
-            gridPane.add(button(flights.get(i).fare), 5, j);
-            Button status = button(flights.get(i).status);
-            gridPane.add(status, 6, j);
-            
-            if("open".equalsIgnoreCase(flights.get(i).status))
+            gridPane.add(button(flight.getFlightCode()), 0, row);
+            gridPane.add(button(flight.getSource().getAirportName()),1, row);
+            gridPane.add(button(flight.getSource().getDate().toString()
+                                      .concat(" ").concat(flight.getSource().getTime())), 2, row);
+            gridPane.add(button(flight.getDestination().getAirportName()), 3, row);
+            gridPane.add(button(flight.getDestination().getDate().toString()
+                                      .concat(" ").concat(flight.getDestination().getTime())), 4, row);
+            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 5, row);
+            gridPane.add(button(flight.getFare().toString()), 6, row);
+            gridPane.add(button(flight.getAvailableSeat().toString()), 7, row);
+            Button status = button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN);
+            gridPane.add(status, 8, row);
+            status.setOnAction(e ->
             {
-                final Integer id = flights.get(i).flightId;
-                
-                status.setOnAction(e ->
+                if(status.getText().equalsIgnoreCase(FieldValue.OPEN))
                 {
-                    controller.makeReservationByAirline(id);
-                });
-            }
-            j++;
+                    controller.makeReservationByAirline(flight.getFlightId());
+                }
+            });
+            row++;
         }
     
-        gridPane.add(new Label(), 0, ++j);
+        gridPane.add(new Label(), 0, ++row);
     
         Button button = new Button("Back/Home");
         button.setOnAction(e -> controller.eventLaunchAirline(airline));
     
-        gridPane.add(button, 3, ++j, 7, 1);
+        gridPane.add(button, 3, ++row, 7, 1);
         
         return gridPane;
     }
     
-    public GridPane ui_flightsToBeCanceledByAirline(String airline, List<Flight> flights)
+    public GridPane ui_flightsToBeCanceledByAirline(String airline, Set<Flight> flights)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
         
-        gridPane.add(new Label(), 0, 0);
-        gridPane.add(new Label(), 0, 1);
+        int row = 0;
         
-        gridPane.add(new Label("Displaying all reservations made for all flights for "), 3, 2, 6, 1);
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
         
-        gridPane.add(new Label(), 0, 3);
-        gridPane.add(new Label(), 0, 4);
+        gridPane.add(new Label("Displaying all reservations made for all flights for "), 3, row++, 6, 1);
         
-        for(int i = 0; i < Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().size(); i++)
-        {
-            gridPane.add(Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().get(i), i, 4);
-        }
+        gridPane.add(new Label(), 0, row++);
+        gridPane.add(new Label(), 0, row++);
         
         for(int i = 0; i < Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().size(); i++)
-        {
-            gridPane.add(new Label(), i, 5);
-        }
+            gridPane.add(Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().get(i), i, row);
+        row++;
         
-        int j = 6;
+        for(int i = 0; i < Utility.ADMIN_CANCEL_FLIGHT_HEADERS().getChildren().size(); i++)
+            gridPane.add(new Label(), i, row);
+        row++;
         
-        for(int i = 0; i < flights.size(); i++)
+        for(Flight flight : flights)
         {
-            gridPane.add(button(flights.get(i).flightName), 0, j);
-            gridPane.add(button(flights.get(i).source), 1, j);
-            gridPane.add(button(flights.get(i).destination), 2, j);
-            gridPane.add(button(flights.get(i).airline), 3, j);
-            gridPane.add(button(flights.get(i).date), 4, j);
-            gridPane.add(button(flights.get(i).fare), 5, j);
-            gridPane.add(button(flights.get(i).fare), 6, j);
-            gridPane.add(button(flights.get(i).fare), 7, j);
-            Button status = button(flights.get(i).status);
-            gridPane.add(status, 8, j);
+            gridPane.add(button(flight.getFlightCode()), 0, row);
+            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 1, row);
+            gridPane.add(button(flight.getSource().getAirportName()), 2, row);
+            gridPane.add(button(flight.getSource().getDate().toString()
+                                      .concat(" ").concat(flight.getSource().getTime())), 3, row);
+            gridPane.add(button(flight.getDestination().getAirportName()), 4, row);
+            gridPane.add(button(flight.getDestination().getDate().toString()
+                                      .concat(" ").concat(flight.getDestination().getTime())), 5, row);
+            gridPane.add(button(flight.getCustomers().size()+""), 6, row);
+            gridPane.add(button(flight.getStatus()), 7, row);
+            Button toCancel = button(FieldValue.TO_CANCEL);
+            gridPane.add(toCancel, 8, row);
             
-            if("open".equalsIgnoreCase(flights.get(i).status))
+            toCancel.setOnAction(e ->
             {
-                final Integer id = flights.get(i).flightId;
-                
-                status.setOnAction(e -> controller.cancelFlight(id, airline));
-            }
-            j++;
+                if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
+                    controller.cancelFlight(flight.getFlightId(), airline);
+            });
+            
+            row++;
         }
         
         return gridPane;
     }
     
-    public HBox sortSection(List<Flight> flights)
+    public HBox sortSection(Set<Flight> flights)
     {
         HBox hBox = new HBox();
         
@@ -530,52 +706,48 @@ public class View extends Application
         
         fare.setOnAction(e ->
         {
-            flights.sort(Comparator.comparing(Flight::getFare));
             VBox vBox = new VBox();
-            vBox.getChildren().addAll(ui_globalSearchResults(flights));
+            vBox.getChildren().addAll(ui_globalSearchResults(Utility.SORT_BY_FARE(flights)));
             setSearchResultsInCenter(vBox);
         });
         
         airline.setOnAction(e ->
         {
-            flights.sort(Comparator.comparing(Flight::getAirline));
             VBox vBox = new VBox();
-            vBox.getChildren().addAll(ui_globalSearchResults(flights));
+            vBox.getChildren().addAll(ui_globalSearchResults(Utility.SORT_BY_AIRLINE(flights)));
             setSearchResultsInCenter(vBox);
         });
         
         return hBox;
     }
     
-    public GridPane ui_reservationResults(List<Reservation> reservations)
+    public GridPane ui_globalReservationResultsForAdmin(Set<Reservation> reservations)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(5);
         
+        int row = 0;
+        
         for(int i = 0; i < Utility.reservationHeaders().getChildren().size(); i++)
-        {
-            gridPane.add(Utility.reservationHeaders().getChildren().get(i), i, 0);
-        }
+            gridPane.add(Utility.reservationHeaders().getChildren().get(i), i, row);
+        row++;
     
         for(int i = 0; i < Utility.reservationHeaders().getChildren().size(); i++)
-        {
-            gridPane.add(new Label(), i, 1);
-        }
+            gridPane.add(new Label(), i, row);
+        row++;
         
-        int j = 2;
-        
-        for(int i = 0; i < reservations.size(); i++)
+        for(Reservation reservation : reservations)
         {
-            gridPane.add(button(reservations.get(i).getFlight().getFlightName()), 0, j);
-            gridPane.add(button(reservations.get(i).getFlight().getSource()), 1, j);
-            gridPane.add(button(reservations.get(i).getFlight().getDestination()), 2, j);
-            gridPane.add(button(reservations.get(i).getFlight().getAirline()), 3, j);
-            gridPane.add(button(reservations.get(i).getFlight().getDate()), 4, j);
-            gridPane.add(button(reservations.get(i).getFlight().getFare()), 5, j);
-            gridPane.add(button(reservations.get(i).getLocalDate()), 6, j);
-            j++;
+            gridPane.add(button(reservation.getFlight().getFlightCode()), 0, row);
+            gridPane.add(button(reservation.getFlight().getSource().getAirportName()), 1, row);
+            gridPane.add(button(reservation.getFlight().getDestination().getAirportName()), 2, row);
+            gridPane.add(button(reservation.getFlight().getAirLine().getAirlineName()), 3, row);
+            gridPane.add(button(reservation.getFlight().getAirplane().getAirPlaneName()), 4, row);
+            gridPane.add(button(FieldValue.$.concat(reservation.getFlight().getFare().toString())), 5, row);
+            gridPane.add(button(reservation.getRsvpDate().toString()), 6, row);
+            row++;
         }
         
         return gridPane;
@@ -639,8 +811,7 @@ public class View extends Application
     public MenuItem globalAdminLoginItem()
     {
         MenuItem global = new MenuItem(FieldValue.SE_ADMIN_LABEL);
-        global.setOnAction(e -> controller.launchLoginForGlobalAdmin
-                (ui_loginContainer(FieldValue.SE_ADMIN_LOGIN_LABEL)));
+        global.setOnAction(e -> controller.launchLoginForGlobalAdmin(ui_loginContainer(FieldValue.SE_ADMIN_LOGIN_LABEL)));
         return global;
     }
     
@@ -695,5 +866,74 @@ public class View extends Application
         Scene scene = new Scene(ui_gridPane);
         stage.setScene(scene);
         stage.showAndWait();
+    }
+    
+    public VBox ui_customerInfo(Customer customer)
+    {
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_CENTER);
+    
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(ui_nameHBox("Customer Name : "
+                .concat(customer.getFirstName().concat(" ").concat(customer.getLastName()))));
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(controller.populateRSVPsFlightsForCustomer(customer));
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label());
+    
+        HBox hBox = logoutHBox();
+        Button logout = (Button)hBox.getChildren().get(0);
+        logout.setOnAction(e -> controller.customerLogout());
+    
+        vBox.getChildren().add(hBox);
+        vBox.getChildren().add(new Label());
+        vBox.getChildren().add(new Label());
+    
+        return vBox;
+    }
+    
+    public HBox ui_nameHBox(String nameHeader)
+    {
+        HBox name = new HBox();
+        name.setAlignment(Pos.TOP_CENTER);
+        name.getChildren().add(new Label(nameHeader));
+        return name;
+    }
+    
+    public HBox logoutHBox()
+    {
+        HBox outContainer = new HBox();
+        outContainer.setAlignment(Pos.BOTTOM_CENTER);
+        Button logout = new Button("Logout");
+        outContainer.getChildren().add(logout);
+        return outContainer;
+    }
+    
+    public void ui_handleAfterGlobalAdminLogin(Admin admin, Set<Reservation> reservations)
+    {
+        VBox superV = new VBox();
+        superV.setAlignment(Pos.TOP_CENTER);
+    
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label(admin.getFirstName() + " " + admin.getLastName()));
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label("Displaying all reservations made using SE"));
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(ui_globalReservationResultsForAdmin(reservations));
+        superV.getChildren().add(new Label());
+        superV.getChildren().add(new Label());
+        HBox logout = logoutHBox();
+        logout.setAlignment(Pos.BASELINE_CENTER);
+        superV.getChildren().add(logout);
+        Button out = (Button) logout.getChildren().get(0);
+        out.setOnAction(e -> controller.adminLogout());
+        
+        setCenter(superV);
     }
 }

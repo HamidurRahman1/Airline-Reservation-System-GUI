@@ -24,4 +24,14 @@ public class Session
     public void addAdminToSession(Admin admin) {}
     
     public void deleteAdminFromSession() {}
+    
+    public Customer getCustomer()
+    {
+        return customer;
+    }
+    
+    public Admin getAdmin()
+    {
+        return admin;
+    }
 }

@@ -1,6 +1,8 @@
 package com.hrs.view.models;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  *  A major player in this project.
@@ -15,10 +17,13 @@ public class Flight
     private String status;
     private Airline airLine;
     private Airplane airplane;
+    private Float fare;
+    private Integer capacity;
+    private Set<Customer> customers = new LinkedHashSet <>();
     
     public Flight() {}
     
-    public Flight(String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane)
+    public Flight(String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane, Float fare)
     {
         this.flightCode = flightCode;
         this.source = source;
@@ -27,9 +32,10 @@ public class Flight
         this.status = status;
         this.airLine = airLine;
         this.airplane = airplane;
+        this.fare = fare;
     }
     
-    public Flight(Integer flightId, String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane)
+    public Flight(Integer flightId, String flightCode, Source source, Destination destination, Integer availableSeat, String status, Airline airLine, Airplane airplane, Float fare)
     {
         this.flightId = flightId;
         this.flightCode = flightCode;
@@ -39,6 +45,7 @@ public class Flight
         this.status = status;
         this.airLine = airLine;
         this.airplane = airplane;
+        this.fare = fare;
     }
     
     public Integer getFlightId()
@@ -121,6 +128,36 @@ public class Flight
         this.airplane = airplane;
     }
     
+    public Float getFare()
+    {
+        return fare;
+    }
+    
+    public void setFare(Float fare)
+    {
+        this.fare = fare;
+    }
+    
+    public Set<Customer> getCustomers()
+    {
+        return customers;
+    }
+    
+    public void setCustomers(Set<Customer> customers)
+    {
+        this.customers = customers;
+    }
+    
+    public Integer getCapacity()
+    {
+        return capacity;
+    }
+    
+    public void setCapacity(Integer capacity)
+    {
+        this.capacity = capacity;
+    }
+    
     @Override
     public boolean equals(Object o)
     {
@@ -134,14 +171,15 @@ public class Flight
                 && Objects.equals(getAvailableSeat(), flight.getAvailableSeat())
                 && Objects.equals(getStatus(), flight.getStatus())
                 && Objects.equals(getAirLine(), flight.getAirLine())
-                && Objects.equals(getAirplane(), flight.getAirplane());
+                && Objects.equals(getAirplane(), flight.getAirplane())
+                && Objects.equals(fare, flight.fare);
     }
     
     @Override
     public int hashCode()
     {
         return Objects.hash(getFlightId(), getFlightCode(), getSource(),
-                getDestination(), getAvailableSeat(), getStatus(), getAirLine(), getAirplane());
+                getDestination(), getAvailableSeat(), getStatus(), getAirLine(), getAirplane(), fare);
     }
     
     @Override
@@ -149,6 +187,6 @@ public class Flight
     {
         return "Flight{" + "flightId=" + flightId + ", flightCode='" + flightCode + '\'' + ", source=" + source
                 + ", destination=" + destination + ", availableSeat=" + availableSeat + ", status='" + status + '\''
-                + ", airLine=" + airLine + ", airplane=" + airplane + '}';
+                + ", airLine=" + airLine + ", airplane=" + airplane + ", fare=" + fare + '}';
     }
 }

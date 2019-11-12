@@ -1,6 +1,9 @@
 package com.hrs.util;
 
+import com.hrs.view.models.Airplane;
+import com.hrs.view.models.Airport;
 import com.hrs.view.models.Arrival;
+import com.hrs.view.models.Flight;
 import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 import javafx.collections.FXCollections;
@@ -10,12 +13,23 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A Utility/helper class for others usage. Provides support to other classes. Any method in here must be stand
@@ -23,6 +37,8 @@ import java.util.List;
  */
 public class Utility
 {
+    public static final String HOME_PIC_PATH = "home.jpg";
+    
     public static Node getNodeByRowColumnIndex (int row, int column, GridPane gridPane)
     {
         Node result = null;
@@ -79,20 +95,31 @@ public class Utility
         
         hBox.getChildren().addAll
                 (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                button(FieldValue.AIRLINE), button(FieldValue.DATE), button(FieldValue.FARE),
+                button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE), button(FieldValue.FARE),
                         button(FieldValue.RV_DATE));
         
         return hBox;
     }
     
-    public static HBox customerHistoryHeaders()
+    public static HBox customerReservationHeaders()
     {
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                        button(FieldValue.AIRLINE), button(FieldValue.DATE), button(FieldValue.FARE),
-                        button(FieldValue.RV_DATE));
+                (button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE), button(FieldValue.FLIGHT_CODE),
+                        button(FieldValue.SOURCE), button(FieldValue.DESTINATION), button(FieldValue.FARE),
+                        button(FieldValue.RV_DATE), button(FieldValue.STATUS));
+        
+        return hBox;
+    }
+    
+    public static HBox customerPastFlightHeaders()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE), button(FieldValue.FLIGHT_CODE),
+                        button(FieldValue.SOURCE), button(FieldValue.DESTINATION), button(FieldValue.FARE));
         
         return hBox;
     }
@@ -121,14 +148,26 @@ public class Utility
         return hBox;
     }
     
-    public static HBox flightHeaders()
+    public static HBox GLOBAL_SEARCH_FLIGHT_HEADERS()
     {
         HBox hBox = new HBox();
         
         hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
-                        button(FieldValue.AIRLINE), button(FieldValue.DATE), button(FieldValue.FARE),
-                        button(FieldValue.STATUS));
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DEP_DATE_TIME),
+                        button(FieldValue.DESTINATION), button(FieldValue.ARR_DATE_TIME), button(FieldValue.AIRLINE),
+                        button(FieldValue.AIRPLANE), button(FieldValue.FARE), button(FieldValue.AVAILABLE_SEAT), button(FieldValue.STATUS));
+        
+        return hBox;
+    }
+    
+    public static HBox AIRLINE_SEARCH_FLIGHT_HEADERS()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll
+                (button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DEP_DATE_TIME),
+                        button(FieldValue.DESTINATION), button(FieldValue.ARR_DATE_TIME), button(FieldValue.AIRLINE),
+                        button(FieldValue.AIRPLANE), button(FieldValue.FARE), button(FieldValue.AVAILABLE_SEAT), button(FieldValue.STATUS));
         
         return hBox;
     }
@@ -156,9 +195,9 @@ public class Utility
         return new Insets(8, 8, 8, 8);
     }
     
-    public static List<String> timeList()
+    public static Set<String> TIMES()
     {
-        List<String> times = new LinkedList <>();
+        Set<String> times = new LinkedHashSet <>();
         
         times.add("12:00 am");
         times.add("3:00 am");
@@ -191,8 +230,70 @@ public class Utility
         
         hBox.getChildren().addAll
                 (button(FieldValue.FLIGHT_CODE), button(FieldValue.AIRPLANE), button(FieldValue.SOURCE),
-                        button(FieldValue.DESTINATION), button(FieldValue.LAST_NAME), button(FieldValue.RSVP_BY));
+                        button(FieldValue.DESTINATION), button(FieldValue.LAST_NAME), button(FieldValue.STATUS),
+                        button(FieldValue.RSVP_BY), button(FieldValue.RSVP_DATE));
         
         return hBox;
     }
+    
+    public static Set<Flight> SORT_BY_AIRLINE(Set<Flight> flights)
+    {
+        List<Flight> list = new LinkedList <>(flights);
+    
+        Collections.sort(list, new Comparator <Flight>()
+        {
+            @Override
+            public int compare(Flight o1, Flight o2)
+            {
+                return o1.getAirLine().getAirlineName().compareTo(o2.getAirLine().getAirlineName());
+            }
+        });
+        
+        return new LinkedHashSet <>(list);
+    }
+    
+    public static Set<Flight> SORT_BY_FARE(Set<Flight> flights)
+    {
+        List<Flight> list = new LinkedList <>(flights);
+        
+        Collections.sort(list, new Comparator <Flight>()
+        {
+            @Override
+            public int compare(Flight o1, Flight o2)
+            {
+                return o1.getFare().compareTo(o2.getFare());
+            }
+        });
+        
+        return new LinkedHashSet <>(list);
+    }
+    
+    public static Background BACKGROUND_IMAGE_BY_AIRLINE(String path)
+    {
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(new File(new File("")
+                        .getAbsolutePath()+"/src/main/java/com/hrs/resources/"+path).toURI().toString(),true),
+                        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                        BackgroundSize.DEFAULT);
+        return new Background(backgroundImage);
+    }
+    
+    public static ObservableList<Airplane> AIRPLANES_LIST(Set<Airplane> airplanes)
+    {
+        List<Airplane> airplanes1 = new LinkedList <>(airplanes);
+        return FXCollections.observableArrayList(airplanes1);
+    }
+    
+    public static ObservableList<Airport> AIRPORTS_LIST(Set<Airport> airports)
+    {
+        List<Airport> airports1 = new LinkedList <>(airports);
+        return FXCollections.observableArrayList(airports1);
+    }
+    
+    public static ObservableList<String> TIMES_LIST()
+    {
+        List<String> airports1 = new LinkedList <>(Utility.TIMES());
+        return FXCollections.observableArrayList(airports1);
+    }
+    
+    
 }

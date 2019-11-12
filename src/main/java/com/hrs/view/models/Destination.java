@@ -22,6 +22,13 @@ public class Destination extends Airport
         this.time = time;
     }
     
+    public Destination(Airport airportName, LocalDate date, String time)
+    {
+        super(airportName.getAirportName());
+        this.date = date;
+        this.time = time;
+    }
+    
     public Destination(Integer airportId, String airportName, LocalDate date, String time)
     {
         super(airportId, airportName);

@@ -1,5 +1,7 @@
 package com.hrs.view.util;
 
+import javafx.scene.Scene;
+
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
@@ -100,8 +102,8 @@ public class FieldValue
     public static final String TOTAL_RSVP = "TOTAL RSVP";
     public static final String DATE = "DATE";
     public static final String FARE = "FARE";
-    public static final String SOURCE = "SOURCE";
-    public static final String DESTINATION = "DESTINATION";
+    public static final String SOURCE = "FROM";
+    public static final String DESTINATION = "TO";
     
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
@@ -138,4 +140,18 @@ public class FieldValue
     public static final String LAST_NAME = "LAST NAME";
     
     public static final String RSVP_BY = "RSVP BY";
+    public static final String RSVP_DATE = "RSVP DATE";
+    
+    public static final String SE = "SE";
+    public static final String WP = "WP";
+    public static final String AVAILABLE_SEAT = "AVL. SEAT";
+    
+    public static final String FULL = "FULL";
+    public static final String OPEN = "OPEN";
+    public static final String ON_TIME = "ON TIME";
+    
+    public static final String FLIGHT_ADDITION_SUCCESS_HEADER = "Flight has successfully been added";
+    
+    public static final String $ = "$ ";
+    
 }
