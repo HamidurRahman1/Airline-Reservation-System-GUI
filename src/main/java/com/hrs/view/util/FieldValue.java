@@ -1,7 +1,5 @@
 package com.hrs.view.util;
 
-import javafx.scene.Scene;
-
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
@@ -9,8 +7,24 @@ public class FieldValue
     
     public static final String CUSTOMER = "Customer";
     public static final String CUSTOMER_LOGIN_LABEL = "Customer Login";
+    
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
+    
+    public static final String AMERICAN = "American Airlines";
+    public static final String SPIRIT = "Spirit Airlines";
+    public static final String JET_BLUE = "JetBlue";
+    public static final String UNITED = "United Airlines";
+    
+    public static final String AP_LAX = "LAX";
+    public static final String AP_LAX_NAME = "Los Angeles I.A. - CA";
+    public static final String AP_JFK = "JFK";
+    public static final String AP_JFK_NAME = "John F. Kennedy I.A. - NY";
+    public static final String AP_MIA = "MIA";
+    public static final String AP_MIA_NAME = "Miami I.A. - FL";
+    public static final String AP_DTW = "DTW";
+    public static final String AP_DTW_NAME = "Detroit I.A. - MI";
+    
     
     public static final String AIRLINE1 = "Airline : SH";
     public static final String AIRLINE2 = "Airline : AR";
@@ -50,13 +64,13 @@ public class FieldValue
     
     public static final String ADMINS = "Admins";
     
-    public static final String SEARCH = "Search Engine for Flights Reservation (SEFR)";
+    public static final String GLOBAL_SEARCH_ENGINE_LABEL = "Search Engine for Flights Reservation (SEFR)";
     
     public static final Double SEARCH_BAR_HEIGHT = 40.0;
     public static final Double SEARCH_BAR_WIDTH = 600.0;
     
-    public static final Integer SEARCH_BAR_RAW = 1;
-    public static final Integer SEARCH_BAR_COL = 1;
+    public static final Integer SEARCH_BAR_RAW = 2;
+    public static final Integer SEARCH_BAR_COL = 0;
     
     public static final Integer LOGIN_SUBMIT_RAW = 4;
     public static final Integer LOGIN_SUBMIT_COL = 1;
@@ -80,10 +94,10 @@ public class FieldValue
     public static final Integer FONT_SIZE_17 = 17;
     public static final Integer FONT_PADDING_7 = 7;
     
-    public static final Double HOME_WINDOW_WIDTH = 1300.0;
+    public static final Double HOME_WINDOW_WIDTH = 1600.0;
     public static final Double HOME_WINDOW_HEIGHT = 1000.0;
     
-    public static final Double HOME_SCENE_WIDTH = 1300.0;
+    public static final Double HOME_SCENE_WIDTH = 1600.0;
     public static final Double HOME_SCENE_HEIGHT = 1000.0;
     
     public static final String ARRIVAL_LABEL = "arrival";
@@ -117,7 +131,7 @@ public class FieldValue
     public static final String RV_DATE = "RV. DATE";
     
     public static final String SEARCH_ENGINE_RESULTS = "Displaying all search results from SE";
-    public static final String RESULTS = "Displaying all search results for";
+    public static final String RESULTS_LABEL = "Displaying all search results for";
     
     public static final String RSVP_TITLE = "Displaying all RSVPs for";
     
@@ -195,4 +209,7 @@ public class FieldValue
     public static final String ENTER_CAP = "Enter max capacity: ";
     
     public static final String ALL_RSVP = "All RSVPs";
+    
+    public static final String EFFECT_LB = "lightblue";
+    public static final String SORT_BY = "Sort Results By: ";
 }

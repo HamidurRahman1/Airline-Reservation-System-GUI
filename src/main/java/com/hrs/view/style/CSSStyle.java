@@ -31,4 +31,24 @@ public class CSSStyle
     {
         return "-fx-padding: " + size + ";";
     }
+    
+    public static String backgroundColor(String color)
+    {
+        return "--fx-background-color: " + color + ";";
+    }
+    
+    public static String backgroundInsets(String inset)
+    {
+        return "--fx-background-insets: " + inset + ";";
+    }
+    
+    public static String backgroundRadius(Integer radius)
+    {
+        return "--fx-background-radius: " + radius + ";";
+    }
+    
+    public static String effect(String color)
+    {
+        return "-fx-effect: dropshadow(three-pass-box, " + color + ", 6, 0, 2, 0);";
+    }
 }

@@ -10,7 +10,6 @@ import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
-import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
@@ -32,14 +31,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -50,7 +43,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +58,8 @@ public class View extends Application
     private Stage primaryStage;
     private Stage arrivalStage;
     private Stage departureStage;
+    private Stage cancelFlightStage;
+    private Stage addFlightStage;
     
     private Scene homeScene;
     private BorderPane homeSceneContainer;
@@ -81,13 +75,13 @@ public class View extends Application
     {
         this.homeScene = new Scene(this.homeSceneContainer, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
         
-        BackgroundImage myBI= new BackgroundImage
-                (new Image(new File(new File("")
-                        .getAbsolutePath()+"/src/main/java/com/hrs/resources/home.jpg").toURI().toString(),true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        
-        this.homeSceneContainer.setBackground(new Background(myBI));
+//        BackgroundImage myBI= new BackgroundImage
+//                (new Image(new File(new File("")
+//                        .getAbsolutePath()+"/src/main/java/com/hrs/resources/home.jpg").toURI().toString(),true),
+//                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+//                BackgroundSize.DEFAULT);
+//
+//        this.homeSceneContainer.setBackground(new Background(myBI));
         
         primaryStage.setTitle(FieldValue.APP_TITLE);
         primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
@@ -102,7 +96,7 @@ public class View extends Application
         
         homeSceneContainer.setTop(ui_homeMenuBar());
         
-        homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
+        homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
         
         homeSceneContainer.setLeft(new VBox());
         homeSceneContainer.setRight(new VBox());
@@ -125,14 +119,11 @@ public class View extends Application
     public void setHome()
     {
         this.homeSceneContainer.setTop(ui_homeMenuBar());
-        this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
+        this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
     }
     
     public void ui_addFlightForAirline(Admin admin, String airline, Set<Airport> airports, Set<Airplane> airplanes)
     {
-        System.out.println(airports);
-        System.out.println(airplanes);
-        
         Stage stage = new Stage();
         stage.setWidth(900);
         stage.setHeight(700);
@@ -264,13 +255,9 @@ public class View extends Application
                 AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
                         Utility.FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
             }
-            else{
-            
-            }
         });
     
         gridPane.add(submit, 1, 13, 1, 1);
-        gridPane.setBackground(Utility.BACKGROUND_IMAGE_BY_AIRLINE(Utility.HOME_PIC_PATH));
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);
         stage.showAndWait();
@@ -278,12 +265,12 @@ public class View extends Application
     
     public void ui_cancelFlightsByAirlineAdmin(String airline, Set<Flight> flights)
     {
-        Stage stage = new Stage();
-        stage.setWidth(FieldValue.HOME_SCENE_WIDTH);
-        stage.setHeight(500);
+        if(cancelFlightStage == null) cancelFlightStage = new Stage();
+        cancelFlightStage.setWidth(FieldValue.HOME_SCENE_WIDTH);
+        cancelFlightStage.setHeight(FieldValue.HOME_SCENE_HEIGHT);
         Scene scene = new Scene(ui_flightsToBeCanceledByAirline(airline, flights));
-        stage.setScene(scene);
-        stage.show();
+        cancelFlightStage.setScene(scene);
+        cancelFlightStage.show();
     }
     
     public VBox ui_adminAccessByAirline(Admin admin, String airline)
@@ -329,7 +316,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(new Label("Displaying all reservations made for all flights for ".concat(airline)), 2, row++, 4, 1);
+        gridPane.add(new Label("Displaying all reservations made for all flights for ".concat(airline)), 3, row++, 4, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -437,15 +424,16 @@ public class View extends Application
         gridPane.setPadding(new Insets(40, 40, 40, 40));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-    
-        Label searchLabel = new Label(label);
-        searchLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, FieldValue.FONT_SIZE_17));
-        gridPane.add(searchLabel, 0,0,2,1);
-        GridPane.setHalignment(searchLabel, HPos.CENTER);
-        GridPane.setMargin(searchLabel, new Insets(20, 0,20,0));
+        
+        gridPane.add(new Label(), 2, 0, 1, 1);
+        
+        Label l = Utility.SEARCH_HEADER_LABEL(label);
+        gridPane.add(l, 1,0,2,1);
+        GridPane.setHalignment(l, HPos.CENTER);
+        GridPane.setMargin(l, new Insets(20, 0, 20, 0));
         
         TextField searchBar = new TextField();
-        gridPane.add(searchBar, 1,1);
+        gridPane.add(searchBar, 0,2, 3, 1);
         GridPane.setHalignment(searchBar, HPos.CENTER);
         searchBar.setMinHeight(FieldValue.SEARCH_BAR_HEIGHT);
         searchBar.setMinWidth(FieldValue.SEARCH_BAR_WIDTH);
@@ -553,7 +541,7 @@ public class View extends Application
                                       .concat(" ").concat(flight.getDestination().getTime())), 4, row);
             gridPane.add(button(flight.getAirLine().getAirlineName()), 5, row);
             gridPane.add(button(flight.getAirplane().getAirPlaneName()), 6, row);
-            gridPane.add(button(flight.getFare().toString()), 7, row);
+            gridPane.add(button(FieldValue.$.concat(flight.getFare().toString())), 7, row);
             gridPane.add(button(flight.getAvailableSeat().toString()), 8, row);
             gridPane.add(button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN), 9, row);
             
@@ -561,7 +549,7 @@ public class View extends Application
             {
                 Button rsvp = button(FieldValue.CLICK);
                 gridPane.add(rsvp, 10, row);
-                rsvp.setOnAction(e -> controller.makeReservationFromSE(flight.getFlightId()));
+                rsvp.setOnAction(e -> controller.makeReservationFromSE(flight));
             }
             
             row++;
@@ -569,8 +557,9 @@ public class View extends Application
         
         gridPane.add(new Label(), 0, ++row);
         
-        Button button = new Button("Back/Home");
-        button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.SEARCH)));
+        Button button = new Button(FieldValue.HOME);
+        button.setStyle(Utility.HOME_STYLE());
+        button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL)));
         
         gridPane.add(button, 4, ++row, 7, 1);
         
@@ -589,7 +578,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(Utility.AIRLINE_HEADER(airline), 2, row++, 7, 1);
+        gridPane.add(Utility.AIRLINE_RESULTS_HEADER_LABEL(airline), 4, row++, 7, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -611,27 +600,27 @@ public class View extends Application
             gridPane.add(button(flight.getDestination().getAirportName()), 3, row);
             gridPane.add(button(flight.getDestination().getDate().toString()
                                       .concat(" ").concat(flight.getDestination().getTime())), 4, row);
-            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 5, row);
-            gridPane.add(button(flight.getFare().toString()), 6, row);
+            gridPane.add(button(flight.getAirLine().getAirlineName()), 5, row);
+            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 6, row);
             gridPane.add(button(flight.getAvailableSeat().toString()), 7, row);
-            Button status = button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN);
-            gridPane.add(status, 8, row);
-            status.setOnAction(e ->
+            gridPane.add(button(FieldValue.$.concat(flight.getFare().toString())), 8, row);
+            gridPane.add(button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN), 9, row);
+            
+            if(flight.getAvailableSeat() != 0)
             {
-                if(status.getText().equalsIgnoreCase(FieldValue.OPEN))
-                {
-                    controller.makeReservationByAirline(flight.getFlightId());
-                }
-            });
+                Button rsvp = button(FieldValue.CLICK);
+                gridPane.add(rsvp, 10, row);
+                rsvp.setOnAction(e -> controller.makeReservationByAirline(flight));
+            }
             row++;
         }
     
         gridPane.add(new Label(), 0, ++row);
     
-        Button button = new Button("Back/Home");
+        Button button = new Button(FieldValue.HOME);
         button.setOnAction(e -> controller.eventLaunchAirline(airline));
     
-        gridPane.add(button, 3, ++row, 7, 1);
+        gridPane.add(button, 5, ++row, 7, 1);
         
         return gridPane;
     }
@@ -648,7 +637,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
         
-        gridPane.add(new Label("Displaying all reservations made for all flights for "), 3, row++, 6, 1);
+        gridPane.add(new Label("Displaying all reservations made for "), 3, row++, 6, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -697,13 +686,14 @@ public class View extends Application
         HBox hBox = new HBox();
         
         Button fare = button("Fare");
+        fare.setStyle(Utility.SORT_FARE());
         Button airline = button("Airline");
+        airline.setStyle(Utility.SORT_AIRLINE());
         
-        Label label = new Label("Sort results by: ");
+        Label label = Utility.SORT_LABEL();
         label.setPadding(new Insets(5, 5, 5, 5));
-        label.setStyle(CSSStyle.fontSize(20));
         
-        hBox.getChildren().addAll(label, fare, new Label(" "), airline);
+        hBox.getChildren().addAll(label, new Label(" "), fare, new Label(" "), airline);
         
         fare.setOnAction(e ->
         {
@@ -756,6 +746,10 @@ public class View extends Application
     
     public void setSearchResultsInCenter(Node node)
     {
+        this.primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
+        this.primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
+        this.homeSceneContainer.setPrefHeight(FieldValue.HOME_SCENE_HEIGHT);
+        this.homeSceneContainer.setPrefWidth(FieldValue.HOME_SCENE_WIDTH);
         this.homeSceneContainer.setCenter(node);
     }
     
@@ -772,7 +766,7 @@ public class View extends Application
         MenuItem airport3 = new MenuItem(FieldValue.AIRPORT3);
         airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
     
-        airportsMenu.getItems().addAll(airport1, airport2, airport3);
+        airportsMenu.getItems().addAll(airport1, Utility.SEPARATOR(), airport2, Utility.SEPARATOR(), airport3);
         
         return airportsMenu;
     }
@@ -790,7 +784,7 @@ public class View extends Application
         MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
         airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split(" ")[2]));
     
-        airlineMenu.getItems().addAll(airline1, airline2, airline3);
+        airlineMenu.getItems().addAll(airline1, Utility.SEPARATOR(), airline2, Utility.SEPARATOR(), airline3);
         
         return airlineMenu;
     }
@@ -798,14 +792,22 @@ public class View extends Application
     public Menu logins(MenuItem... menuItems)
     {
         Menu loginMenu = new Menu(FieldValue.CUSTOMER);
-        loginMenu.getItems().addAll(menuItems);
+        for(MenuItem menuItem : menuItems)
+        {
+            loginMenu.getItems().add(menuItem);
+            loginMenu.getItems().add(Utility.SEPARATOR());
+        }
         return loginMenu;
     }
     
     public Menu admins(MenuItem... menuItems)
     {
         Menu menu = new Menu(FieldValue.ADMINS);
-        menu.getItems().addAll(menuItems);
+        for(MenuItem menuItem : menuItems)
+        {
+            menu.getItems().add(menuItem);
+            menu.getItems().add(Utility.SEPARATOR());
+        }
         return menu;
     }
     
@@ -846,7 +848,7 @@ public class View extends Application
         return menuBar;
     }
     
-    public Menu loggedUser()
+    public Menu ui_loggedUser()
     {
         Menu menu = new Menu(FieldValue.LOGGED_USER);
         

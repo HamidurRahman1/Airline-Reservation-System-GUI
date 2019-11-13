@@ -11,6 +11,7 @@ import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 /**
@@ -24,6 +25,10 @@ public interface ApiService
     
     // Returns a set of flights for reservation by airline name, must include flights that are booked as well
     Set<Flight> getAllFlightsByAirlineForReservation(String airlineName);
+    
+    // Returns a set of flights from the current date to future dates, those flights will be visible to admin for
+    // flight cancellation
+    Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate);
     
     // Returns a set of reservations of a customer by id, must include reservation that are cancelled as well
     Set<Reservation> getAllReservationsByCustomerId(Integer customerId);

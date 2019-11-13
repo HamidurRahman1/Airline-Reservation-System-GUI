@@ -31,6 +31,12 @@ import static com.hrs.test.Tester.testFlight2;
 public class ApiApiServiceImpl implements ApiService
 {
     @Override
+    public Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate)
+    {
+        return Tester.testFlights();
+    }
+    
+    @Override
     public Set<Flight> getAllFlightsForReservation()
     {
         return Tester.testFlights();

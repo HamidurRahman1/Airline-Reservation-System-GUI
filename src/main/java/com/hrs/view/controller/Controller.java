@@ -9,7 +9,6 @@ import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
-import com.hrs.view.models.Arrival;
 import com.hrs.test.Tester;
 import com.hrs.util.Utility;
 import com.hrs.view.View;
@@ -42,7 +41,6 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
-import java.util.List;
 import java.util.Set;
 
 import static com.hrs.util.Utility.button;
@@ -70,39 +68,39 @@ public class Controller
         this.view = view;
     }
     
-    public void makeReservationFromSE(Integer flightId)
+    public void makeReservationFromSE(Flight flight)
     {
         if(Configuration.getSession().isCustomerInSession())
         {
-            apiServiceImpl.makeReservation(flightId, Configuration.getSession().getCustomer().getCustomerId());
-            apiServiceImpl.makeReservationBySE(flightId, Configuration.getSession().getCustomer().getCustomerId());
+            apiServiceImpl.makeReservationBySE(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
             AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                     (Configuration.getSession().getCustomer().getFirstName().concat(" ")
                                   .concat(Configuration.getSession().getCustomer().getLastName())));
-            eventGlobalSearchBar();
+            view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
         }
         else
         {
-            reservationWithUsernameAndPass(flightId, 0);
+            reservationWithUsernameAndPass(flight, 0);
         }
     }
     
-    public void makeReservationByAirline(Integer flightId)
+    public void makeReservationByAirline(Flight flight)
     {
         if(Configuration.getSession().isCustomerInSession())
         {
-            apiServiceImpl.makeReservation(flightId, Configuration.getSession().getCustomer().getCustomerId());
+            apiServiceImpl.makeReservation(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
             AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                     (Configuration.getSession().getCustomer().getFirstName().concat(" ")
                                   .concat(Configuration.getSession().getCustomer().getLastName())));
+            view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(), Tester.testFlights2()));
         }
         else
         {
-            reservationWithUsernameAndPass(flightId, 1);
+            reservationWithUsernameAndPass(flight, 1);
         }
     }
     
-    public void reservationWithUsernameAndPass(Integer flightIdPk, Integer key)
+    public void reservationWithUsernameAndPass(Flight flight, Integer key)
     {
         Stage stage = new Stage();
         stage.setTitle(FieldValue.EXP_RSVP);
@@ -125,17 +123,21 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    apiServiceImpl.makeReservation(flightIdPk, username.getText(), pass.getText());
-                    apiServiceImpl.makeReservationBySE(flightIdPk, "", "");
-                    AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
-                    eventGlobalSearchBar();
+                    if(apiServiceImpl.makeReservationBySE(flight.getFlightId(), "", ""))
+                    {
+                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
+                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+                    }
+                    view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
                 }
                 else
                 {
-                    if(apiServiceImpl.makeReservation(flightIdPk, username.getText(), pass.getText()))
+                    if(apiServiceImpl.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
                     {
-                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
+                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
                     }
+                    view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(), Tester.testFlights()));
                 }
             }
             catch(InvalidUserNameException ex)
@@ -155,9 +157,11 @@ public class Controller
     
     public void eventLaunchAirline(String airlineName)
     {
-        view.setTop(view.ui_homeMenuBar());
+        if(Configuration.getSession().isCustomerInSession())
+            view.setTop(view.menuBar(view.ui_loggedUser(), view.airlines(), view.airports()));
+        else view.setTop(view.ui_homeMenuBar());
         
-        GridPane gridPane = view.ui_searchBarContainer(Utility.FIND_BY(airlineName));
+        GridPane gridPane = view.ui_searchBarContainer(Utility.FIND_FLIGHTS_BY_LABEL(airlineName));
         
         TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
                 FieldValue.SEARCH_BAR_COL, gridPane);
@@ -179,7 +183,13 @@ public class Controller
         HBox hBox = new HBox();
         Button button = button(FieldValue.HOME);
         button.setAlignment(Pos.CENTER);
-        button.setOnAction(e -> view.setHome());
+        button.setOnAction(e ->
+        {
+            if(Configuration.getSession().isCustomerInSession())
+                view.setTop(view.menuBar(view.ui_loggedUser(), view.airlines(), view.airports()));
+            else view.setTop(view.ui_homeMenuBar());
+            view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
+        });
         
         hBox.getChildren().add(button);
         gridPane.add(hBox, 1, 8);
@@ -428,8 +438,8 @@ public class Controller
     
     public void takeLoggedUserToSearchEngine()
     {
-        view.setTop(view.menuBar(view.loggedUser(), view.airlines(), view.airports()));
-        view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+        view.setTop(view.menuBar(view.ui_loggedUser(), view.airlines(), view.airports()));
+        view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
     }
     
     private void launchLoginForAllByKey(GridPane gridPane, String loginViewKey)
@@ -492,8 +502,11 @@ public class Controller
                     add.setOnAction(event -> view.ui_addFlightForAirline(admin, loginViewKey, apiServiceImpl.getAllAirports(),
                                         apiServiceImpl.getAllAirPlaneByAirLine(loginViewKey)));
                     
-                    cancel.setOnAction(event -> view.ui_cancelFlightsByAirlineAdmin(loginViewKey,
-                            apiServiceImpl.getAllFlightsByAirlineForReservation(loginViewKey)));
+                    cancel.setOnAction(event ->
+                    {
+                        view.ui_cancelFlightsByAirlineAdmin
+                                (loginViewKey, apiServiceImpl.getAllFlightsByAirline(loginViewKey, Configuration.getCurrentDate()));
+                    });
                     
                     rsvp.setOnAction(event -> view.RSVPsByAirline(loginViewKey,
                             view.ui_displayAllRSVPsByAirline(loginViewKey, Tester.testReservation())));
@@ -518,24 +531,12 @@ public class Controller
         stage.showAndWait();
     }
     
-    private void cancelFlightsByAirline(String loginViewKey, Set<Flight> flights)
-    {
-        Stage stage = new Stage();
-        stage.setTitle(Utility.ALL_ACTIVE_FLIGHT(loginViewKey));
-        stage.setWidth(FieldValue.HOME_SCENE_WIDTH);
-        stage.setHeight(500);
-        Scene scene = new Scene(view.ui_flightsToBeCanceledByAirline(loginViewKey, flights));
-        stage.setScene(scene);
-        stage.show();
-    }
-    
     public void cancelFlight(Integer flight, String airlineName)
     {
         if(AlertBox.DisplayConfirmation("?", "?"))
         {
             apiServiceImpl.cancelFlight(flight);
-            cancelFlightsByAirline(airlineName, apiServiceImpl.getAllFlightsByAirlineForReservation(airlineName));
-//            cancelFlightsByAirline(airlineName, Tester.testFlights2());
+            view.ui_cancelFlightsByAirlineAdmin(airlineName, Tester.testFlights2());
         }
     }
     
@@ -565,7 +566,7 @@ public class Controller
         {
             Configuration.getSession().deleteAdminFromSession();
             view.setTop(view.ui_homeMenuBar());
-            view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+            view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
         });
         return superV;
     }
@@ -591,7 +592,7 @@ public class Controller
         {
             Configuration.getSession().deleteCustomerFromSession();
             view.setTop(view.ui_homeMenuBar());
-            view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+            view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
         });
         
         vBox.getChildren().add(hBox);
@@ -725,14 +726,14 @@ public class Controller
     {
         Configuration.getSession().deleteCustomerFromSession();
         view.setTop(view.ui_homeMenuBar());
-        view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+        view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
     }
     
     public void adminLogout()
     {
         Configuration.getSession().deleteAdminFromSession();
         view.setTop(view.ui_homeMenuBar());
-        view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+        view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
     }
     
     public void handleLoggedUser()
@@ -748,7 +749,7 @@ public class Controller
         {
             AlertBox.DisplayInformation(FieldValue.NO_USER, FieldValue.NO_VALID_USER);
             view.setTop(view.ui_homeMenuBar());
-            view.setCenter(view.ui_searchBarContainer(FieldValue.SEARCH));
+            view.setCenter(view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
         }
     }
     

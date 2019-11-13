@@ -105,9 +105,9 @@ public class Tester
     {
         Set<Flight> flights = new LinkedHashSet <>();
         
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 150f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 0, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 100f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 200f));
+        flights.add(new Flight("code1", testSource1(), testDestination3(), 5, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 150f));
+        flights.add(new Flight("code2", testSource2(), testDestination2(), 6, STATUS_ON_TIME(), testAirline1(), testAirplane2(), 100f));
+        flights.add(new Flight("code3", testSource3(), testDestination1(), 1, STATUS_CANCELED(), testAirline2(), testAirplane1(), 200f));
         
         return flights;
     }
@@ -116,9 +116,9 @@ public class Tester
     {
         Set<Flight> flights = new LinkedHashSet <>();
         
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 150f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 0, STATUS_CANCELED(), testAirline1(), testAirplane1(), 100f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 200f));
+        flights.add(new Flight("code1", testSource1(), testDestination3(), 5, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 150f));
+        flights.add(new Flight("code2", testSource2(), testDestination2(), 6, STATUS_CANCELED(), testAirline1(), testAirplane2(), 100f));
+        flights.add(new Flight("code3", testSource3(), testDestination1(), 0, STATUS_CANCELED(), testAirline2(), testAirplane1(), 200f));
         
         return flights;
     }
