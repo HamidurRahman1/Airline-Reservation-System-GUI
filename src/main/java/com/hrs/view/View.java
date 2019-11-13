@@ -136,7 +136,7 @@ public class View extends Application
         Stage stage = new Stage();
         stage.setWidth(900);
         stage.setHeight(700);
-        stage.setTitle("Adding a flight for ".concat(airline));
+        stage.setTitle(Utility.ADD_FLIGHT_FOR(airline));
     
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -146,31 +146,31 @@ public class View extends Application
         gridPane.add(new Label(), 0, 0);
         gridPane.add(new Label(), 0, 1);
     
-        Label codeLabel = label("Enter a flight code/name: ");
+        Label codeLabel = label(FieldValue.ENTER_CODE);
         codeLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label airplaneLabel = label("Select an airplane: ");
+        Label airplaneLabel = label(FieldValue.SELECT_AP);
         airplaneLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label sourceLabel = label("Select departure airport: ");
+        Label sourceLabel = label(FieldValue.SELECT_SRC);
         sourceLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label sourceDateLabel = label("Select departure date: ");
+        Label sourceDateLabel = label(FieldValue.SELECT_DPT_DATE);
         sourceDateLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label sourceTimeLabel = label("Select departure time: ");
+        Label sourceTimeLabel = label(FieldValue.SELECT_DPT_TIME);
         sourceTimeLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label destinationLabel = label("Select arrival airport: ");
+        Label destinationLabel = label(FieldValue.SELECT_ARR);
         destinationLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label destinationDateLabel = label("Select arrival date: ");
+        Label destinationDateLabel = label(FieldValue.SELECT_ARR_DATE);
         destinationDateLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label destinationTimeLabel = label("Select arrival time: ");
+        Label destinationTimeLabel = label(FieldValue.SELECT_ARR_TIME);
         destinationTimeLabel.setPadding(Utility.FLIGHT_LABEL());
     
-        Label capacityLabel = label("Enter max capacity: ");
+        Label capacityLabel = label(FieldValue.ENTER_CAP);
         capacityLabel.setPadding(Utility.FLIGHT_LABEL());
     
         TextField codeField = new TextField();
@@ -254,7 +254,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, 11);
         gridPane.add(new Label(), 0, 12);
     
-        Button submit = new Button("Submit");
+        Button submit = new Button(FieldValue.SUBMIT);
         submit.setOnAction(e ->
         {
             if(controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
@@ -262,8 +262,7 @@ public class View extends Application
             {
                 stage.close();
                 AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
-                        "A flight has successfully been added by "
-                                + admin.getFirstName() + " for Airline ".concat(airline.toUpperCase()));
+                        Utility.FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
             }
             else{
             
@@ -292,9 +291,9 @@ public class View extends Application
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.BASELINE_CENTER);
         
-        Label header = label("Admin Access Enabled for ".concat(airline.toUpperCase()));
+        Label header = label(Utility.ACCESS(airline));
         
-        Label name = label("Admin Name: ".concat(admin.getFirstName()).concat(" ").concat(admin.getLastName()));
+        Label name = label(FieldValue.ADMIN_NAME.concat(admin.getFirstName()).concat(" ").concat(admin.getLastName()));
     
         Button addFlight = new Button(FieldValue.ADD_FLIGHT);
         addFlight.setPrefWidth(130);
@@ -302,7 +301,7 @@ public class View extends Application
         Button cancelFlight = new Button(FieldValue.CANCEL_FLIGHT);
         cancelFlight.setPrefWidth(130);
         
-        Button allRSVP = new Button("All RSVPs");
+        Button allRSVP = new Button(FieldValue.ALL_RSVP);
         allRSVP.setPrefWidth(130);
         
         Button logout = new Button(FieldValue.LOGOUT_LABEL);
@@ -674,15 +673,19 @@ public class View extends Application
                                       .concat(" ").concat(flight.getDestination().getTime())), 5, row);
             gridPane.add(button(flight.getCustomers().size()+""), 6, row);
             gridPane.add(button(flight.getStatus()), 7, row);
-            Button toCancel = button(FieldValue.TO_CANCEL);
-            gridPane.add(toCancel, 8, row);
             
-            toCancel.setOnAction(e ->
+            if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
             {
-                if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
-                    controller.cancelFlight(flight.getFlightId(), airline);
-            });
-            
+                Button toCancel = button(FieldValue.TO_CANCEL);
+                gridPane.add(toCancel, 8, row);
+                toCancel.setOnAction(e ->
+                {
+                    if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
+                    {
+                        controller.cancelFlight(flight.getFlightId(), airline);
+                    }
+                });
+            }
             row++;
         }
         
@@ -857,7 +860,7 @@ public class View extends Application
     {
         Menu menu = new Menu(FieldValue.SEARCH_FLIGHTS);
         MenuItem menuItem = new MenuItem("Search Engine");
-        menu.setOnAction(e -> controller.takeLoggedUserToSE());
+        menu.setOnAction(e -> controller.takeLoggedUserToSearchEngine());
         menu.getItems().addAll(menuItem);
         return menu;
     }
@@ -951,6 +954,7 @@ public class View extends Application
         Button out = (Button) logout.getChildren().get(0);
         out.setOnAction(e -> controller.adminLogout());
         
+        setTop(menuBar(airports()));
         setCenter(superV);
     }
 }

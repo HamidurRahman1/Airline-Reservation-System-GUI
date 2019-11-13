@@ -46,6 +46,7 @@ public class FieldValue
     public static final String LASTNAME = "Last Name : ";
     
     public static final String USERNAME = "User Name : ";
+    public static final String ADMIN_NAME = "Admin Name : ";
     
     public static final String ADMINS = "Admins";
     
@@ -85,11 +86,9 @@ public class FieldValue
     public static final Double HOME_SCENE_WIDTH = 1300.0;
     public static final Double HOME_SCENE_HEIGHT = 1000.0;
     
-    public static final String ARRIVAL_CONTAINER_ID = "arrivalContainer";
     public static final String ARRIVAL_LABEL = "arrival";
     
     public static final String DEPARTURE_LABEL = "departure";
-    public static final String DEPARTURE_CONTAINER_ID = "departureContainer";
     
     public static final String FLIGHT_CODE = "FLIGHT CODE";
     public static final String AIRLINE = "AIRLINE";
@@ -135,7 +134,6 @@ public class FieldValue
     public static final String A2 = "AR";
     public static final String A3 = "HR";
     
-    public static final String SELECT = "Select One";
     public static final String TO_CANCEL = "TO CANCEL";
     public static final String LAST_NAME = "LAST NAME";
     
@@ -163,4 +161,38 @@ public class FieldValue
     public static final String ACCOUNT = "Account Info";
     
     public static final String TO_RSVP = "TO RSVP";
+    
+    public static final String REFRESH = "REFRESH";
+    public static final String ARRIVAL_HEADER = "Arrival Flights for ";
+    public static final String DEPARTURE_HEADER = "Departure Flights for ";
+    
+    public static final String RSVP_SUCCESS = "Reservation Has Been Successful";
+    public static final String EXP_RSVP = "Express Reservation";
+    public static final String HOME = "Home";
+    
+    public static final String NEW_CUSTOMER_ADDED = "A New Customer Has Successfully Been Added";
+    
+    public static final String RSVP_FLIGHT = "Reservation and Flight Histories";
+    
+    public static final String ALL_UPCOMING_RSVP = "All Future Reservations";
+    
+    public static final String CANCEL_HEADER = "Canceling this flight?";
+    public static final String CANCEL_MSG = "Do you really want to cancel this flight?";
+    
+    public static final String PAST_FLIGHTS = "All Past Flights";
+    
+    public static final String NO_USER = "User Not In Session";
+    
+    public static final String NO_VALID_USER = "No valid user found in session to continue.\n\n";
+    public static final String ENTER_CODE = "Enter a flight code/name: ";
+    public static final String SELECT_AP = "Select an airplane: ";
+    public static final String SELECT_SRC = "Select departure airport: ";
+    public static final String SELECT_DPT_DATE = "Select departure date: ";
+    public static final String SELECT_DPT_TIME = "Select departure time: ";
+    public static final String SELECT_ARR = "Select arrival airport: ";
+    public static final String SELECT_ARR_DATE = "Select arrival date: ";
+    public static final String SELECT_ARR_TIME = "Select arrival time: ";
+    public static final String ENTER_CAP = "Enter max capacity: ";
+    
+    public static final String ALL_RSVP = "All RSVPs";
 }

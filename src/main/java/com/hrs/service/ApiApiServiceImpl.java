@@ -1,7 +1,5 @@
 package com.hrs.service;
 
-import com.hrs.exceptions.IllegalArgumentException;
-import com.hrs.exceptions.InvalidEmailException;
 import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
 import com.hrs.test.Tester;
@@ -14,10 +12,10 @@ import com.hrs.view.models.Destination;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
+import com.hrs.view.util.FieldValue;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.hrs.test.Tester.STATUS_ACTIVE;
@@ -36,24 +34,6 @@ public class ApiApiServiceImpl implements ApiService
     public Set<Flight> getAllFlightsForReservation()
     {
         return Tester.testFlights();
-    }
-    
-    @Override
-    public void getAllFlightsByCustomerId(Integer customerId)
-    {
-    
-    }
-    
-    @Override
-    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName)
-    {
-        return Tester.testFlights();
-    }
-    
-    @Override
-    public Set<Flight> getAllFlightsByAirline(String airlineName)
-    {
-        return new LinkedHashSet <>();
     }
     
     @Override
@@ -96,18 +76,12 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public Set<Reservation> getGlobalReservations()
+    public Set<Reservation> getGlobalReservationsMadeUsingSearchEngine()
     {
         Set<Reservation> reservations = new LinkedHashSet <>();
         reservations.add(new Reservation(testCustomer(), testFlight1(), LocalDate.now(), STATUS_ACTIVE(), 0));
         reservations.add(new Reservation(testCustomer(), testFlight2(), LocalDate.now(), STATUS_CANCELED(), 0));
         return reservations;
-    }
-    
-    @Override
-    public Set<Reservation> getCustomerReservations(Integer customerId)
-    {
-        return null;
     }
     
     @Override
@@ -133,9 +107,9 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public Set<Reservation> getAllReservationsByAirline(String airlineName)
+    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName)
     {
-        return null;
+        return Tester.testFlights();
     }
     
     @Override
@@ -160,19 +134,14 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public void cancelReservation2testFunc(Integer customerId)
-    {
-    
-    }
-    
-    @Override
     public boolean cancelFlight(Integer flightId)
     {
         return true;
     }
     
     @Override
-    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidUserNameException, InvalidPasswordException
+    public boolean makeReservation(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException
     {
         return true;
     }
@@ -184,7 +153,8 @@ public class ApiApiServiceImpl implements ApiService
     }
     
     @Override
-    public boolean makeReservationBySE(Integer flightIdPk, String username, String password) throws InvalidUserNameException, InvalidPasswordException
+    public boolean makeReservationBySE(Integer flightIdPk, String username, String password)
+            throws InvalidUserNameException, InvalidPasswordException
     {
         return true;
     }
@@ -199,5 +169,19 @@ public class ApiApiServiceImpl implements ApiService
     public boolean insertFlightByAirline(Flight flight)
     {
         return true;
+    }
+    
+    @Override
+    public Set<Flight> getAllFlightsByAirport(String airportName)
+    {
+        Set<Flight> flights = new LinkedHashSet <>();
+        
+        flights.add(new Flight("C1D8", new Source("NY"), new Destination("TXD"), FieldValue.ON_TIME, new Airline("AME. Airline"), new Airplane("AA109K")));
+        flights.add(new Flight("HS78", new Source("NY"), new Destination("LA"), FieldValue.CANCELED, new Airline("JB"), new Airplane("JB90P")));
+    
+        flights.add(new Flight("AY90", new Source("NC"), new Destination("NY"), FieldValue.ON_TIME, new Airline("Delta"), new Airplane("D01L")));
+        flights.add(new Flight("78T6", new Source("MI"), new Destination("NY"), FieldValue.CANCELED, new Airline("JB"), new Airplane("JB9Y")));
+        
+        return flights;
     }
 }

@@ -1,5 +1,6 @@
 package com.hrs.util;
 
+import com.hrs.configs.Configuration;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Arrival;
@@ -55,25 +56,6 @@ public class Utility
         return result;
     }
     
-//    public static void setOnCenter(Stage stage)
-//    {
-//        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-//        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-//        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-//    }
-    
-    public static ObservableList<Arrival> toObservableList(List<Arrival> arrivals)
-    {
-        return FXCollections.observableArrayList(arrivals);
-    }
-    
-    public static List<Label> arrivalHeaders()
-    {
-        return Arrays.asList(new Label(FieldValue.FLIGHT_CODE), new Label(FieldValue.AIRLINE),
-                new Label(FieldValue.SOURCE),
-                new Label(FieldValue.DATE), new Label(FieldValue.STATUS));
-    }
-    
     public static Button button(String label)
     {
         Button button = new Button(label);
@@ -101,6 +83,26 @@ public class Utility
         return hBox;
     }
     
+    public static HBox ARRIVAL_HEADERS()
+    {
+        HBox hBox = new HBox();
+    
+        hBox.getChildren().addAll(button(FieldValue.FLIGHT_CODE), button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE),
+                        button(FieldValue.SOURCE), button(FieldValue.STATUS), button(Configuration.getCurrentDate().toString()));
+    
+        return hBox;
+    }
+    
+    public static HBox DEPARTURE_HEADERS()
+    {
+        HBox hBox = new HBox();
+        
+        hBox.getChildren().addAll(button(FieldValue.FLIGHT_CODE), button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE),
+                button(FieldValue.DESTINATION), button(FieldValue.STATUS), button(FieldValue.DATE));
+        
+        return hBox;
+    }
+    
     public static HBox CUSTOMER_RSVP_HEADERS()
     {
         HBox hBox = new HBox();
@@ -120,30 +122,6 @@ public class Utility
         hBox.getChildren().addAll(button(FieldValue.AIRLINE), button(FieldValue.AIRPLANE),
                 button(FieldValue.FLIGHT_CODE), button(FieldValue.SOURCE), button(FieldValue.DESTINATION),
                 button(FieldValue.FARE));
-        
-        return hBox;
-    }
-    
-    public static HBox airlineSpecificHeaders()
-    {
-        HBox hBox = new HBox();
-    
-        hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT_CODE), button(FieldValue.DESTINATION), button(FieldValue.AIRLINE),
-                        button(FieldValue.DATE), button(FieldValue.FARE), button(FieldValue.RV_DATE));
-    
-        return hBox;
-    }
-    
-    public static HBox addFlightHeaders()
-    {
-        HBox hBox = new HBox();
-        
-        hBox.getChildren().addAll
-                (button(FieldValue.FLIGHT_CODE), label(" "), button(FieldValue.DESTINATION), label(" "),
-                        button(FieldValue.AIRLINE), label(" "),
-                        button(FieldValue.DATE), label(" "),
-                        button(FieldValue.FARE), label(" "), button(FieldValue.RV_DATE));
         
         return hBox;
     }
@@ -296,5 +274,47 @@ public class Utility
         return FXCollections.observableArrayList(airports1);
     }
     
+    public static String RSVP_CUSTOMER_MESSAGE(String name)
+    {
+        return "Successfully reserved a seat for user="+name+".\n"
+                + "Please check your account to verify.\n\n";
+    }
     
+    public static String FIND_BY(String airlineName)
+    {
+        return "Find Flights for ".concat(airlineName);
+    }
+    
+    public static String TITTLE_BY(String label, String airportName)
+    {
+        return "Displaying all " + label + " flights for " + airportName;
+    }
+    
+    public static String NEW_CUSTOMER_ADDED_MSG(String first, String last, String email)
+    {
+        return "A customer has successfully been added.\n"
+                .concat("Name: ").concat(first).concat(" ").concat(last).concat(".\n")
+                .concat("Email: ").concat(email).concat("\n\n");
+    }
+    
+    public static String ALL_ACTIVE_FLIGHT(String loginViewKey)
+    {
+        return "All active flights for ".concat(loginViewKey.toUpperCase());
+    }
+    
+    public static String ADD_FLIGHT_FOR(String airline)
+    {
+        return "Adding a flight for ".concat(airline.toUpperCase());
+    }
+    
+    public static String FLIGHT_BY_ADMIN(String firstName, String airline)
+    {
+        return "A flight has successfully been added by "
+                .concat(firstName).concat(" ").concat( "for Airline ".concat(airline.toUpperCase()).concat("\n\n"));
+    }
+    
+    public static String ACCESS(String airline)
+    {
+        return "Admin Access Enabled for ".concat(airline.toUpperCase());
+    }
 }

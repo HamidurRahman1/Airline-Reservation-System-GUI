@@ -112,6 +112,17 @@ public class Tester
         return flights;
     }
     
+    public static Set<Flight> testFlights2()
+    {
+        Set<Flight> flights = new LinkedHashSet <>();
+        
+        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 150f));
+        flights.add(new Flight("code1", testSource1(), testDestination1(), 0, STATUS_CANCELED(), testAirline1(), testAirplane1(), 100f));
+        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 200f));
+        
+        return flights;
+    }
+    
     public static String STATUS_ON_TIME()
     {
         return FieldValue.ON_TIME;
