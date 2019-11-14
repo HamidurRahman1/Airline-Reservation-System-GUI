@@ -12,6 +12,7 @@ import com.hrs.view.models.Login;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
 
+import com.hrs.view.util.FieldValue;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -85,8 +86,8 @@ public class Tester
     {
         Customer customer = new Customer("Hamidur", "Rahman");
         customer.setLogin(testLogin());
-        customer.setFlights(testFlights());
-//        customer.setReservations(testReservation());
+        customer.setFlights(customerFlights());
+        customer.setReservations(customerReservation());
         return customer;
     }
     
@@ -104,37 +105,37 @@ public class Tester
     {
         Set<Flight> flights = new LinkedHashSet <>();
         
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 150f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 0, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 100f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 200f));
+        flights.add(new Flight("code1", testSource1(), testDestination3(), 5, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 150f));
+        flights.add(new Flight("code2", testSource2(), testDestination2(), 6, STATUS_ON_TIME(), testAirline1(), testAirplane2(), 100f));
+        flights.add(new Flight("code3", testSource3(), testDestination1(), 1, STATUS_CANCELED(), testAirline2(), testAirplane1(), 200f));
         
         return flights;
     }
     
-    public static Set<Flight> customerFlights()
+    public static Set<Flight> testFlights2()
     {
         Set<Flight> flights = new LinkedHashSet <>();
         
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 5, STATUS_CANCELED(), testAirline1(), testAirplane1(), 150f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 9, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 100f));
-        flights.add(new Flight("code1", testSource1(), testDestination1(), 0, STATUS_CANCELED(), testAirline1(), testAirplane1(), 200f));
+        flights.add(new Flight("code1", testSource1(), testDestination3(), 5, STATUS_ON_TIME(), testAirline1(), testAirplane1(), 150f));
+        flights.add(new Flight("code2", testSource2(), testDestination2(), 6, STATUS_CANCELED(), testAirline1(), testAirplane2(), 100f));
+        flights.add(new Flight("code3", testSource3(), testDestination1(), 0, STATUS_CANCELED(), testAirline2(), testAirplane1(), 200f));
         
         return flights;
     }
     
     public static String STATUS_ON_TIME()
     {
-        return new String("ON TIME");
+        return FieldValue.ON_TIME;
     }
     
     public static String STATUS_CANCELED()
     {
-        return new String("CANCELED");
+        return FieldValue.CANCELED;
     }
     
     public static String STATUS_ACTIVE()
     {
-        return new String("CANCELED");
+        return FieldValue.ACTIVE;
     }
     
     public static Airline testAirline1()
@@ -272,5 +273,45 @@ public class Tester
         airports.add(new Airplane(14, "AP4"));
         
         return airports;
+    }
+    
+    public static Set<Flight> customerFlights()
+    {
+        Set<Flight> flights = new LinkedHashSet <>();
+        
+        Flight f1 = new Flight("D10X", new Source("JFK"),
+                new Destination("MID"), STATUS_ON_TIME(), new Airline("AME. Ar."), new Airplane("AA 017B"), 150f);
+    
+        Flight f2 = new Flight("8PK9", new Source("LGA"),
+                new Destination("TXD"), STATUS_CANCELED(), new Airline("Delta Ar."), new Airplane("D 909P"), 110f);
+    
+        Flight f3 = new Flight("9PU7", new Source("LAC"),
+                new Destination("JFK"), STATUS_ON_TIME(), new Airline("Jet Blue"), new Airplane("JB P17B"), 120f);
+        
+        flights.add(f1);
+        flights.add(f2);
+        flights.add(f3);
+        
+        return flights;
+    }
+    
+    public static Set<Reservation> customerReservation()
+    {
+        Set<Reservation> reservations = new LinkedHashSet <>();
+    
+        Flight f2 = new Flight("8PK9",
+                new Source("LGA", LocalDate.of(2019, 11, 12), "3:00 pm"),
+                new Destination("TXD", LocalDate.of(2019, 11, 12), "9:00 pm"),
+                STATUS_ON_TIME(), new Airline("Delta Ar."), new Airplane("D 909P"), 110f);
+    
+        Flight f3 = new Flight("9PU7",
+                new Source("LAC", LocalDate.of(2019, 11, 20), "12:00 pm"),
+                new Destination("JFK", LocalDate.of(2019, 11, 20), "6:00 pm"),
+                STATUS_ON_TIME(), new Airline("Jet Blue"), new Airplane("JB P17B"), 120f);
+    
+        reservations.add(new Reservation(f2, LocalDate.of(2019, 11, 7), STATUS_ACTIVE(), 0));
+        reservations.add(new Reservation(f3, LocalDate.now(), STATUS_ACTIVE(), 1));
+        
+        return reservations;
     }
 }

@@ -7,10 +7,8 @@ import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
-import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
-import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
 
 import javafx.application.Application;
@@ -32,14 +30,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -50,13 +42,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static com.hrs.util.Utility.LOGOUT_STYLE;
+import static com.hrs.util.Utility.NAME_HEADER_STYLE;
+import static com.hrs.util.Utility.STYLE;
 import static com.hrs.util.Utility.button;
+import static com.hrs.util.Utility.FONT_SIZE;
 import static com.hrs.util.Utility.label;
 
 public class View extends Application
@@ -66,6 +61,7 @@ public class View extends Application
     private Stage primaryStage;
     private Stage arrivalStage;
     private Stage departureStage;
+    private Stage cancelFlightStage;
     
     private Scene homeScene;
     private BorderPane homeSceneContainer;
@@ -81,14 +77,6 @@ public class View extends Application
     {
         this.homeScene = new Scene(this.homeSceneContainer, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
         
-        BackgroundImage myBI= new BackgroundImage
-                (new Image(new File(new File("")
-                        .getAbsolutePath()+"/src/main/java/com/hrs/resources/home.jpg").toURI().toString(),true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        
-        this.homeSceneContainer.setBackground(new Background(myBI));
-        
         primaryStage.setTitle(FieldValue.APP_TITLE);
         primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
         primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
@@ -102,7 +90,7 @@ public class View extends Application
         
         homeSceneContainer.setTop(ui_homeMenuBar());
         
-        homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
+        homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
         
         homeSceneContainer.setLeft(new VBox());
         homeSceneContainer.setRight(new VBox());
@@ -125,18 +113,15 @@ public class View extends Application
     public void setHome()
     {
         this.homeSceneContainer.setTop(ui_homeMenuBar());
-        this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.SEARCH));
+        this.homeSceneContainer.setCenter(ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL));
     }
     
     public void ui_addFlightForAirline(Admin admin, String airline, Set<Airport> airports, Set<Airplane> airplanes)
     {
-        System.out.println(airports);
-        System.out.println(airplanes);
-        
         Stage stage = new Stage();
         stage.setWidth(900);
         stage.setHeight(700);
-        stage.setTitle("Adding a flight for ".concat(airline));
+        stage.setTitle(Utility.ADD_FLIGHT_FOR(airline));
     
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -146,34 +131,45 @@ public class View extends Application
         gridPane.add(new Label(), 0, 0);
         gridPane.add(new Label(), 0, 1);
     
-        Label codeLabel = label("Enter a flight code/name: ");
+        Label codeLabel = label(FieldValue.ENTER_CODE);
         codeLabel.setPadding(Utility.FLIGHT_LABEL());
+        codeLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label airplaneLabel = label("Select an airplane: ");
+        Label airplaneLabel = label(FieldValue.SELECT_AP);
         airplaneLabel.setPadding(Utility.FLIGHT_LABEL());
+        airplaneLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label sourceLabel = label("Select departure airport: ");
+        Label sourceLabel = label(FieldValue.SELECT_SRC);
         sourceLabel.setPadding(Utility.FLIGHT_LABEL());
+        sourceLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
+        
     
-        Label sourceDateLabel = label("Select departure date: ");
+        Label sourceDateLabel = label(FieldValue.SELECT_DPT_DATE);
         sourceDateLabel.setPadding(Utility.FLIGHT_LABEL());
+        sourceDateLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label sourceTimeLabel = label("Select departure time: ");
+        Label sourceTimeLabel = label(FieldValue.SELECT_DPT_TIME);
         sourceTimeLabel.setPadding(Utility.FLIGHT_LABEL());
+        sourceTimeLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label destinationLabel = label("Select arrival airport: ");
+        Label destinationLabel = label(FieldValue.SELECT_ARR);
         destinationLabel.setPadding(Utility.FLIGHT_LABEL());
+        destinationLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label destinationDateLabel = label("Select arrival date: ");
+        Label destinationDateLabel = label(FieldValue.SELECT_ARR_DATE);
         destinationDateLabel.setPadding(Utility.FLIGHT_LABEL());
+        destinationDateLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label destinationTimeLabel = label("Select arrival time: ");
+        Label destinationTimeLabel = label(FieldValue.SELECT_ARR_TIME);
         destinationTimeLabel.setPadding(Utility.FLIGHT_LABEL());
+        destinationTimeLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
-        Label capacityLabel = label("Enter max capacity: ");
+        Label capacityLabel = label(FieldValue.ENTER_CAP);
         capacityLabel.setPadding(Utility.FLIGHT_LABEL());
+        capacityLabel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
     
         TextField codeField = new TextField();
+        codeField.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
         
         ChoiceBox<Airplane> airPlaneChoiceBox = new ChoiceBox<>(Utility.AIRPLANES_LIST(airplanes));
     
@@ -254,7 +250,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, 11);
         gridPane.add(new Label(), 0, 12);
     
-        Button submit = new Button("Submit");
+        Button submit = new Button(FieldValue.SUBMIT);
         submit.setOnAction(e ->
         {
             if(controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
@@ -262,16 +258,11 @@ public class View extends Application
             {
                 stage.close();
                 AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
-                        "A flight has successfully been added by "
-                                + admin.getFirstName() + " for Airline ".concat(airline.toUpperCase()));
-            }
-            else{
-            
+                        Utility.FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
             }
         });
     
         gridPane.add(submit, 1, 13, 1, 1);
-        gridPane.setBackground(Utility.BACKGROUND_IMAGE_BY_AIRLINE(Utility.HOME_PIC_PATH));
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);
         stage.showAndWait();
@@ -279,12 +270,13 @@ public class View extends Application
     
     public void ui_cancelFlightsByAirlineAdmin(String airline, Set<Flight> flights)
     {
-        Stage stage = new Stage();
-        stage.setWidth(FieldValue.HOME_SCENE_WIDTH);
-        stage.setHeight(500);
+        if(cancelFlightStage == null) cancelFlightStage = new Stage();
+        cancelFlightStage.setTitle("Cancelable flights for ".concat(airline.toUpperCase()));
+        cancelFlightStage.setWidth(FieldValue.HOME_SCENE_WIDTH-300);
+        cancelFlightStage.setHeight(FieldValue.HOME_SCENE_HEIGHT-150);
         Scene scene = new Scene(ui_flightsToBeCanceledByAirline(airline, flights));
-        stage.setScene(scene);
-        stage.show();
+        cancelFlightStage.setScene(scene);
+        cancelFlightStage.show();
     }
     
     public VBox ui_adminAccessByAirline(Admin admin, String airline)
@@ -292,21 +284,24 @@ public class View extends Application
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.BASELINE_CENTER);
         
-        Label header = label("Admin Access Enabled for ".concat(airline.toUpperCase()));
+        Label header = label(Utility.ACCESS(airline));
+        header.setStyle(Utility.ACCESS_STYLE());
         
-        Label name = label("Admin Name: ".concat(admin.getFirstName()).concat(" ").concat(admin.getLastName()));
+        Label name = label(FieldValue.ADMIN_NAME.concat(admin.getFirstName()).concat(" ").concat(admin.getLastName()));
+        name.setStyle(NAME_HEADER_STYLE());
     
         Button addFlight = new Button(FieldValue.ADD_FLIGHT);
-        addFlight.setPrefWidth(130);
+        addFlight.setPrefWidth(190);
         
         Button cancelFlight = new Button(FieldValue.CANCEL_FLIGHT);
-        cancelFlight.setPrefWidth(130);
+        cancelFlight.setPrefWidth(190);
         
-        Button allRSVP = new Button("All RSVPs");
-        allRSVP.setPrefWidth(130);
+        Button allRSVP = new Button(FieldValue.ALL_RSVP);
+        allRSVP.setPrefWidth(190);
         
         Button logout = new Button(FieldValue.LOGOUT_LABEL);
-        logout.setPrefWidth(130);
+        logout.setPrefWidth(190);
+        logout.setStyle(LOGOUT_STYLE());
         
         vBox.getChildren().addAll(new Label(), new Label(),
                 header, new Label(), name, new Label(), new Label(),
@@ -330,7 +325,9 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(new Label("Displaying all reservations made for all flights for ".concat(airline)), 2, row++, 4, 1);
+        Label label = new Label("Displaying all reservations made using ".concat(airline).concat(" GUI"));
+        label.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
+        gridPane.add(label, 1, row++, 6, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -438,15 +435,16 @@ public class View extends Application
         gridPane.setPadding(new Insets(40, 40, 40, 40));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-    
-        Label searchLabel = new Label(label);
-        searchLabel.setFont(Font.font(FieldValue.FONT_MONACO, FontWeight.BOLD, FieldValue.FONT_SIZE_17));
-        gridPane.add(searchLabel, 0,0,2,1);
-        GridPane.setHalignment(searchLabel, HPos.CENTER);
-        GridPane.setMargin(searchLabel, new Insets(20, 0,20,0));
+        
+        gridPane.add(new Label(), 2, 0, 1, 1);
+        
+        Label l = Utility.SEARCH_HEADER_LABEL(label);
+        gridPane.add(l, 1,0,2,1);
+        GridPane.setHalignment(l, HPos.CENTER);
+        GridPane.setMargin(l, new Insets(20, 0, 20, 0));
         
         TextField searchBar = new TextField();
-        gridPane.add(searchBar, 1,1);
+        gridPane.add(searchBar, 0,2, 3, 1);
         GridPane.setHalignment(searchBar, HPos.CENTER);
         searchBar.setMinHeight(FieldValue.SEARCH_BAR_HEIGHT);
         searchBar.setMinWidth(FieldValue.SEARCH_BAR_WIDTH);
@@ -525,7 +523,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
         
-        gridPane.add(Utility.SE_HEADER(), 2, row++, 7, 1);
+        gridPane.add(Utility.SE_HEADER(), 4, row++, 5, 1);
     
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -554,28 +552,27 @@ public class View extends Application
                                       .concat(" ").concat(flight.getDestination().getTime())), 4, row);
             gridPane.add(button(flight.getAirLine().getAirlineName()), 5, row);
             gridPane.add(button(flight.getAirplane().getAirPlaneName()), 6, row);
-            gridPane.add(button(flight.getFare().toString()), 7, row);
+            gridPane.add(button(FieldValue.$.concat(flight.getFare().toString())), 7, row);
             gridPane.add(button(flight.getAvailableSeat().toString()), 8, row);
+            gridPane.add(button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN), 9, row);
             
-            Button status = button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN);
-            gridPane.add(status, 9, row);
-            status.setOnAction(e ->
+            if(flight.getAvailableSeat() != 0)
             {
-                if(status.getText().equalsIgnoreCase(FieldValue.OPEN))
-                {
-                    controller.makeReservationFromSE(flight.getFlightId());
-                }
-            });
+                Button rsvp = button(FieldValue.CLICK);
+                gridPane.add(rsvp, 10, row);
+                rsvp.setOnAction(e -> controller.makeReservationFromSE(flight));
+            }
             
             row++;
         }
         
         gridPane.add(new Label(), 0, ++row);
         
-        Button button = new Button("Back/Home");
-        button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.SEARCH)));
+        Button button = new Button(FieldValue.HOME);
+        button.setStyle(Utility.HOME_STYLE());
+        button.setOnAction(e -> this.setCenter(ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL)));
         
-        gridPane.add(button, 3, ++row, 7, 1);
+        gridPane.add(button, 4, ++row, 7, 1);
         
         return gridPane;
     }
@@ -592,7 +589,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(Utility.AIRLINE_HEADER(airline), 2, row++, 7, 1);
+        gridPane.add(Utility.AIRLINE_RESULTS_HEADER_LABEL(airline), 4, row++, 7, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -614,27 +611,28 @@ public class View extends Application
             gridPane.add(button(flight.getDestination().getAirportName()), 3, row);
             gridPane.add(button(flight.getDestination().getDate().toString()
                                       .concat(" ").concat(flight.getDestination().getTime())), 4, row);
-            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 5, row);
-            gridPane.add(button(flight.getFare().toString()), 6, row);
+            gridPane.add(button(flight.getAirLine().getAirlineName()), 5, row);
+            gridPane.add(button(flight.getAirplane().getAirPlaneName()), 6, row);
             gridPane.add(button(flight.getAvailableSeat().toString()), 7, row);
-            Button status = button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN);
-            gridPane.add(status, 8, row);
-            status.setOnAction(e ->
+            gridPane.add(button(FieldValue.$.concat(flight.getFare().toString())), 8, row);
+            gridPane.add(button(flight.getAvailableSeat() == 0 ? FieldValue.FULL : FieldValue.OPEN), 9, row);
+            
+            if(flight.getAvailableSeat() != 0)
             {
-                if(status.getText().equalsIgnoreCase(FieldValue.OPEN))
-                {
-                    controller.makeReservationByAirline(flight.getFlightId());
-                }
-            });
+                Button rsvp = button(FieldValue.CLICK);
+                gridPane.add(rsvp, 10, row);
+                rsvp.setOnAction(e -> controller.makeReservationByAirline(flight));
+            }
             row++;
         }
     
         gridPane.add(new Label(), 0, ++row);
     
-        Button button = new Button("Back/Home");
+        Button button = new Button(FieldValue.HOME);
+        button.setStyle(Utility.HOME_STYLE());
         button.setOnAction(e -> controller.eventLaunchAirline(airline));
     
-        gridPane.add(button, 3, ++row, 7, 1);
+        gridPane.add(button, 5, ++row, 7, 1);
         
         return gridPane;
     }
@@ -650,8 +648,11 @@ public class View extends Application
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
+    
+        Label label1 = new Label("Displaying all reservations made for ".concat(airline.toUpperCase()));
+        label1.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
+        gridPane.add(label1, 3, row++, 6, 1);
         
-        gridPane.add(new Label("Displaying all reservations made for all flights for "), 3, row++, 6, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
@@ -676,15 +677,19 @@ public class View extends Application
                                       .concat(" ").concat(flight.getDestination().getTime())), 5, row);
             gridPane.add(button(flight.getCustomers().size()+""), 6, row);
             gridPane.add(button(flight.getStatus()), 7, row);
-            Button toCancel = button(FieldValue.TO_CANCEL);
-            gridPane.add(toCancel, 8, row);
             
-            toCancel.setOnAction(e ->
+            if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
             {
-                if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
-                    controller.cancelFlight(flight.getFlightId(), airline);
-            });
-            
+                Button toCancel = button(FieldValue.CLICK);
+                gridPane.add(toCancel, 8, row);
+                toCancel.setOnAction(e ->
+                {
+                    if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
+                    {
+                        controller.cancelFlight(flight.getFlightId(), airline);
+                    }
+                });
+            }
             row++;
         }
         
@@ -696,13 +701,14 @@ public class View extends Application
         HBox hBox = new HBox();
         
         Button fare = button("Fare");
+        fare.setStyle(Utility.SORT_FARE());
         Button airline = button("Airline");
+        airline.setStyle(Utility.SORT_AIRLINE());
         
-        Label label = new Label("Sort results by: ");
+        Label label = Utility.SORT_LABEL();
         label.setPadding(new Insets(5, 5, 5, 5));
-        label.setStyle(CSSStyle.fontSize(20));
         
-        hBox.getChildren().addAll(label, fare, new Label(" "), airline);
+        hBox.getChildren().addAll(label, new Label(" "), fare, new Label(" "), airline);
         
         fare.setOnAction(e ->
         {
@@ -755,6 +761,10 @@ public class View extends Application
     
     public void setSearchResultsInCenter(Node node)
     {
+        this.primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
+        this.primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
+        this.homeSceneContainer.setPrefHeight(FieldValue.HOME_SCENE_HEIGHT);
+        this.homeSceneContainer.setPrefWidth(FieldValue.HOME_SCENE_WIDTH);
         this.homeSceneContainer.setCenter(node);
     }
     
@@ -762,16 +772,20 @@ public class View extends Application
     {
         Menu airportsMenu = new Menu(FieldValue.AIRPORT_LABEL);
         
-        MenuItem airport1 = new MenuItem(FieldValue.AIRPORT1);
-        airport1.setOnAction(e -> controller.eventLaunchAirport(airport1.getText().split(" ")[2]));
+        MenuItem airport1 = new MenuItem(FieldValue.AP_JFK_NAME);
+        airport1.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_JFK));
     
-        MenuItem airport2 = new MenuItem(FieldValue.AIRPORT2);
-        airport2.setOnAction(e -> controller.eventLaunchAirport(airport2.getText().split(" ")[2]));
+        MenuItem airport2 = new MenuItem(FieldValue.AP_LAX_NAME);
+        airport2.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_LAX));
     
-        MenuItem airport3 = new MenuItem(FieldValue.AIRPORT3);
-        airport3.setOnAction(e -> controller.eventLaunchAirport(airport3.getText().split(" ")[2]));
+        MenuItem airport3 = new MenuItem(FieldValue.AP_MIA_NAME);
+        airport3.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_MIA));
     
-        airportsMenu.getItems().addAll(airport1, airport2, airport3);
+        MenuItem airport4 = new MenuItem(FieldValue.AP_DTW_NAME);
+        airport4.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_DTW));
+    
+        airportsMenu.getItems().addAll(airport1, Utility.SEPARATOR(), airport2,
+                Utility.SEPARATOR(), airport3, Utility.SEPARATOR(), airport4);
         
         return airportsMenu;
     }
@@ -780,16 +794,20 @@ public class View extends Application
     {
         Menu airlineMenu = new Menu(FieldValue.AIRLINE_LABEL);
         
-        MenuItem airline1 = new MenuItem(FieldValue.AIRLINE1);
-        airline1.setOnAction(e -> controller.eventLaunchAirline(airline1.getText().split(" ")[2]));
+        MenuItem airline1 = new MenuItem(FieldValue.AR_AMERICAN);
+        airline1.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_AMERICAN));
         
-        MenuItem airline2 = new MenuItem(FieldValue.AIRLINE2);
-        airline2.setOnAction(e -> controller.eventLaunchAirline(airline2.getText().split(" ")[2]));
+        MenuItem airline2 = new MenuItem(FieldValue.AR_SPIRIT);
+        airline2.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_SPIRIT));
         
-        MenuItem airline3 = new MenuItem(FieldValue.AIRLINE3);
-        airline3.setOnAction(e -> controller.eventLaunchAirline(airline3.getText().split(" ")[2]));
+        MenuItem airline3 = new MenuItem(FieldValue.AR_JET_BLUE);
+        airline3.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_JET_BLUE));
     
-        airlineMenu.getItems().addAll(airline1, airline2, airline3);
+        MenuItem airline4 = new MenuItem(FieldValue.AR_UNITED);
+        airline4.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_UNITED));
+    
+        airlineMenu.getItems().addAll(airline1, Utility.SEPARATOR(), airline2,
+                Utility.SEPARATOR(), airline3, Utility.SEPARATOR(), airline4);
         
         return airlineMenu;
     }
@@ -797,14 +815,22 @@ public class View extends Application
     public Menu logins(MenuItem... menuItems)
     {
         Menu loginMenu = new Menu(FieldValue.CUSTOMER);
-        loginMenu.getItems().addAll(menuItems);
+        for(MenuItem menuItem : menuItems)
+        {
+            loginMenu.getItems().add(menuItem);
+            loginMenu.getItems().add(Utility.SEPARATOR());
+        }
         return loginMenu;
     }
     
     public Menu admins(MenuItem... menuItems)
     {
         Menu menu = new Menu(FieldValue.ADMINS);
-        menu.getItems().addAll(menuItems);
+        for(MenuItem menuItem : menuItems)
+        {
+            menu.getItems().add(menuItem);
+            menu.getItems().add(Utility.SEPARATOR());
+        }
         return menu;
     }
     
@@ -825,9 +851,7 @@ public class View extends Application
     public MenuItem airlineAdminLoginItem(String label)
     {
         MenuItem admin = new MenuItem(label);
-        admin.setOnAction(e -> controller.launchLoginForAirlineAdmin
-                (ui_loginContainer("Admin Login for ".concat(label.split(" ")[2])),
-                label.split(" ")[2]));
+        admin.setOnAction(e -> controller.launchLoginForAirlineAdmin(ui_loginContainer("Admin Login for "+label), label));
         return admin;
     }
     
@@ -845,15 +869,35 @@ public class View extends Application
         return menuBar;
     }
     
+    public Menu ui_loggedUser()
+    {
+        Menu menu = new Menu(FieldValue.LOGGED_USER);
+        
+        MenuItem menuItem = new MenuItem(FieldValue.ACCOUNT);
+        menu.setOnAction(e -> controller.handleLoggedUser());
+        menu.getItems().addAll(menuItem);
+        return menu;
+    }
+    
+    public Menu searchEngine()
+    {
+        Menu menu = new Menu(FieldValue.SEARCH_FLIGHTS);
+        MenuItem menuItem = new MenuItem("Search Engine");
+        menu.setOnAction(e -> controller.takeLoggedUserToSearchEngine());
+        menu.getItems().addAll(menuItem);
+        return menu;
+    }
+    
     public MenuBar ui_homeMenuBar()
     {
         return menuBar(
                 logins(customerLoginItem(), newCustomerItem()),
                 airports(), airlines(),
                 admins(globalAdminLoginItem(),
-                        airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : SH")),
-                        airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : AR")),
-                        airlineAdminLoginItem(FieldValue.AIR_ADMIN_LABEL.concat(" : HR"))));
+                        airlineAdminLoginItem(FieldValue.AR_AMERICAN),
+                        airlineAdminLoginItem(FieldValue.AR_SPIRIT),
+                        airlineAdminLoginItem(FieldValue.AR_JET_BLUE),
+                        airlineAdminLoginItem(FieldValue.AR_UNITED)));
     }
     
     public void RSVPsByAirline(String airlineName, GridPane ui_gridPane)
@@ -868,45 +912,13 @@ public class View extends Application
         stage.showAndWait();
     }
     
-    public VBox ui_customerInfo(Customer customer)
-    {
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.TOP_CENTER);
-    
-        vBox.getChildren().add(new Label());
-        vBox.getChildren().add(new Label());
-        vBox.getChildren().add(ui_nameHBox("Customer Name : "
-                .concat(customer.getFirstName().concat(" ").concat(customer.getLastName()))));
-        vBox.getChildren().add(new Label());
-        vBox.getChildren().add(controller.populateRSVPsFlightsForCustomer(customer));
-        vBox.getChildren().add(new Label());
-        vBox.getChildren().add(new Label());
-    
-        HBox hBox = logoutHBox();
-        Button logout = (Button)hBox.getChildren().get(0);
-        logout.setOnAction(e -> controller.customerLogout());
-    
-        vBox.getChildren().add(hBox);
-        vBox.getChildren().add(new Label());
-        vBox.getChildren().add(new Label());
-    
-        return vBox;
-    }
-    
-    public HBox ui_nameHBox(String nameHeader)
-    {
-        HBox name = new HBox();
-        name.setAlignment(Pos.TOP_CENTER);
-        name.getChildren().add(new Label(nameHeader));
-        return name;
-    }
-    
     public HBox logoutHBox()
     {
         HBox outContainer = new HBox();
         outContainer.setAlignment(Pos.BOTTOM_CENTER);
         Button logout = new Button("Logout");
         outContainer.getChildren().add(logout);
+        logout.setStyle(LOGOUT_STYLE());
         return outContainer;
     }
     
@@ -917,11 +929,14 @@ public class View extends Application
     
         superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
-        superV.getChildren().add(new Label(admin.getFirstName() + " " + admin.getLastName()));
+        Label label = new Label("Admin Name: ".concat(admin.getFirstName() + " " + admin.getLastName()));
+        label.setStyle(NAME_HEADER_STYLE());
+        superV.getChildren().add(label);
         superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
-        superV.getChildren().add(new Label());
-        superV.getChildren().add(new Label("Displaying all reservations made using SE"));
+        Label label1 = new Label("Displaying all reservations made using Search Engine");
+        label1.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
+        superV.getChildren().add(label1);
         superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
         superV.getChildren().add(new Label());
@@ -934,6 +949,7 @@ public class View extends Application
         Button out = (Button) logout.getChildren().get(0);
         out.setOnAction(e -> controller.adminLogout());
         
+        setTop(menuBar(airports()));
         setCenter(superV);
     }
 }

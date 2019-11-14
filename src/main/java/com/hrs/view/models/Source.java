@@ -16,16 +16,14 @@ public class Source extends Airport
         super();
     }
     
+    public Source(String airportName)
+    {
+        super(airportName);
+    }
+    
     public Source(String airportName, LocalDate date, String time)
     {
         super(airportName);
-        this.date = date;
-        this.time = time;
-    }
-    
-    public Source(Airport airport, LocalDate date, String time)
-    {
-        super(airport.getAirportName());
         this.date = date;
         this.time = time;
     }

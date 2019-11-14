@@ -9,21 +9,33 @@ public class Session
     
     public boolean isCustomerInSession()
     {
-        return true;
+        return customer != null;
     }
     
-    public void addCustomerToSession(Customer customer) {}
+    public void addCustomerToSession(Customer customer)
+    {
+        Session.customer = customer;
+    }
     
-    public void deleteCustomerFromSession() {}
+    public void deleteCustomerFromSession()
+    {
+        customer = null;
+    }
     
     public boolean isAdminInSession()
     {
-        return true;
+        return admin != null;
     }
     
-    public void addAdminToSession(Admin admin) {}
+    public void addAdminToSession(Admin admin)
+    {
+        Session.admin = admin;
+    }
     
-    public void deleteAdminFromSession() {}
+    public void deleteAdminFromSession()
+    {
+        admin = null;
+    }
     
     public Customer getCustomer()
     {
