@@ -3,7 +3,7 @@ package com.hrs.view.controller;
 import com.hrs.configs.Configuration;
 import com.hrs.exceptions.InvalidPasswordException;
 import com.hrs.exceptions.InvalidUserNameException;
-import com.hrs.service.ApiApiServiceImpl;
+import com.hrs.service.ApiService;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
@@ -53,11 +53,11 @@ import static com.hrs.util.Utility.button;
 public class Controller
 {
     private View view;
-    private ApiApiServiceImpl apiServiceImpl;
+    private ApiService apiService;
     
     public Controller()
     {
-        apiServiceImpl = Configuration.getApiServiceImpl();
+        apiService = Configuration.getApiService();
     }
     
     public View getView()
@@ -74,7 +74,7 @@ public class Controller
     {
         if(Configuration.getSession().isCustomerInSession())
         {
-            apiServiceImpl.makeReservationBySE(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
+            apiService.makeReservationBySE(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
             AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                     (Configuration.getSession().getCustomer().getFirstName().concat(" ")
                                   .concat(Configuration.getSession().getCustomer().getLastName())));
@@ -90,7 +90,7 @@ public class Controller
     {
         if(Configuration.getSession().isCustomerInSession())
         {
-            apiServiceImpl.makeReservation(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
+            apiService.makeReservation(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
             AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                     (Configuration.getSession().getCustomer().getFirstName().concat(" ")
                                   .concat(Configuration.getSession().getCustomer().getLastName())));
@@ -125,7 +125,7 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    if(apiServiceImpl.makeReservationBySE(flight.getFlightId(), "", ""))
+                    if(apiService.makeReservationBySE(flight.getFlightId(), "", ""))
                     {
                         AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
                                 Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
@@ -134,7 +134,7 @@ public class Controller
                 }
                 else
                 {
-                    if(apiServiceImpl.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
+                    if(apiService.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
                     {
                         AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
                                 Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
@@ -178,7 +178,7 @@ public class Controller
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
                     view.setCenter(view.ui_searchResultsByAirline(airlineName,
-                            apiServiceImpl.getAllFlightsByAirlineForReservation(airlineName)));
+                            apiService.getAllFlightsByAirlineForReservation(airlineName)));
                 }
             }
         });
@@ -217,7 +217,7 @@ public class Controller
     {
         VBox departure = genericAirport(airportName, FieldValue.DEPARTURE_LABEL, x1, y1);
     
-        GridPane gridPane = populateGridForDeparture(apiServiceImpl.getAllFlightsByAirport(airportName));
+        GridPane gridPane = populateGridForDeparture(apiService.getAllFlightsByAirport(airportName));
     
         Label header = new Label(FieldValue.DEPARTURE_HEADER.concat(airportName.toUpperCase()));
         header.setStyle(STYLE().concat(FONT_SIZE(20)).concat("-fx-padding: 8; -fx-border-padding: 10"));
@@ -226,7 +226,7 @@ public class Controller
         submit.setStyle(GREEN());
     
         submit.setOnAction(e -> departure.getChildren().set(2, populateGridForDeparture
-                (apiServiceImpl.getAllFlightsByAirport(airportName))));
+                (apiService.getAllFlightsByAirport(airportName))));
     
         departure.getChildren().add(header);
         departure.getChildren().add(gridPane);
@@ -237,7 +237,7 @@ public class Controller
     {
         VBox arrival = genericAirport(airportName, FieldValue.ARRIVAL_LABEL, x1, y1);
         
-        GridPane gridPane = populateGridForArrival(apiServiceImpl.getAllFlightsByAirport(airportName));
+        GridPane gridPane = populateGridForArrival(apiService.getAllFlightsByAirport(airportName));
     
         Label header = new Label(FieldValue.ARRIVAL_HEADER.concat(airportName.toUpperCase()));
     
@@ -247,7 +247,7 @@ public class Controller
         submit.setStyle(GREEN());
         
         submit.setOnAction(e -> arrival.getChildren().set(2,
-                populateGridForArrival(apiServiceImpl.getAllFlightsByAirport(airportName))));
+                populateGridForArrival(apiService.getAllFlightsByAirport(airportName))));
     
         arrival.getChildren().add(header);
         arrival.getChildren().add(gridPane);
@@ -401,7 +401,7 @@ public class Controller
         {
             try
             {
-                if(apiServiceImpl.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
+                if(apiService.insertNewCustomer(firstName.getText(), lastName.getText(), email.getText(), password.getText()))
                 {
                     stage.close();
                     AlertBox.DisplayInformation(FieldValue.NEW_CUSTOMER_ADDED,
@@ -469,9 +469,9 @@ public class Controller
             {
                 try
                 {
-                    Admin admin = apiServiceImpl.getGlobalAdminByLogin(username.getText(), pass.getText());
+                    Admin admin = apiService.getGlobalAdminByLogin(username.getText(), pass.getText());
                     Configuration.getSession().addAdminToSession(admin);
-                    Set<Reservation> reservations = apiServiceImpl.getGlobalReservationsMadeUsingSearchEngine();
+                    Set<Reservation> reservations = apiService.getGlobalReservationsMadeUsingSearchEngine();
                     view.ui_handleAfterGlobalAdminLogin(admin, reservations);
                 }
                 catch(InvalidUserNameException ex) {}
@@ -481,7 +481,7 @@ public class Controller
             {
                 try
                 {
-                    Customer customer = apiServiceImpl.getCustomerByLogin(username.getText(), pass.getText());
+                    Customer customer = apiService.getCustomerByLogin(username.getText(), pass.getText());
                     Configuration.getSession().addCustomerToSession(customer);
                     view.setTop(view.menuBar(view.searchEngine(), view.airlines(), view.airports()));
                     VBox center = customerCenterContainer(customer);
@@ -497,7 +497,7 @@ public class Controller
             {
                 try
                 {
-                    Admin admin = apiServiceImpl.getAirlineAdminByLogin("", "", "");
+                    Admin admin = apiService.getAirlineAdminByLogin("", "", "");
                     Configuration.getSession().addAdminToSession(admin);
                     
                     VBox adminAccessView = view.ui_adminAccessByAirline(Tester.admin(), loginViewKey);
@@ -507,14 +507,14 @@ public class Controller
                     Button rsvp = (Button) adminAccessView.getChildren().get(FieldValue.RSVP_FLIGHT_INDEX);
                     Button logout = (Button) adminAccessView.getChildren().get(adminAccessView.getChildren().size()-1);
                     
-                    add.setOnAction(event -> view.ui_addFlightForAirline(admin, loginViewKey, apiServiceImpl.getAllAirports(),
-                                        apiServiceImpl.getAllAirPlaneByAirLine(loginViewKey)));
+                    add.setOnAction(event -> view.ui_addFlightForAirline(admin, loginViewKey, apiService.getAllAirports(),
+                                        apiService.getAllAirPlaneByAirLine(loginViewKey)));
                     add.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
                     
                     cancel.setOnAction(event ->
                     {
                         view.ui_cancelFlightsByAirlineAdmin
-                                (loginViewKey, apiServiceImpl.getAllFlightsByAirline(loginViewKey, Configuration.getCurrentDate()));
+                                (loginViewKey, apiService.getAllFlightsByAirline(loginViewKey, Configuration.getCurrentDate()));
                     });
                     cancel.setStyle(STYLE().concat(FONT_SIZE(18)).concat("-fx-padding: 8; -fx-border-padding: 10"));
                     
@@ -546,7 +546,7 @@ public class Controller
     {
         if(AlertBox.DisplayConfirmation("?", "?"))
         {
-            apiServiceImpl.cancelFlight(flight);
+            apiService.cancelFlight(flight);
             view.ui_cancelFlightsByAirlineAdmin(airlineName, Tester.testFlights2());
         }
     }
@@ -632,8 +632,8 @@ public class Controller
                 {
                     if(AlertBox.DisplayConfirmation(FieldValue.CANCEL_HEADER, FieldValue.CANCEL_MSG))
                     {
-                        apiServiceImpl.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
-                        customer.setReservations(apiServiceImpl.getAllReservationsByCustomerId(customer.getCustomerId()));
+                        apiService.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
+                        customer.setReservations(apiService.getAllReservationsByCustomerId(customer.getCustomerId()));
                         VBox center = customerCenterContainer(customer);
                         view.setCenter(center);
                     }
@@ -710,13 +710,20 @@ public class Controller
         TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
                 FieldValue.SEARCH_BAR_COL, gridPane);
     
-        String query = searchBar.getText();
-        
-        Set<Flight> flights = apiServiceImpl.getAllFlightsForReservation();
+        try
+        {
+            String query = searchBar.getText();
     
-        GridPane center = view.ui_globalSearchResults(flights);
+            Set<Flight> flights = apiService.getAllFlightsForReservation(query);
+    
+            GridPane center = view.ui_globalSearchResults(flights);
+    
+            view.setSearchResultsInCenter(center);
+        }
+        catch(IllegalArgumentException ex)
+        {
         
-        view.setSearchResultsInCenter(center);
+        }
     }
     
     public void adminLogout()
@@ -756,6 +763,6 @@ public class Controller
         flight.setDestination(new Destination(destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
         flight.setCapacity(Integer.parseInt(capacity1.getText()));
         
-        return apiServiceImpl.insertFlightByAirline(flight);
+        return apiService.insertFlightByAirline(flight);
     }
 }
