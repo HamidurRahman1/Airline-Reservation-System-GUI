@@ -203,4 +203,6 @@ public class FieldValue
     
     public static final String EFFECT_LB = "lightblue";
     public static final String SORT_BY = "Sort Results By: ";
+    
+    public static final String KEY_WORDS = "Ex. find flights, get flights, all flights, flights etc.";
 }

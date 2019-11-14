@@ -177,7 +177,8 @@ public class Controller
                 
                 if (ke.getCode().equals(KeyCode.ENTER))
                 {
-                    view.setCenter(view.ui_searchResultsByAirline(airlineName, Tester.testFlights()));
+                    view.setCenter(view.ui_searchResultsByAirline(airlineName,
+                            apiServiceImpl.getAllFlightsByAirlineForReservation(airlineName)));
                 }
             }
         });
@@ -704,6 +705,13 @@ public class Controller
     
     public void eventGlobalSearchBar()
     {
+        GridPane gridPane = view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL);
+    
+        TextField searchBar = (TextField)Utility.getNodeByRowColumnIndex(FieldValue.SEARCH_BAR_RAW,
+                FieldValue.SEARCH_BAR_COL, gridPane);
+    
+        String query = searchBar.getText();
+        
         Set<Flight> flights = apiServiceImpl.getAllFlightsForReservation();
     
         GridPane center = view.ui_globalSearchResults(flights);

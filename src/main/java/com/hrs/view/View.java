@@ -449,6 +449,10 @@ public class View extends Application
         searchBar.setMinHeight(FieldValue.SEARCH_BAR_HEIGHT);
         searchBar.setMinWidth(FieldValue.SEARCH_BAR_WIDTH);
         
+        gridPane.add(new Label(), 0, 3, 3, 1);
+    
+        gridPane.add(new Label(FieldValue.KEY_WORDS), 1, 4, 3, 1);
+        
         searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
         {
             @Override
@@ -589,7 +593,7 @@ public class View extends Application
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
     
-        gridPane.add(Utility.AIRLINE_RESULTS_HEADER_LABEL(airline), 4, row++, 7, 1);
+        gridPane.add(Utility.AIRLINE_RESULTS_HEADER_LABEL(airline.toUpperCase()), 4, row++, 7, 1);
         
         gridPane.add(new Label(), 0, row++);
         gridPane.add(new Label(), 0, row++);
