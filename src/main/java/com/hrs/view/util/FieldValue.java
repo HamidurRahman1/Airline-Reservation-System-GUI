@@ -11,10 +11,10 @@ public class FieldValue
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AMERICAN = "American Airlines";
-    public static final String SPIRIT = "Spirit Airlines";
-    public static final String JET_BLUE = "JetBlue";
-    public static final String UNITED = "United Airlines";
+    public static final String AR_AMERICAN = "American Airlines";
+    public static final String AR_SPIRIT = "Spirit Airlines";
+    public static final String AR_JET_BLUE = "JetBlue";
+    public static final String AR_UNITED = "United Airlines";
     
     public static final String AP_LAX = "LAX";
     public static final String AP_LAX_NAME = "Los Angeles I.A. - CA";
@@ -24,15 +24,6 @@ public class FieldValue
     public static final String AP_MIA_NAME = "Miami I.A. - FL";
     public static final String AP_DTW = "DTW";
     public static final String AP_DTW_NAME = "Detroit I.A. - MI";
-    
-    
-    public static final String AIRLINE1 = "Airline : SH";
-    public static final String AIRLINE2 = "Airline : AR";
-    public static final String AIRLINE3 = "Airline : HR";
-    
-    public static final String AIRPORT1 = "Airport : NY";
-    public static final String AIRPORT2 = "Airport : LA";
-    public static final String AIRPORT3 = "Airport : DC";
     
     public static final String CUST_REG_FORM = "New Customer Registration Form";
     

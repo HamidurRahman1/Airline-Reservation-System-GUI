@@ -4,8 +4,8 @@ import com.hrs.configs.Configuration;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Flight;
-import com.hrs.view.style.CSSStyle;
 import com.hrs.view.util.FieldValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -223,6 +223,7 @@ public class Utility
         "-fx-background-radius: 8,7,6;"+
         "-fx-background-insets: 0,1,2;"+
         "-fx-text-fill: black;"+
+                "-fx-font-weight: bold;"+"-fx-font-family: monaco;"+
         "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
     }
     
@@ -230,17 +231,21 @@ public class Utility
     {
         Label l = new Label(FieldValue.SEARCH_ENGINE_RESULTS);
         l.setAlignment(Pos.CENTER);
-        l.setStyle(STYLE()
-                .concat(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
-                                .concat(CSSStyle.fontSize(18))).concat("-fx-padding: 8; -fx-border-padding: 10"));
+        l.setStyle(COMMON_RESULT_HEADER());
         return l;
+    }
+    
+    public static String COMMON_RESULT_HEADER()
+    {
+        return STYLE().concat(FONT_FAMILY(FieldValue.FONT_MONACO)
+                .concat(FONT_SIZE(18))).concat("-fx-padding: 8; -fx-border-padding: 10");
     }
     
     public static Label SORT_LABEL()
     {
         Label l = new Label(FieldValue.SORT_BY);
         l.setAlignment(Pos.CENTER);
-        l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO).concat(CSSStyle.fontSize(18)).concat(STYLE()));
+        l.setStyle(FONT_FAMILY(FieldValue.FONT_MONACO).concat(FONT_SIZE(18)).concat(STYLE()));
         return l;
     }
     
@@ -248,9 +253,9 @@ public class Utility
     {
         Label l = new Label(label);
         l.setAlignment(Pos.CENTER);
-        l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
-                           .concat(CSSStyle.fontSize(18))
-                           .concat(CSSStyle.effect(FieldValue.EFFECT_LB)));
+        l.setStyle(FONT_FAMILY(FieldValue.FONT_MONACO)
+                           .concat(FONT_SIZE(18))
+                           .concat(effect(FieldValue.EFFECT_LB)));
         return l;
     }
     
@@ -258,8 +263,7 @@ public class Utility
     {
         Label l = new Label(FieldValue.RESULTS_LABEL.concat(" ").concat(airline));
         l.setAlignment(Pos.CENTER);
-        l.setStyle(CSSStyle.fontFamily(FieldValue.FONT_MONACO)
-                           .concat(CSSStyle.fontSize(15)));
+        l.setStyle(COMMON_RESULT_HEADER());
         return l;
     }
     
@@ -439,53 +443,95 @@ public class Utility
         return STYLE() + "-fx-background-color: lightblue; ";
     }
     
-    public static String FULL_BTN_STYLE()
+    public static String HOME_STYLE()
     {
-        return "";
+        return Utility.STYLE().concat("-fx-background-color: black; -fx-text-fill: white; -fx-font-wight: bold;");
     }
     
-    public static String OPEN_BTN_STYLE()
+    public static String FONT_FAMILY(String font)
     {
-        return "";
+        return "-fx-font-family: " + font + ";";
+    }
+    
+    public static String FONT_SIZE(Integer size)
+    {
+        return "-fx-font-size: " + size + ";";
+    }
+    
+    public static String effect(String color)
+    {
+        return "-fx-effect: dropshadow(three-pass-box, " + color + ", 6, 0, 2, 0);";
+    }
+    
+    public static String NAME_HEADER_STYLE()
+    {
+        return "-fx-background-color: "+
+        "#3c7fb1,"+
+            "linear-gradient(#fafdfe, #e8f5fc),"+
+           "linear-gradient(#eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);"+
+        "-fx-background-insets: 0,1,2;"+
+        "-fx-background-radius: 5,4,2;"+
+        "-fx-padding: 5 30 5 30;"+
+        "-fx-text-fill: black;"+ "-fx-font-weight: bold;"+"-fx-font-family: monaco;"+
+        "-fx-font-size: 20px;";
+    }
+    
+    public static String ACCESS_STYLE()
+    {
+        return "-fx-background-color:"+
+        "linear-gradient(#f0ff35, #a9ff00),"+
+                "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);"+
+        "-fx-background-radius: 5, 4, 2;"+
+        "-fx-background-insets: 0, 1, 2;"+
+                "-fx-padding: 5 30 5 30;"+
+        "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );"+
+        "-fx-text-fill: #395306;" + "-fx-font-weight: bold;"+"-fx-font-size: 20px;" + "-fx-font-family: monaco;";
+    }
+    
+    public static String LOGOUT_STYLE()
+    {
+        return "-fx-background-color: linear-gradient(#ff5400, #be1d00);"+
+        "-fx-background-radius: 30;"+
+        "-fx-background-insets: 0;"+
+        "-fx-text-fill: white;"+
+                "-fx-padding: 5 30 5 30;"+
+            "-fx-font-weight: bold;"+"-fx-font-size: 20px;" + "-fx-font-family: monaco;";
+    }
+    
+    public static String GREEN()
+    {
+        return "-fx-background-color:"+
+        "linear-gradient(#f0ff35, #a9ff00),"+
+                "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);"+
+        "-fx-background-radius: 6, 5;"+
+        "-fx-background-insets: 0, 1;"+
+        "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );"+
+                "-fx-font-family: monaco;" + "-fx-text-fill: #395306;";
+    }
+    
+    public static String RED()
+    {
+        return "-fx-background-color: linear-gradient(#ff5400, #be1d00);"+
+                "-fx-background-radius: 30;"+
+                "-fx-background-insets: 0;"+
+                "-fx-text-fill: white;"+
+                "-fx-padding: 5 30 5 30;"+
+                "-fx-font-weight: bold;"+"-fx-font-size: 20px;";
     }
     
     public static String CLICK_ME()
     {
         return "-fx-background-color:"+
-        "linear-gradient(#ffd65b, #e68400),"+
-                "linear-gradient(#ffef84, #f2ba44),"+
+                " linear-gradient(#ffd65b, #e68400),"+
+            "linear-gradient(#ffef84, #f2ba44),"+
         " linear-gradient(#ffea6a, #efaa22),"+
         "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),"+
-        " linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));"+
-        " -fx-background-radius: 30;"+
-        "-fx-background-insets: 0,1,2,3,0;"+
-        " -fx-text-fill: #654b00;"+
-        " -fx-font-weight: bold;"+
-        " -fx-font-size: 14px;"+
-        " -fx-padding: 10 20 10 20;";
-    }
-    
-    public static String TO_CANCEL_STYLE()
-    {
-        return "-fx-background-color: linear-gradient(#ff5400, #be1d00);"+
+        "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));"+
         "-fx-background-radius: 30;"+
-        "-fx-background-insets: 0;"+
-        "-fx-text-fill: white;";
-    }
-    
-    public static String TO_RSVP_STYLE()
-    {
-        return  "-fx-background-color:"+
-                "linear-gradient(#f0ff35, #a9ff00),"+
-                "radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);"+
-                "-fx-background-radius: 6, 5;"+
-                "-fx-background-insets: 0, 1;"+
-                "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );"+
-                "-fx-text-fill: #395306;";
-    }
-    
-    public static String HOME_STYLE()
-    {
-        return Utility.STYLE().concat("-fx-background-color: black; -fx-text-fill: white; -fx-font-wight: bold;");
+        "-fx-background-insets: 0,1,2,3,0;"+
+        "-fx-text-fill: #654b00;"+
+        "-fx-font-weight: bold;"+
+        "-fx-font-size: 14px;"+
+        "-fx-padding: 10 20 10 20;";
     }
 }
