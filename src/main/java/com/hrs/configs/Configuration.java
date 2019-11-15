@@ -1,6 +1,7 @@
 package com.hrs.configs;
 
 import com.hrs.service.ApiService;
+import com.hrs.view.View;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Session;
 
@@ -12,6 +13,7 @@ public class Configuration
     private static ApiService apiService = null;
     private static LocalDate currentDate = null;
     private static Session session = null;
+    private static View view = null;
     
     static
     {
@@ -58,5 +60,15 @@ public class Configuration
     public static ApiService getApiService()
     {
         return apiService;
+    }
+    
+    public static View getView()
+    {
+        return view;
+    }
+    
+    public static void setView(View view)
+    {
+        Configuration.view = view;
     }
 }

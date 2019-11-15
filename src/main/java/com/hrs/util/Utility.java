@@ -39,6 +39,11 @@ public class Utility
 {
     public static final String HOME_PIC_PATH = "home.jpg";
     
+    public static String GENERAL_BTN_STYLE()
+    {
+        return STYLE().concat(FONT_FAMILY(FieldValue.FONT_MONACO).concat("-fx-padding: 8; -fx-border-padding: 10"));
+    }
+    
     public static Node getNodeByRowColumnIndex (int row, int column, GridPane gridPane)
     {
         Node result = null;
@@ -112,7 +117,7 @@ public class Utility
         Button b3 = button(FieldValue.AIRPLANE); b3.setStyle(HEADERS_STYLE());
         Button b4 = button(FieldValue.DESTINATION); b4.setStyle(HEADERS_STYLE());
         Button b5 = button(FieldValue.STATUS); b5.setStyle(HEADERS_STYLE());
-        Button b6 = button(Configuration.getCurrentDate().toString()); b6.setStyle(HEADERS_STYLE());
+        Button b6 = button(FieldValue.DATE); b6.setStyle(HEADERS_STYLE());
     
     
         hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6);
@@ -128,14 +133,16 @@ public class Utility
         Button b2 = button(FieldValue.AIRPLANE); b2.setStyle(HEADERS_STYLE());
         Button b3 = button(FieldValue.FLIGHT_CODE); b3.setStyle(HEADERS_STYLE());
         Button b4 = button(FieldValue.SOURCE); b4.setStyle(HEADERS_STYLE());
-        Button b5 = button(FieldValue.DESTINATION); b5.setStyle(HEADERS_STYLE());
-        Button b6 = button(FieldValue.FARE); b6.setStyle(HEADERS_STYLE());
-        Button b7 = button(FieldValue.RV_DATE); b7.setStyle(HEADERS_STYLE());
-        Button b8 = button(FieldValue.STATUS); b8.setStyle(HEADERS_STYLE());
-        Button b9 = button(FieldValue.TO_CANCEL); b9.setStyle(HEADERS_STYLE());
+        Button b5 = button(FieldValue.DEP_DATE_TIME); b5.setStyle(HEADERS_STYLE());
+        Button b6 = button(FieldValue.DESTINATION); b6.setStyle(HEADERS_STYLE());
+        Button b7 = button(FieldValue.ARR_DATE_TIME); b7.setStyle(HEADERS_STYLE());
+        Button b8 = button(FieldValue.FARE); b8.setStyle(HEADERS_STYLE());
+        Button b9 = button(FieldValue.RV_DATE); b9.setStyle(HEADERS_STYLE());
+        Button b10 = button(FieldValue.STATUS); b10.setStyle(HEADERS_STYLE());
+        Button b11 = button(FieldValue.TO_CANCEL); b11.setStyle(HEADERS_STYLE());
     
     
-        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b7, b8, b9);
+        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11);
         
         return hBox;
     }
@@ -201,15 +208,14 @@ public class Utility
         Button b3 = button(FieldValue.DEP_DATE_TIME); b3.setStyle(HEADERS_STYLE());
         Button b4 = button(FieldValue.DESTINATION); b4.setStyle(HEADERS_STYLE());
         Button b5 = button(FieldValue.ARR_DATE_TIME); b5.setStyle(HEADERS_STYLE());
-        Button b6 = button(FieldValue.AIRLINE); b6.setStyle(HEADERS_STYLE());
-        Button b7 = button(FieldValue.AIRPLANE); b7.setStyle(HEADERS_STYLE());
-        Button b8 = button(FieldValue.FARE); b8.setStyle(HEADERS_STYLE());
-        Button b9 = button(FieldValue.AVAILABLE_SEAT); b9.setStyle(HEADERS_STYLE());
-        Button b10 = button(FieldValue.STATUS); b10.setStyle(HEADERS_STYLE());
-        Button b11 = button(FieldValue.TO_RSVP); b11.setStyle(HEADERS_STYLE());
+        Button b6 = button(FieldValue.AIRPLANE); b6.setStyle(HEADERS_STYLE());
+        Button b7 = button(FieldValue.FARE); b7.setStyle(HEADERS_STYLE());
+        Button b8 = button(FieldValue.AVAILABLE_SEAT); b8.setStyle(HEADERS_STYLE());
+        Button b9 = button(FieldValue.STATUS); b9.setStyle(HEADERS_STYLE());
+        Button b10 = button(FieldValue.TO_RSVP); b10.setStyle(HEADERS_STYLE());
     
     
-        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11);
+        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10);
         
         return hBox;
     }
@@ -261,7 +267,7 @@ public class Utility
     
     public static Label AIRLINE_RESULTS_HEADER_LABEL(String airline)
     {
-        Label l = new Label(FieldValue.RESULTS_LABEL.concat(" ").concat(airline));
+        Label l = new Label(FieldValue.RESULTS_LABEL.concat(airline));
         l.setAlignment(Pos.CENTER);
         l.setStyle(COMMON_RESULT_HEADER());
         return l;
@@ -516,7 +522,7 @@ public class Utility
                 "-fx-background-insets: 0;"+
                 "-fx-text-fill: white;"+
                 "-fx-padding: 5 30 5 30;"+
-                "-fx-font-weight: bold;"+"-fx-font-size: 20px;";
+                "-fx-font-weight: bold;"+"-fx-font-size: 12px;";
     }
     
     public static String CLICK_ME()

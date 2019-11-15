@@ -85,10 +85,10 @@ public class FieldValue
     public static final Integer FONT_SIZE_17 = 17;
     public static final Integer FONT_PADDING_7 = 7;
     
-    public static final Double HOME_WINDOW_WIDTH = 1600.0;
+    public static final Double HOME_WINDOW_WIDTH = 1650.0;
     public static final Double HOME_WINDOW_HEIGHT = 1000.0;
     
-    public static final Double HOME_SCENE_WIDTH = 1600.0;
+    public static final Double HOME_SCENE_WIDTH = 1650.0;
     public static final Double HOME_SCENE_HEIGHT = 1000.0;
     
     public static final String ARRIVAL_LABEL = "arrival";
@@ -114,15 +114,15 @@ public class FieldValue
     
     public static final String SE_ADMIN_LABEL = "Global Admin";
     public static final String SE_ADMIN_LOGIN_LABEL = "Global Admin Login";
-    public static final String AIR_ADMIN_LABEL = "Admin";
     
     public static final String LOGIN_VIEW_KEY_GLOBAL = "global";
     public static final String LOGIN_VIEW_KEY_CUSTOMER = "customer";
     
-    public static final String RV_DATE = "RV. DATE";
+    public static final String RV_DATE = "RSVP DATE";
     
-    public static final String SEARCH_ENGINE_RESULTS = "Displaying all search results from SE";
-    public static final String RESULTS_LABEL = "Displaying all search results for";
+    public static final String RSVP_BY_SE = "Displaying all reservations made using Search Engine";
+    public static final String SEARCH_ENGINE_RESULTS = "Displaying all search results from Search Engine";
+    public static final String RESULTS_LABEL = "Displaying all search results for ";
     
     public static final String RSVP_TITLE = "Displaying all RSVPs for";
     
@@ -135,9 +135,7 @@ public class FieldValue
     public static final Integer CANCEL_FLIGHT_INDEX = 9;
     public static final Integer RSVP_FLIGHT_INDEX = 11;
     
-    public static final String A1 = "SH";
-    public static final String A2 = "AR";
-    public static final String A3 = "HR";
+    public static final Double HOME_BTN_WIDTH = 150.0;
     
     public static final String TO_CANCEL = "TO CANCEL";
     public static final String LAST_NAME = "LAST NAME";
@@ -154,13 +152,13 @@ public class FieldValue
     
     public static final String FLIGHT_ADDITION_SUCCESS_HEADER = "Flight has successfully been added";
     
-    public static final String $ = "$ ";
+    public static final String $ = "$";
     
     public static final String ON_TIME = "ON TIME";
     public static final String ACTIVE = "ACTIVE";
     public static final String CANCELED = "CANCELED";
     public static final String CLICK = "CLICK ME";
-    public static final String SEARCH_FLIGHTS = "Search Flights";
+    public static final String SEARCH_ENGINE = "Search Engine";
     
     public static final String LOGGED_USER = "User";
     public static final String ACCOUNT = "Account Info";
