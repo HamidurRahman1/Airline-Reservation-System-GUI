@@ -1,10 +1,10 @@
 package com.hrs.exceptions;
 
-public class InvalidUserNameException extends Exception
+public class InvalidLoginException extends Exception
 {
     private String message;
     
-    public InvalidUserNameException(String message)
+    public InvalidLoginException(String message)
     {
         super(message);
         this.message = message;
@@ -19,6 +19,6 @@ public class InvalidUserNameException extends Exception
     @Override
     public String toString()
     {
-        return "InvalidUserNameException{" + "message='" + message + '\'' + '}';
+        return "InvalidLoginException{" + "message='" + message + '\'' + '}';
     }
 }

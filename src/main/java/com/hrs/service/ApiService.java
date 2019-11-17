@@ -1,7 +1,6 @@
 package com.hrs.service;
 
-import com.hrs.exceptions.InvalidPasswordException;
-import com.hrs.exceptions.InvalidUserNameException;
+import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.test.Tester;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
@@ -30,6 +29,12 @@ import static com.hrs.test.Tester.testFlight2;
  */
 public class ApiService implements Services
 {
+    @Override
+    public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
+    {
+        return null;
+    }
+    
     @Override
     public Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate)
     {
@@ -64,19 +69,19 @@ public class ApiService implements Services
     }
     
     @Override
-    public Customer getCustomerByLogin(String username, String password) throws InvalidUserNameException, InvalidPasswordException
+    public Customer getCustomerByLogin(String username, String password) throws InvalidLoginException, InvalidPasswordException
     {
         return Tester.testCustomer();
     }
     
     @Override
-    public Admin getGlobalAdminByLogin(String username, String password) throws InvalidUserNameException, InvalidPasswordException
+    public Admin getGlobalAdminByLogin(String username, String password) throws InvalidLoginException, InvalidPasswordException
     {
         return Tester.admin();
     }
     
     @Override
-    public Admin getAirlineAdminByLogin(String airline, String username, String password) throws InvalidUserNameException, InvalidPasswordException
+    public Admin getAirlineAdminByLogin(String airline, String username, String password) throws InvalidLoginException, InvalidPasswordException
     {
         return new Admin("Hamidur", "Rahman");
     }
@@ -147,7 +152,7 @@ public class ApiService implements Services
     
     @Override
     public boolean makeReservation(Integer flightIdPk, String username, String password)
-            throws InvalidUserNameException, InvalidPasswordException
+            throws InvalidLoginException, InvalidPasswordException
     {
         return true;
     }
@@ -159,14 +164,14 @@ public class ApiService implements Services
     }
     
     @Override
-    public boolean makeReservationBySE(Integer flightIdPk, String username, String password)
-            throws InvalidUserNameException, InvalidPasswordException
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password)
+            throws InvalidLoginException, InvalidPasswordException
     {
         return true;
     }
     
     @Override
-    public boolean makeReservationBySE(Integer flightIdPk, Integer customerId)
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId)
     {
         return true;
     }

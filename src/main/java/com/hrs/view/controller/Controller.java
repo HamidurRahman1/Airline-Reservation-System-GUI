@@ -1,8 +1,7 @@
 package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
-import com.hrs.exceptions.InvalidPasswordException;
-import com.hrs.exceptions.InvalidUserNameException;
+import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.service.ApiService;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
@@ -71,7 +70,7 @@ public class Controller
     {
         if(Configuration.getSession().isCustomerInSession())
         {
-            apiService.makeReservationBySE(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
+            apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.getSession().getCustomer().getCustomerId());
             AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                     (Configuration.getSession().getCustomer().getFirstName().concat(" ")
                                   .concat(Configuration.getSession().getCustomer().getLastName())));
@@ -122,7 +121,7 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    if(apiService.makeReservationBySE(flight.getFlightId(), "", ""))
+                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), "", ""))
                     {
                         AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
                                 Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
@@ -139,13 +138,9 @@ public class Controller
                     view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(), Tester.testFlights()));
                 }
             }
-            catch(InvalidUserNameException ex)
+            catch(InvalidLoginException ex)
             {
                 AlertBox.DisplayError("Incorrect username", "No user found with username="+username);
-            }
-            catch(InvalidPasswordException ex)
-            {
-            
             }
         });
         stage.setScene(scene);
@@ -489,8 +484,7 @@ public class Controller
                     Set<Reservation> reservations = apiService.getGlobalReservationsMadeUsingSearchEngine();
                     view.ui_handleAfterGlobalAdminLogin(admin, reservations);
                 }
-                catch(InvalidUserNameException ex) {}
-                catch(InvalidPasswordException ex) {}
+                catch(InvalidLoginException ex) {}
             }
             else if(loginViewKey.equalsIgnoreCase(FieldValue.LOGIN_VIEW_KEY_CUSTOMER))
             {
@@ -502,13 +496,14 @@ public class Controller
                     VBox center = customerCenterContainer(customer);
                     view.setCenter(center);
                 }
-                catch(InvalidUserNameException ex){}
-                catch(InvalidPasswordException ex){}
+                catch(InvalidLoginException ex)
+                {
+                    AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getMessage().concat("\n\n"));
+                }
             }
             else if(loginViewKey.equalsIgnoreCase(FieldValue.AR_AMERICAN)
                             || loginViewKey.equalsIgnoreCase(FieldValue.AR_JET_BLUE)
-                            || loginViewKey.equalsIgnoreCase(FieldValue.AR_UNITED)
-                            || loginViewKey.equalsIgnoreCase(FieldValue.AR_SPIRIT))
+                            || loginViewKey.equalsIgnoreCase(FieldValue.AR_DELTA))
             {
                 try
                 {
@@ -546,8 +541,7 @@ public class Controller
                     view.setTop(view.menuBar(view.airports()));
                     view.setCenter(adminAccessView);
                 }
-                catch(InvalidUserNameException ex) {}
-                catch(InvalidPasswordException ex) {}
+                catch(InvalidLoginException ex) {}
             
             }
         });

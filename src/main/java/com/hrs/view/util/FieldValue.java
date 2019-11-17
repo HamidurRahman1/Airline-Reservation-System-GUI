@@ -12,18 +12,21 @@ public class FieldValue
     public static final String AIRLINE_LABEL = "Airlines";
     
     public static final String AR_AMERICAN = "American Airlines";
-    public static final String AR_SPIRIT = "Spirit Airlines";
     public static final String AR_JET_BLUE = "JetBlue";
-    public static final String AR_UNITED = "United Airlines";
+    public static final String AR_DELTA = "Delta Airlines";
     
-    public static final String AP_LAX = "LAX";
+    public static final String AP_LA = "LA";
     public static final String AP_LAX_NAME = "Los Angeles I.A. - CA";
     public static final String AP_JFK = "JFK";
     public static final String AP_JFK_NAME = "John F. Kennedy I.A. - NY";
-    public static final String AP_MIA = "MIA";
-    public static final String AP_MIA_NAME = "Miami I.A. - FL";
-    public static final String AP_DTW = "DTW";
-    public static final String AP_DTW_NAME = "Detroit I.A. - MI";
+    public static final String AP_MI = "MI";
+    public static final String AP_MI_NAME = "Michigan I.A. - MI";
+    public static final String AP_BOSTON = "Boston";
+    public static final String AP_BOSTON_NAME = "Boston I.A. - MA";
+    public static final String AP_NEWARK = "Newark";
+    public static final String AP_NEWARK_NAME = "Newark I.A. - NJ";
+    public static final String AP_GEORGIA = "Georgia";
+    public static final String AP_GEORGIA_NAME = "Georgia I.A. - GA";
     
     public static final String CUST_REG_FORM = "New Customer Registration Form";
     
@@ -203,4 +206,6 @@ public class FieldValue
     public static final String SORT_BY = "Sort Results By: ";
     
     public static final String KEY_WORDS = "Ex. find flights, get flights, all flights, flights etc.";
+    
+    public static final String INVALID_LOGIN = "Invalid Login!";
 }

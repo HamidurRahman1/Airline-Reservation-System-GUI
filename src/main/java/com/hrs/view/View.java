@@ -869,18 +869,28 @@ public class View extends Application
         
         MenuItem airport1 = new MenuItem(FieldValue.AP_JFK_NAME);
         airport1.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_JFK));
-    
+        
         MenuItem airport2 = new MenuItem(FieldValue.AP_LAX_NAME);
-        airport2.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_LAX));
-    
-        MenuItem airport3 = new MenuItem(FieldValue.AP_MIA_NAME);
-        airport3.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_MIA));
-    
-        MenuItem airport4 = new MenuItem(FieldValue.AP_DTW_NAME);
-        airport4.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_DTW));
-    
+        airport2.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_LA));
+        
+        MenuItem airport3 = new MenuItem(FieldValue.AP_MI_NAME);
+        airport3.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_MI));
+        
+        MenuItem airport4 = new MenuItem(FieldValue.AP_BOSTON_NAME);
+        airport4.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_BOSTON));
+        
+        MenuItem airport5 = new MenuItem(FieldValue.AP_GEORGIA_NAME);
+        airport5.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_GEORGIA));
+        
+        MenuItem airport6 = new MenuItem(FieldValue.AP_NEWARK_NAME);
+        airport6.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_NEWARK));
+        
+        //        MenuItem airport7 = new MenuItem(FieldValue.AP_ATLANTA_NAME);
+        //        airport7.setOnAction(e -> controller.eventLaunchAirport(FieldValue.AP_ATLANTA));
+        
         airportsMenu.getItems().addAll(airport1, Utility.SEPARATOR(), airport2,
-                Utility.SEPARATOR(), airport3, Utility.SEPARATOR(), airport4);
+                Utility.SEPARATOR(), airport3, Utility.SEPARATOR(), airport4,
+                Utility.SEPARATOR(), airport5, Utility.SEPARATOR(), airport6, Utility.SEPARATOR());
         
         return airportsMenu;
     }
@@ -892,22 +902,19 @@ public class View extends Application
         MenuItem airline1 = new MenuItem(FieldValue.AR_AMERICAN);
         airline1.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_AMERICAN));
         
-        MenuItem airline2 = new MenuItem(FieldValue.AR_SPIRIT);
-        airline2.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_SPIRIT));
+        MenuItem airline2 = new MenuItem(FieldValue.AR_JET_BLUE);
+        airline2.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_JET_BLUE));
         
-        MenuItem airline3 = new MenuItem(FieldValue.AR_JET_BLUE);
-        airline3.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_JET_BLUE));
-    
-        MenuItem airline4 = new MenuItem(FieldValue.AR_UNITED);
-        airline4.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_UNITED));
-    
+        MenuItem airline3 = new MenuItem(FieldValue.AR_DELTA);
+        airline3.setOnAction(e -> controller.eventLaunchAirline(FieldValue.AR_DELTA));
+        
         airlineMenu.getItems().addAll(airline1, Utility.SEPARATOR(), airline2,
-                Utility.SEPARATOR(), airline3, Utility.SEPARATOR(), airline4);
+                Utility.SEPARATOR(), airline3, Utility.SEPARATOR());
         
         return airlineMenu;
     }
     
-    public Menu logins(MenuItem... menuItems)
+    public Menu login(MenuItem... menuItems)
     {
         Menu loginMenu = new Menu(FieldValue.CUSTOMER);
         for(MenuItem menuItem : menuItems)
@@ -985,14 +992,14 @@ public class View extends Application
     
     public MenuBar ui_homeMenuBar()
     {
-        return menuBar(
-                logins(customerLoginItem(), newCustomerItem()),
-                airports(), airlines(),
-                admins(globalAdminLoginItem(),
-                        airlineAdminLoginItem(FieldValue.AR_AMERICAN),
-                        airlineAdminLoginItem(FieldValue.AR_SPIRIT),
-                        airlineAdminLoginItem(FieldValue.AR_JET_BLUE),
-                        airlineAdminLoginItem(FieldValue.AR_UNITED)));
+        return menuBar
+                (login(customerLoginItem(), newCustomerItem()),
+                        airports(),
+                        airlines(),
+                        admins(globalAdminLoginItem(),
+                                airlineAdminLoginItem(FieldValue.AR_AMERICAN),
+                                airlineAdminLoginItem(FieldValue.AR_DELTA),
+                                airlineAdminLoginItem(FieldValue.AR_JET_BLUE)));
     }
     
     public void RSVPsByAirline(String airlineName, GridPane ui_gridPane)
