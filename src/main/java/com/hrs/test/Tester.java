@@ -4,7 +4,6 @@ import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
-import com.hrs.view.models.Arrival;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Destination;
 import com.hrs.view.models.Flight;
@@ -12,8 +11,7 @@ import com.hrs.view.models.Login;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
 
-import com.hrs.view.util.FieldValue;
-import javafx.application.Application;
+import com.hrs.resources.FieldValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -206,28 +204,6 @@ public class Tester
     public static Destination testDestination3()
     {
         return new Destination(testAirport3().getAirportName(), LocalDate.now(), "1:00 pm");
-    }
-
-    public static List<Arrival> arrivals()
-    {
-        List<Arrival> arrivals = new LinkedList <>();
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        return arrivals;
-    }
-
-    public static List<Arrival> arrivals2()
-    {
-        List<Arrival> arrivals = new LinkedList <>();
-        arrivals.add(new Arrival("flight up", "airline", "source", "time", "a"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        arrivals.add(new Arrival("flight", "airline", "source", "time", "status"));
-        return arrivals;
     }
 
     public static Set<Reservation> testReservation()

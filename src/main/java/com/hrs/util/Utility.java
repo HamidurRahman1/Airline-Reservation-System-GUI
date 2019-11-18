@@ -3,7 +3,7 @@ package com.hrs.util;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Flight;
-import com.hrs.view.util.FieldValue;
+import com.hrs.resources.FieldValue;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

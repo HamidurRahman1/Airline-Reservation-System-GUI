@@ -1,4 +1,4 @@
-package com.hrs.view.util;
+package com.hrs.resources;
 
 public class FieldValue
 {
