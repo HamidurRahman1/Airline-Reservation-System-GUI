@@ -3,7 +3,6 @@ package com.hrs.view.util;
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
-    public static final String CURRENT_DATE = "Search Date";
     
     public static final String CUSTOMER = "Customer";
     public static final String CUSTOMER_LOGIN_LABEL = "Customer Login";
@@ -83,10 +82,8 @@ public class FieldValue
     public static final String SUBMIT = "Submit";
     
     public static final String FONT_MONACO = "monaco";
-    public static final String FONT_COLOR_BLACK = "black";
     
     public static final Integer FONT_SIZE_17 = 17;
-    public static final Integer FONT_PADDING_7 = 7;
     
     public static final Double HOME_WINDOW_WIDTH = 1650.0;
     public static final Double HOME_WINDOW_HEIGHT = 1000.0;
@@ -112,6 +109,8 @@ public class FieldValue
     public static final String SOURCE = "FROM";
     public static final String DESTINATION = "TO";
     
+    public static final String CANCELABLE = "Cancelable flights for ";
+    
     public static final String NO_ARRIVAL_FLIGHTS = "NO ARRIVAL FLIGHTS TO DISPLAY";
     public static final String NO_DEPARTURE_FLIGHTS = "NO DEPARTURE FLIGHTS TO DISPLAY";
     
@@ -127,16 +126,13 @@ public class FieldValue
     public static final String SEARCH_ENGINE_RESULTS = "Displaying all search results from Search Engine";
     public static final String RESULTS_LABEL = "Displaying all search results for ";
     
-    public static final String RSVP_TITLE = "Displaying all RSVPs for";
+    public static final String RSVP_TITLE = "Displaying all RSVPs for ";
+    public static final String ALL_FLIGHTS = "Displaying all flights for ";
     
     public static final String ADD_FLIGHT = "ADD FLIGHT";
     public static final String CANCEL_FLIGHT = "CANCEL FLIGHT";
     
     public static final String LOGOUT_LABEL = "Logout";
-    
-    public static final Integer ADD_FLIGHT_INDEX = 7;
-    public static final Integer CANCEL_FLIGHT_INDEX = 9;
-    public static final Integer RSVP_FLIGHT_INDEX = 11;
     
     public static final Double HOME_BTN_WIDTH = 150.0;
     
@@ -189,7 +185,7 @@ public class FieldValue
     
     public static final String NO_USER = "User Not In Session";
     
-    public static final String NO_VALID_USER = "No valid user found in session to continue.\n\n";
+    public static final String NO_VALID_USER = "No valid user found in session to continue.";
     public static final String ENTER_CODE = "Enter a flight code/name: ";
     public static final String SELECT_AP = "Select an airplane: ";
     public static final String SELECT_SRC = "Select departure airport: ";
@@ -207,5 +203,10 @@ public class FieldValue
     
     public static final String KEY_WORDS = "Ex. find flights, get flights, all flights, flights etc.";
     
-    public static final String INVALID_LOGIN = "Invalid Login!";
+    public static final String INVALID_QUERY = "Invalid query!";
+    public static final String INVALID_LOGIN = "Invalid login!";
+    public static final String INVALID_INFO = "Provided information not suitable!";
+    
+    public static final String ADMIN_LOGIN_FOR = "Admin Login for ";
+    public static final String LOGIN = "Login Page";
 }
