@@ -206,7 +206,10 @@ public class FieldValue
     public static final String INVALID_QUERY = "Invalid query!";
     public static final String INVALID_LOGIN = "Invalid login!";
     public static final String INVALID_INFO = "Provided information not suitable!";
+    public static final String NO_USER_FOUND = "No user found with given username=";
     
     public static final String ADMIN_LOGIN_FOR = "Admin Login for ";
     public static final String LOGIN = "Login Page";
+    
+    public static final String INVALID_INSERT = "Invalid Info";
 }
