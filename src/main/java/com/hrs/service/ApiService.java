@@ -69,19 +69,19 @@ public class ApiService implements Services
     }
     
     @Override
-    public Customer getCustomerByLogin(String username, String password) throws InvalidLoginException, InvalidPasswordException
+    public Customer getCustomerByLogin(String username, String password) throws InvalidLoginException
     {
         return Tester.testCustomer();
     }
     
     @Override
-    public Admin getGlobalAdminByLogin(String username, String password) throws InvalidLoginException, InvalidPasswordException
+    public Admin getGlobalAdminByLogin(String username, String password) throws InvalidLoginException
     {
         return Tester.admin();
     }
     
     @Override
-    public Admin getAirlineAdminByLogin(String airline, String username, String password) throws InvalidLoginException, InvalidPasswordException
+    public Admin getAirlineAdminByLogin(String airline, String username, String password) throws InvalidLoginException
     {
         return new Admin("Hamidur", "Rahman");
     }
@@ -125,7 +125,7 @@ public class ApiService implements Services
     
     @Override
     public boolean insertNewCustomer(String firstName, String lastName, String email, String password)
-//            throws IllegalArgumentException, InvalidEmailException
+            throws IllegalArgumentException
     {
         try
         {
@@ -151,8 +151,7 @@ public class ApiService implements Services
     }
     
     @Override
-    public boolean makeReservation(Integer flightIdPk, String username, String password)
-            throws InvalidLoginException, InvalidPasswordException
+    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidLoginException
     {
         return true;
     }
@@ -164,8 +163,7 @@ public class ApiService implements Services
     }
     
     @Override
-    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password)
-            throws InvalidLoginException, InvalidPasswordException
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password) throws InvalidLoginException
     {
         return true;
     }
@@ -177,7 +175,7 @@ public class ApiService implements Services
     }
     
     @Override
-    public boolean insertFlightByAirline(Flight flight)
+    public boolean insertFlightByAirline(Flight flight) throws IllegalArgumentException
     {
         return true;
     }

@@ -61,7 +61,7 @@ public interface Services
     boolean insertNewCustomer(String firstName, String lastName, String email, String password) throws IllegalArgumentException;
     
     // Insert a new flight into database that has been just created by an airline admin
-    boolean insertFlightByAirline(Flight flight);
+    boolean insertFlightByAirline(Flight flight) throws IllegalArgumentException;
     
     // Customer is canceling a reservation, customer id provided with reservation id
     boolean cancelReservation(Integer customerId, Integer reservationId);

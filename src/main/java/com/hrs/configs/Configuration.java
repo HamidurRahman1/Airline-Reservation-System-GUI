@@ -37,37 +37,37 @@ public class Configuration
         controller = new Controller();
     }
     
-    public static Controller getController()
+    public static Controller GET_CONTROLLER()
     {
         return controller;
     }
     
-    public static void setCurrentDate(LocalDate localDate)
+    public static void SET_CURRENT_DATE(LocalDate localDate)
     {
         currentDate = localDate;
     }
     
-    public static LocalDate getCurrentDate()
+    public static LocalDate GET_CURRENT_DATE()
     {
         return currentDate;
     }
     
-    public static Session getSession()
+    public static Session GET_SESSION()
     {
         return session;
     }
     
-    public static ApiService getApiService()
+    public static ApiService GET_API_SERVICE()
     {
         return apiService;
     }
     
-    public static View getView()
+    public static View GET_VIEW()
     {
         return view;
     }
     
-    public static void setView(View view)
+    public static void SET_VIEW(View view)
     {
         Configuration.view = view;
     }
