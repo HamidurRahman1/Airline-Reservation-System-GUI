@@ -32,7 +32,7 @@ public class ApiService implements Services
     @Override
     public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
     {
-        return null;
+        return Tester.testReservation();
     }
     
     @Override
