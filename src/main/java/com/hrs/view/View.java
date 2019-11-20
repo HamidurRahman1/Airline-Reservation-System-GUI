@@ -9,7 +9,7 @@ import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
-import com.hrs.view.util.FieldValue;
+import com.hrs.resources.FieldValue;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;

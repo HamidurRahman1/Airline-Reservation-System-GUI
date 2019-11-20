@@ -35,11 +35,11 @@
     <!-- DEPENDENCY FOR JAVAFX - END -->
 
     <!-- DEPENDENCY FOR MySQL CONNECTOR - START -->
-    <!--<dependency>-->
-      <!--<groupId>mysql</groupId>-->
-      <!--<artifactId>mysql-connector-java</artifactId>-->
-      <!--<version>${mysql.connector.version}</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql.connector.version}</version>
+    </dependency>
     <!-- DEPENDENCY FOR MySQL CONNECTOR - END -->
 
   </dependencies>

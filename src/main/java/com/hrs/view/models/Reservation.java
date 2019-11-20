@@ -1,6 +1,5 @@
 package com.hrs.view.models;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -20,7 +19,6 @@ public class Reservation
     
     public Reservation(Flight flight, LocalDate rsvpDate, String status, Integer rsvpBy)
     {
-        this.customer = customer;
         this.flight = flight;
         this.rsvpDate = rsvpDate;
         this.status = status;

@@ -16,7 +16,7 @@ import com.hrs.view.models.Destination;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
-import com.hrs.view.util.FieldValue;
+import com.hrs.resources.FieldValue;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -406,7 +406,7 @@ public class Controller
         }
         catch(IllegalArgumentException ex)
         {
-            AlertBox.DisplayError(FieldValue.INVALID_INFO, ex.getMessage());
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
         }
         return isInserted;
     }

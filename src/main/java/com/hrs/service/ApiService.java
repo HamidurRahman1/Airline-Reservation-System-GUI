@@ -11,7 +11,7 @@ import com.hrs.view.models.Destination;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
-import com.hrs.view.util.FieldValue;
+import com.hrs.resources.FieldValue;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -32,7 +32,7 @@ public class ApiService implements Services
     @Override
     public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
     {
-        return null;
+        return Tester.testReservation();
     }
     
     @Override
