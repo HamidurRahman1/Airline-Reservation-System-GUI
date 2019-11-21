@@ -29,6 +29,15 @@ import static com.hrs.test.Tester.testFlight2;
  */
 public class ApiService implements Services
 {
+    // first character has to be letter, must contain at least 4 character and no more then 14 character (number, letter and _)
+    public final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
+
+    //character@test.test
+    public final String emailRegEx = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+
+    //name validation
+    public final String nameRegEx = "^[a-zA-Z]\\w\\D{3,14}$";
+
     @Override
     public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
     {
