@@ -1,10 +1,13 @@
 package com.hrs.configs;
 
+import com.hrs.dao.dbServices.DatabaseService;
+import com.hrs.dao.gateway.Gateway;
 import com.hrs.service.ApiService;
 import com.hrs.view.View;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Session;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Configuration
@@ -14,12 +17,36 @@ public class Configuration
     private static LocalDate currentDate = null;
     private static Session session = null;
     private static View view = null;
+    private static Gateway gateway = null;
+    private static DatabaseService databaseService = null;
     
     static
     {
-        initializeApiService();
-        initializeController();
-        initializeSession();
+        try
+        {
+            initializeGateway();
+            initializeDatabaseService();
+            initializeApiService();
+            initializeController();
+            initializeSession();
+        }
+        catch(ClassNotFoundException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        catch(SQLException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private static void initializeDatabaseService() throws ClassNotFoundException, SQLException
+    {
+        databaseService = new DatabaseService();
     }
     
     private static void initializeApiService()
@@ -35,6 +62,11 @@ public class Configuration
     private static void initializeController()
     {
         controller = new Controller();
+    }
+    
+    private static void initializeGateway()
+    {
+        gateway = Gateway.getInstance();
     }
     
     public static Controller GET_CONTROLLER()
@@ -70,5 +102,15 @@ public class Configuration
     public static void SET_VIEW(View view)
     {
         Configuration.view = view;
+    }
+    
+    public static Gateway GET_GATEWAY()
+    {
+        return gateway;
+    }
+    
+    public static DatabaseService GET_DATABASE_SERVICE()
+    {
+        return databaseService;
     }
 }

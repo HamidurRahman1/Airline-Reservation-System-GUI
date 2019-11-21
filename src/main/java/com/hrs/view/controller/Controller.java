@@ -214,17 +214,20 @@ public class Controller
     {
         try
         {
-            if(apiService.insertNewCustomer(firstName, lastName, email, password))
-            {
-                AlertBox.DisplayInformation(FieldValue.NEW_CUST_LABEL,
-                        FieldValue.NEW_CUSTOMER_ADDED.concat("\n")
-                                                     .concat(FieldValue.USERNAME
-                                                             .concat(firstName).concat(" ").concat(lastName)));
-            }
+            apiService.insertNewCustomer(firstName, lastName, email, password);
+            AlertBox.DisplayInformation(FieldValue.NEW_CUST_LABEL,
+                    FieldValue.NEW_CUSTOMER_ADDED.concat("\n")
+                                                 .concat(FieldValue.USERNAME
+                                                         .concat(firstName).concat(" ").concat(lastName)));
         }
-        catch(Exception ex)     //IllegalArgumentException
+        catch(IllegalArgumentException ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_INFO, ex.getMessage());
+            view.ui_newCustomerRegistration();
+        }
+        catch(Exception ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
             view.ui_newCustomerRegistration();
         }
     }
@@ -386,12 +389,11 @@ public class Controller
         }
     }
     
-    public boolean addFlightForAirline(String airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
+    public void addFlightForAirline(String airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
                                        ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
                                        ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
                                        DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1)
     {
-        boolean isInserted = false;
         try
         {
             Flight flight = new Flight();
@@ -402,12 +404,15 @@ public class Controller
             flight.setDestination(new Destination(destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
             flight.setCapacity(Integer.parseInt(capacity1.getText()));
     
-            isInserted = apiService.insertFlightByAirline(flight);
+            apiService.insertFlightByAirline(flight);
         }
         catch(IllegalArgumentException ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
         }
-        return isInserted;
+        catch(Exception ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+        }
     }
 }

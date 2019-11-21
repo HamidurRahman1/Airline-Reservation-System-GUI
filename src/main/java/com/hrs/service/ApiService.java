@@ -1,5 +1,8 @@
 package com.hrs.service;
 
+import com.hrs.configs.Configuration;
+import com.hrs.dao.dbServices.DatabaseService;
+import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.test.Tester;
 import com.hrs.view.models.Admin;
@@ -29,6 +32,8 @@ import static com.hrs.test.Tester.testFlight2;
  */
 public class ApiService implements Services
 {
+    private DatabaseService databaseService = Configuration.GET_DATABASE_SERVICE();
+    
     // first character has to be letter, must contain at least 4 character and no more then 14 character (number, letter and _)
     public final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
 
@@ -138,13 +143,16 @@ public class ApiService implements Services
     {
         try
         {
-        
+            return databaseService.insertNewCustomer(firstName, lastName, email, password);
+        }
+        catch(IllegalArgumentException ex)
+        {
+            throw ex;
         }
         catch(Exception ex)
         {
-        
+            throw ex;
         }
-        return true;
     }
     
     @Override

@@ -322,13 +322,10 @@ public class View extends Application
         submit.setStyle(CLICK_ME());
         submit.setOnAction(e ->
         {
-            if(controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
-                    sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1))
-            {
-                stage.close();
-                AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
-                        FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
-            }
+            controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
+                        sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1);
+            stage.close();
+            AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER, FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
         });
         
         gridPane.add(submit, 1, 13, 1, 1);
