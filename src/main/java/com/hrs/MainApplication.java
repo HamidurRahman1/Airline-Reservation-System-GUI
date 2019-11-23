@@ -1,6 +1,5 @@
 package com.hrs;
 
-import com.hrs.dao.gateway.Gateway;
 import com.hrs.view.View;
 
 import javafx.application.Platform;

@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class DatabaseService implements Services
@@ -34,7 +35,13 @@ public class DatabaseService implements Services
     @Override
     public Set<Flight> getAllFlightsForReservation(String query) throws IllegalArgumentException
     {
-        return null;
+        Set<Flight> flights = new LinkedHashSet <>();
+    
+//        select count('a') from Flights;
+//
+//        SELECT * FROM Flights ORDER BY flightId asc LIMIT select count('a') from Flights) OFFSET 1
+        
+        return flights;
     }
     
     @Override
@@ -80,7 +87,7 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Set <Reservation> getGlobalReservationsMadeUsingSearchEngine()
+    public Set<Reservation> getGlobalReservationsMadeUsingSearchEngine()
     {
         return null;
     }
@@ -94,13 +101,33 @@ public class DatabaseService implements Services
     @Override
     public Set<Airplane> getAllAirPlaneByAirLine(String airlineName) throws IllegalArgumentException
     {
-        return null;
+        Set<Airplane> airplanes = new LinkedHashSet <>();
+        
+        try
+        {
+//            final String query = select airplaneId, airplaneName from Airplanes
+//            where airlineId in (select airlineId from Airlines where airlineName = 'American Airlines')
+        }
+        catch(Exception ex)
+        {
+        
+        }
+        return airplanes;
     }
     
     @Override
     public Set<Airport> getAllAirports()
     {
-        return null;
+        Set<Airport> airports = new LinkedHashSet <>();
+        try
+        {
+//            select * from Airports;
+        }
+        catch(Exception ex)
+        {
+        
+        }
+        return airports;
     }
     
     @Override

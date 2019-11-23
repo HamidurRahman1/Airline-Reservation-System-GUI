@@ -14,7 +14,7 @@ public class FieldValue
     public static final String AR_JET_BLUE = "JetBlue";
     public static final String AR_DELTA = "Delta Airlines";
     
-    public static final String AP_LA = "LA";
+    public static final String AP_LA = "LAX";
     public static final String AP_LAX_NAME = "Los Angeles I.A. - CA";
     public static final String AP_JFK = "JFK";
     public static final String AP_JFK_NAME = "John F. Kennedy I.A. - NY";
@@ -155,7 +155,7 @@ public class FieldValue
     
     public static final String ON_TIME = "ON TIME";
     public static final String ACTIVE = "ACTIVE";
-    public static final String CANCELED = "CANCELED";
+    public static final String CANCELED = "CANCELLED";
     public static final String CLICK = "CLICK ME";
     public static final String SEARCH_ENGINE = "Search Engine";
     
