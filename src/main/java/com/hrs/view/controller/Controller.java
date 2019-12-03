@@ -141,7 +141,9 @@ public class Controller
                     }
                     try
                     {
-                        view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
+                        Set<Flight> flights = apiService.getAllFlightsForReservation(" ");
+                        System.out.println(flights.size());
+                        view.setCenter(view.ui_globalSearchResults(flights));
                     }
                     catch(IllegalArgumentException ex)
                     {
@@ -355,7 +357,6 @@ public class Controller
     public void handleAllRSVPsForAirline(String airlineName)
     {
         Set<Reservation> reservations = apiService.getAllReservationsMadeUsingSearchEngineAndAirlineGui(airlineName);
-        
         view.ui_displayRSVPsByAirline(airlineName, reservations);
     }
     

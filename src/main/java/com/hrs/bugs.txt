@@ -1,0 +1,17 @@
+1. getAllFlightsForReservations() a update korer na available seat, r abar query korle extra row add korilay.
+
+2. flightId should be coming from airline_flight_id instead getting populated with flight_info_id.
+
+3. Query in getAllFlightsForReservation() needs to be rechecked, similar to bug 2.
+
+4. Airport screen is not getting closed.
+
+5. No global admin's login found.
+
+6. getAllReservationsMadeUsingSearchEngineAndAirlineGui() does not return customer associated with rsvp. Customer object
+is null. (Tested for American Airlines)
+
+7. db.cancelFlight() -> api.cancelFlight() -> cont.cancelFlight() -> ... -> getAllFlightsByAirline() return flight_info_id
+instead of airline_flight_id. Could not move forward with since it is not valid function. (American Airlines)
+
+8. insertFlightByAirline() needs implementation.

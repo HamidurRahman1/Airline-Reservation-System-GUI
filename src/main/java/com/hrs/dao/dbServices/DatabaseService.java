@@ -63,8 +63,8 @@ public class DatabaseService implements Services
                 throw new java.lang.IllegalArgumentException("Airline Name Not Found");
             }
             
-            while (rs.next()) {
-                
+            while (rs.next())
+            {
                 Integer flightID = Integer.parseInt(rs.getString("flight_info.flight_info_id"));
                 String flightCode = Integer.toString(rs.getString("airline_flight_name").hashCode());
                 LocalDate sourceDate = LocalDate.parse(rs.getString("flight_source_date"));
@@ -89,7 +89,8 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Set<Flight> getAllFlightsForReservation(String str) {
+    public Set<Flight> getAllFlightsForReservation(String str)
+    {
         /*
          * @this query will show you all the current available flights, before you showed it to customer screen, make
          * sure check the given date.
@@ -109,21 +110,24 @@ public class DatabaseService implements Services
                 "flight_status_info = 'On Time' and\n" +
                 "flight_source_date > " + current;
         
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
             int rowcount = 0;
-            if (rs.last()) {
+            if (rs.last())
+            {
                 rowcount = rs.getRow();
                 rs.beforeFirst();
             }
-            if (rowcount == 0) {
+            if (rowcount == 0)
+            {
                 throw new java.lang.IllegalArgumentException("No Result Found");
             }
             
-            while (rs.next()) {
-                
+            while (rs.next())
+            {
                 Integer flightID = Integer.parseInt(rs.getString("flight_info.flight_info_id"));
                 String flightCode = Integer.toString(rs.getString("airline_flight_name").hashCode());
                 LocalDate sourceDate = LocalDate.parse(rs.getString("flight_source_date"));
@@ -139,10 +143,12 @@ public class DatabaseService implements Services
                 
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
                 flights.add(flight);
+                System.out.println(flight.getFlightId());
             }
-        } catch (SQLException e) {
-        
+    
+            System.out.println(flights.size());
         }
+        catch (SQLException e) {}
         
         return flights;
     }
@@ -277,7 +283,8 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Admin getGlobalAdminByLogin(String username, String password) {
+    public Admin getGlobalAdminByLogin(String username, String password)
+    {
         username = "'" + username + "'";
         password = "'" + password + "'";
         
@@ -286,7 +293,8 @@ public class DatabaseService implements Services
                 "where airline_admin.airline_admin_id = airline_admin_login.airline_admin_id and\n" +
                 "admin_username = " + username + " and admin_password = " + password;
         Admin admin = new Admin();
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
@@ -311,8 +319,9 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Admin getAirlineAdminByLogin(String airline, String username, String password) {
-        
+    public Admin getAirlineAdminByLogin(String airline, String username, String password)
+    {
+        System.out.println();
         username = "'" + username + "'";
         password = "'" + password + "'";
         airline = "'" + airline + "'";
@@ -564,19 +573,21 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public boolean cancelFlight(Integer flightId) {
+    public boolean cancelFlight(Integer flightId)
+    {
         String status = "'" + "CANCELLED" + "'";
         String query = "update flight_status\n" +
                 "set flight_status_info = " + status + " " +
-                "where airline_flight_id = " + Integer.toString(flightId);
+                "where airline_flight_id = " + flightId;
+        
         String query2 = "select reservation_status.reservation_status_id, res_status\n" +
                 "from reservation_status, reservation_info, flight_info\n" +
                 "where reservation_status.reservation_id = reservation_info.reservation_id and\n" +
                 "flight_info.reservation_id = reservation_info.reservation_id and\n" +
-                "flight_info.airline_flight_id = " + Integer.toString(flightId);
-        try {
-            PreparedStatement ps = connection.prepareStatement(query,
-                    Statement.RETURN_GENERATED_KEYS);
+                "flight_info.airline_flight_id = " + flightId;
+        try
+        {
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.execute();
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query2);
@@ -586,13 +597,12 @@ public class DatabaseService implements Services
                 Integer res_status_id = Integer.parseInt(rs.getString("reservation_status.reservation_status_id"));
                 query3 = "update reservation_status\n" +
                         "set res_status = " + status + " " +
-                        "where reservation_status_id = " + Integer.toString(res_status_id);
+                        "where reservation_status_id = " + res_status_id;
                 ps = connection.prepareStatement(query3, Statement.RETURN_GENERATED_KEYS);
                 ps.execute();
             }
-        } catch (SQLException e) {
-            throw new java.lang.IllegalArgumentException(e.getMessage());
         }
+        catch (SQLException e) { throw new java.lang.IllegalArgumentException(e.getMessage()); }
         
         return true;
     }
@@ -902,7 +912,7 @@ public class DatabaseService implements Services
         return reservations;
     }
     
-    void insertAirlineAdmin(String firstname, String lastname, Integer airline_ID) {
+    private void insertAirlineAdmin(String firstname, String lastname, Integer airline_ID) {
         
         String firstname_1 = "'" + firstname + "'";
         String lastname_1 = "'" + lastname + "'";
@@ -974,7 +984,7 @@ public class DatabaseService implements Services
         }
     }
     
-    void insert_airline_info(String airline_name) {
+    private void insert_airline_info(String airline_name) {
         
         String airline_name_ = "'" + airline_name + "'";
         
