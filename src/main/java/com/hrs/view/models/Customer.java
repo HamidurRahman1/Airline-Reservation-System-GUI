@@ -101,6 +101,6 @@ public class Customer extends Person
     @Override
     public String toString()
     {
-        return "Customer{" + "customerId=" + customerId + ", login=" + login +'}';
+        return "Customer{" + "customerId=" + customerId + " " + super.toString() + ", login=" + login +'}';
     }
 }

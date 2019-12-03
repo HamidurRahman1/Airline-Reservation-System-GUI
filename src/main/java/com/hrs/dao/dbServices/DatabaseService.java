@@ -138,7 +138,6 @@ public class DatabaseService implements Services
                 Airplane airplane = new Airplane(Integer.parseInt(rs.getString("airline_info.airline_id")), rs.getString("airline_flight_name"));
                 
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
-                System.out.println(flight);
                 flights.add(flight);
             }
         } catch (SQLException e) {
@@ -150,8 +149,7 @@ public class DatabaseService implements Services
     
     @Override
     public Set<Reservation> getAllReservationsByCustomerId(Integer customerId) {
-    
-        System.out.println(customerId);
+        
         Set<Reservation> reservations = new LinkedHashSet<>();
         
         String query = "select customer_info.customer_id,customer_info.customer_first_name,customer_info.customer_last_name, reservation_info.reservation_id, flight_info.flight_info_id, airline_flight_info.airline_flight_id,airline_info.airline_id,\n" +
@@ -166,17 +164,11 @@ public class DatabaseService implements Services
                 "customer_info.customer_id = reservation_info.customer_id and\n" +
                 "reservation_info.reservation_id = reservation_status.reservation_id and\n" +
                 "reservation_info.reservation_id = flight_info.reservation_id";
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
-            int rowcount = 0;
-            if (rs.last()) {
-                rowcount = rs.getRow();
-                rs.beforeFirst();
-            }
-            if (rowcount == 0) {
-                throw new java.lang.IllegalArgumentException("Id Not Found");
-            }
+           
             while (rs.next()) {
                 Integer reservationID = Integer.parseInt(rs.getString("reservation_info.reservation_id"));
                 Integer customerID = Integer.parseInt(rs.getString("customer_info.customer_id"));
@@ -197,12 +189,13 @@ public class DatabaseService implements Services
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
                 
                 Reservation reservation = new Reservation(reservationID, null, flight, LocalDate.parse(rs.getString("reservation_date")), rs.getString("res_status"), Integer.parseInt(rs.getString("reservation_by")));
-                System.out.println(reservation);
                 reservations.add(reservation);
             }
-        } catch (SQLException e) {
-        
+            
+            statement.close();
+            rs.close();
         }
+        catch (SQLException e) {}
         
         return reservations;
     }
@@ -237,17 +230,13 @@ public class DatabaseService implements Services
                 throw new java.lang.IllegalArgumentException("Customer Not Found");
             }
             while (rs.next()) {
-                
                 id = Integer.parseInt(rs.getString("customer_info.customer_id"));
-                System.out.println(id);
                 fname = rs.getString("customer_first_name");
                 lname = rs.getString("customer_last_name");
                 
                 login = new Login(rs.getString("cust_username"), rs.getString("cust_password"));
                 reservations = getAllReservationsByCustomerId(id);
-                System.out.println("after");
             }
-            
             
             String query2 = "select flight_info.flight_info_id, airline_flight_info.airline_flight_id,airline_info.airline_id,\n" +
                     "source_name, destination_name, flight_status_info,flight_source_date, \n" +
@@ -263,18 +252,18 @@ public class DatabaseService implements Services
                     "reservation_info.reservation_id = flight_info.reservation_id";
             ResultSet rs2 = statement.executeQuery(query2);
             while (rs2.next()) {
-                Integer flightID = Integer.parseInt(rs.getString("flight_info.flight_info_id"));
-                String flightCode = Integer.toString(rs.getString("airline_flight_name").hashCode());
-                LocalDate sourceDate = LocalDate.parse(rs.getString("flight_source_date"));
-                Source source = new Source(rs.getString("source_name"), sourceDate, rs.getString("flight_fly_time"));
-                LocalDate destinationDate = LocalDate.parse(rs.getString("flight_dest_date"));
-                Destination destination = new Destination(rs.getString("destination_name"), destinationDate, rs.getString("flight_land_time"));
-                Integer capacity = Integer.parseInt(rs.getString("flight_max_capacity"));
-                Integer availableSeat = capacity - Integer.parseInt(rs.getString("flight_current_capacity"));
-                Float fare = Float.parseFloat(rs.getString("fare"));
-                String status = rs.getString("flight_status_info");
-                Airline airLine = new Airline(Integer.parseInt(rs.getString("airline_flight_info.airline_flight_id")), rs.getString("airline_name"));
-                Airplane airplane = new Airplane(Integer.parseInt(rs.getString("airline_info.airline_id")), rs.getString("airline_flight_name"));
+                Integer flightID = Integer.parseInt(rs2.getString("flight_info.flight_info_id"));
+                String flightCode = Integer.toString(rs2.getString("airline_flight_name").hashCode());
+                LocalDate sourceDate = LocalDate.parse(rs2.getString("flight_source_date"));
+                Source source = new Source(rs2.getString("source_name"), sourceDate, rs2.getString("flight_fly_time"));
+                LocalDate destinationDate = LocalDate.parse(rs2.getString("flight_dest_date"));
+                Destination destination = new Destination(rs2.getString("destination_name"), destinationDate, rs2.getString("flight_land_time"));
+                Integer capacity = Integer.parseInt(rs2.getString("flight_max_capacity"));
+                Integer availableSeat = capacity - Integer.parseInt(rs2.getString("flight_current_capacity"));
+                Float fare = Float.parseFloat(rs2.getString("fare"));
+                String status = rs2.getString("flight_status_info");
+                Airline airLine = new Airline(Integer.parseInt(rs2.getString("airline_flight_info.airline_flight_id")), rs2.getString("airline_name"));
+                Airplane airplane = new Airplane(Integer.parseInt(rs2.getString("airline_info.airline_id")), rs2.getString("airline_flight_name"));
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
                 flights.add(flight);
             }
@@ -313,7 +302,6 @@ public class DatabaseService implements Services
             while (rs.next()) {
                 admin = new Admin(rs.getString("airline_admin_fname"), rs.getString("admin_username"), new Login(rs.getString("admin_username"), rs.getString("admin_password")));
             }
-            System.out.println(admin);
             
         } catch (SQLException e) {
         
@@ -353,7 +341,6 @@ public class DatabaseService implements Services
             while (rs.next()) {
                 admin = new Admin(rs.getString("airline_admin_fname"), rs.getString("airline_admin_lname"), new Login(rs.getString("admin_username"), rs.getString("admin_password")));
             }
-            System.out.println(admin);
             
         } catch (SQLException e) {
         
@@ -415,7 +402,6 @@ public class DatabaseService implements Services
                 //Set<Reservation> custReservation = getAllReservationsByCustomerId(customerID);
                 
                 Reservation reservation = new Reservation(reservationID, null, flight, LocalDate.parse(rs.getString("reservation_date")), rs.getString("res_status"), Integer.parseInt(rs.getString("reservation_by")));
-                System.out.println(reservation);
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
@@ -426,7 +412,8 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Set<Airplane> getAllAirPlaneByAirLine(String airlineName) {
+    public Set<Airplane> getAllAirPlaneByAirLine(String airlineName)
+    {
         Set<Airplane> airplanes = new LinkedHashSet<>();
         airlineName = "'" + airlineName + "'";
         String query = "select airline_flight_id, airline_flight_name\n" +
@@ -453,7 +440,6 @@ public class DatabaseService implements Services
         } catch (SQLException e) {
         
         }
-        System.out.println(airplanes);
         return airplanes;
     }
     
@@ -476,7 +462,7 @@ public class DatabaseService implements Services
             while (rs.next()) {
                 Airport airport = new Airport(Integer.parseInt(rs.getString("airport_id")), rs.getString("airport_name"));
                 airports.add(airport);
-                System.out.println(rs.getString("airport_id") + " " + rs.getString("airport_name"));
+//                System.out.println(rs.getString("airport_id") + " " + rs.getString("airport_name"));
             }
         } catch (SQLException e) {
         
@@ -532,7 +518,6 @@ public class DatabaseService implements Services
                 Airplane airplane = new Airplane(Integer.parseInt(rs.getString("airline_info.airline_id")), rs.getString("airline_flight_name"));
                 
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
-                System.out.println(flight);
                 flights.add(flight);
             }
         } catch (SQLException e) {
@@ -831,7 +816,6 @@ public class DatabaseService implements Services
                 Airplane airplane = new Airplane(Integer.parseInt(rs.getString("airline_info.airline_id")), rs.getString("airline_flight_name"));
                 
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
-                System.out.println(flight);
                 flights.add(flight);
             }
         } catch (SQLException e) {
@@ -893,7 +877,6 @@ public class DatabaseService implements Services
                 //Set<Reservation> custReservation = getAllReservationsByCustomerId(customerID);
                 
                 Reservation reservation = new Reservation(reservationID, null, flight, LocalDate.parse(rs.getString("reservation_date")), rs.getString("res_status"), Integer.parseInt(rs.getString("reservation_by")));
-                System.out.println(reservation);
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
@@ -1154,8 +1137,7 @@ public class DatabaseService implements Services
         String query = "insert into reservation_info(customer_id, reservation_by, reservation_date) values( " + customer_id + "," + rvb + "," + date + ")";
         int reservation_key = -1;
         try {
-            PreparedStatement ps = connection.prepareStatement(query,
-                    Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
             int generatedKey = 0;
@@ -1163,7 +1145,9 @@ public class DatabaseService implements Services
                 generatedKey = rs.getInt(1);
             }
             reservation_key = generatedKey;
+            System.out.println("b");
             insert_reservation_status(generatedKey, "ACTIVE");
+            System.out.println("a");
             
         } catch (SQLException e) {
             throw new java.lang.IllegalArgumentException("Reservation Info");
