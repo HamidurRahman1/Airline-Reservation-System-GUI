@@ -189,27 +189,44 @@ public class Controller
         TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW,
                 FieldValue.SEARCH_BAR_COL, gridPane);
         
-        searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
+        searchBar.setOnAction(e ->
         {
-            @Override
-            public void handle(KeyEvent ke)
+            try
             {
-                final String query = searchBar.getText();
-                
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
-                    try
-                    {
-                        view.setCenter(view.ui_searchResultsByAirline(airlineName,
-                                apiService.getAllFlightsByAirlineForReservation(airlineName)));
-                    }
-                    catch(IllegalArgumentException ex)
-                    {
-                        System.out.println(ex.getMessage());
-                    }
-                }
+                view.setCenter(view.ui_searchResultsByAirline(airlineName,
+                        apiService.getAllFlightsByAirlineForReservation(airlineName)));
+            }
+            catch(IllegalArgumentException ex)
+            {
+                AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage());
             }
         });
+        
+//        searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
+//        {
+//            @Override
+//            public void handle(KeyEvent ke)
+//            {
+//                final String query = searchBar.getText();
+//
+//                if (ke.getCode().equals(KeyCode.ENTER))
+//                {
+//                    try
+//                    {
+//                        view.setCenter(view.ui_searchResultsByAirline(airlineName, apiService.getAllFlightsByAirlineForReservation(airlineName)));
+//                    }
+//                    catch(IllegalArgumentException ex)
+//                    {
+//                        AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage());
+//                    }
+//                }
+//                else
+//                {
+//                    System.out.println(ke.getCode());
+//                    AlertBox.DisplayError(FieldValue.INVALID_QUERY, "Given query is not valid. query="+query);
+//                }
+//            }
+//        });
         
         HBox hBox = new HBox();
         Button button = BUTTON(FieldValue.HOME); button.setMinWidth(FieldValue.HOME_BTN_WIDTH);
@@ -405,17 +422,10 @@ public class Controller
         }
     }
     
-    public void eventGlobalSearchBar()
+    public void eventGlobalSearchBar(String query)
     {
-        GridPane gridPane = view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL);
-        
-        TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW,
-                FieldValue.SEARCH_BAR_COL, gridPane);
-        
         try
         {
-            String query = searchBar.getText();
-            
             Set<Flight> flights = apiService.getAllFlightsForReservation(query);
             
             GridPane center = view.ui_globalSearchResults(flights);

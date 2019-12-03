@@ -488,8 +488,6 @@ public class DatabaseService implements Services
     @Override
     public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName)
     {
-        System.out.println(airlineName);
-        
         airlineName = "'" + airlineName + "'";
         
         Set<Flight> flights = new LinkedHashSet<>();

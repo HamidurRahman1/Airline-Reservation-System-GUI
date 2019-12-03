@@ -1,5 +1,9 @@
 package com.hrs.resources;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
@@ -212,4 +216,7 @@ public class FieldValue
     public static final String LOGIN = "Login Page";
     
     public static final String INVALID_INSERT = "Invalid Info";
+    
+    public static final Set<String> QUERIES =
+            new LinkedHashSet <>(Arrays.asList("q", "find flights", "get flights", "all flights", "flights"));
 }

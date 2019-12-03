@@ -563,17 +563,7 @@ public class View extends Application
         
         gridPane.add(new Label(FieldValue.KEY_WORDS), 1, 4, 3, 1);
         
-        searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
-        {
-            @Override
-            public void handle(KeyEvent ke)
-            {
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
-                    controller.eventGlobalSearchBar();
-                }
-            }
-        });
+        searchBar.setOnAction(e -> controller.eventGlobalSearchBar(searchBar.getText()));
         
         return gridPane;
     }

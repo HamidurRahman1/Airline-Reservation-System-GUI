@@ -19,6 +19,7 @@ public class Configuration
     private static View view = null;
     private static Gateway gateway = null;
     private static DatabaseService databaseService = null;
+    private static String LAST_QUERY = null;
     
     static
     {
@@ -82,6 +83,16 @@ public class Configuration
     public static LocalDate GET_CURRENT_DATE()
     {
         return currentDate;
+    }
+    
+    public static void SET_QUERY(String query)
+    {
+        LAST_QUERY = query;
+    }
+    
+    public static String GET_QUERY()
+    {
+        return LAST_QUERY;
     }
     
     public static Session GET_SESSION()

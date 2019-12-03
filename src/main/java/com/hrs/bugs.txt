@@ -16,7 +16,7 @@ instead of airline_flight_id. Could not move forward with since it is not valid 
 
 8. insertFlightByAirline() needs implementation.
 
-9. getAllFlightsByAirline(delta) does not return any rows.
+9. getAllFlightsByAirline(delta) does not return any rows. (for admin)
 
 10. JetBlue airline admin cannot see rsvps.
 
@@ -26,4 +26,6 @@ instead of airline_flight_id. Could not move forward with since it is not valid 
 
 13. makeReservation() all four methods needs to be checked for dates -> dest, src
 
-14. Changed all LocalDate.now() to Configuration.GET_CURRENT_DATE() for consistency.
+14. Changed all LocalDate.now() to Configuration.GET_CURRENT_DATE() for consistency. - fixed partially
+
+15. Global Search Engine and Airline search engine was not taking the query - fixed
