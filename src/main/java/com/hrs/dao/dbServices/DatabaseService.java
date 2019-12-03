@@ -581,13 +581,13 @@ public class DatabaseService implements Services
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query2);
             String query3 = new String();
-            while (rs.next()) {
+            while (rs.next())
+            {
                 Integer res_status_id = Integer.parseInt(rs.getString("reservation_status.reservation_status_id"));
                 query3 = "update reservation_status\n" +
                         "set res_status = " + status + " " +
                         "where reservation_status_id = " + Integer.toString(res_status_id);
-                ps = connection.prepareStatement(query3,
-                        Statement.RETURN_GENERATED_KEYS);
+                ps = connection.prepareStatement(query3, Statement.RETURN_GENERATED_KEYS);
                 ps.execute();
             }
         } catch (SQLException e) {
@@ -638,7 +638,8 @@ public class DatabaseService implements Services
                 src = rs.getString("source_name");
                 dest = rs.getString("destination_name");
             }
-            insert_flight_info(reservation_id, flightIdPk, sourceDate, destDate, fly_time, land_time, src, dest);
+            // change flight Id
+            insert_flight_info(reservation_id, 3, sourceDate, destDate, fly_time, land_time, src, dest);
             
         } catch (SQLException | IllegalArgumentException e) {
             throw new java.lang.IllegalArgumentException(e.getMessage());
@@ -683,47 +684,62 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password) {
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password)
+    {
         String user_name = "'" + username + "'";
         String pass_word = "'" + password + "'";
         String current_date = "'" + LocalDate.now().toString() + "'";
         Integer reservation_id = -1;
         Integer customer_id = -1;
+        
         String customer_id_select = "select customer_info.customer_id\n" +
                 "from customer_info, customer_login\n" +
                 "where cust_username = " + user_name + " and\n" +
                 "cust_password = " + pass_word + " and\n" +
                 "customer_info.customer_id = customer_login.customer_id";
-        String flight_select = "select flight_source_date,flight_dest_date,flight_fly_time,flight_land_time,source_name,destination_name\n" +
+        
+        
+        // change flightId
+        String flight_select = "select flight_source_date, flight_dest_date, flight_fly_time, flight_land_time, source_name, destination_name\n" +
                 "from flight_info, airline_flight_info\n" +
                 "where airline_flight_info.airline_flight_id = flight_info.airline_flight_id and\n" +
-                "airline_flight_info.airline_flight_id = " + flightIdPk.toString() + " and\n" +
+                "airline_flight_info.airline_flight_id = " + 3 + " and\n" +
                 "flight_source_date > " + current_date;
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(customer_id_select);
             
-            while (rs.next()) {
+            while (rs.next())
+            {
                 customer_id = Integer.parseInt(rs.getString("customer_info.customer_id"));
             }
+            
+            rs.close();
+            
             reservation_id = insert_reservation_info(customer_id, "0", LocalDate.now());
-            rs = statement.executeQuery(flight_select);
+            
             LocalDate sourceDate = LocalDate.now();
             LocalDate destDate = LocalDate.now();
+            
             String src = "";
             String dest = "";
             String fly_time = "";
             String land_time = "";
             
-            while (rs.next()) {
-                sourceDate = LocalDate.parse(rs.getString("flight_source_date"));
-                destDate = LocalDate.parse(rs.getString("flight_dest_date"));
-                fly_time = rs.getString("flight_fly_time");
-                land_time = rs.getString("flight_land_time");
-                src = rs.getString("source_name");
-                dest = rs.getString("destination_name");
+            ResultSet rs2 = statement.executeQuery(flight_select);
+            
+            while (rs2.next())
+            {
+                sourceDate = LocalDate.parse(rs2.getString("flight_source_date"));
+                destDate = LocalDate.parse(rs2.getString("flight_dest_date"));
+                fly_time = rs2.getString("flight_fly_time");
+                land_time = rs2.getString("flight_land_time");
+                src = rs2.getString("source_name");
+                dest = rs2.getString("destination_name");
             }
-            insert_flight_info(reservation_id, flightIdPk, sourceDate, destDate, fly_time, land_time, src, dest);
+            
+            insert_flight_info(reservation_id, 3, sourceDate, destDate, fly_time, land_time, src, dest);
             
         } catch (SQLException | IllegalArgumentException e) {
             throw new java.lang.IllegalArgumentException(e.getMessage());
@@ -1092,26 +1108,25 @@ public class DatabaseService implements Services
         }
     }
     
-    void insert_flight_info(Integer reservation_id, Integer airline_flight_id, LocalDate sourceDate, LocalDate destination_date, String fly_time, String land_time, String source_name, String destination_name) {
-        
+    private void insert_flight_info(Integer reservation_id, Integer airline_flight_id, LocalDate sourceDate, LocalDate destination_date, String fly_time, String land_time, String source_name, String destination_name)
+    {
         String source = "'" + source_name + "'";
         String dest = "'" + destination_name + "'";
         String flyTime = "'" + fly_time + "'";
         String landTime = "'" + land_time + "'";
-        String sDate = "'" + sourceDate.toString() + "'";
-        String dDate = "'" + destination_date.toString() + "'";
-        String query = "insert into flight_info(reservation_id,airline_flight_id,flight_source_date,flight_dest_date,flight_fly_time,flight_land_time,source_name,destination_name)\n" +
-                "\tvalues( " + reservation_id + "," + airline_flight_id + "," + sDate + "," + dDate + "," + flyTime + "," + landTime + "," + source + "," + dest + ");";
-        try {
-            PreparedStatement ps = connection.prepareStatement(query,
-                    Statement.RETURN_GENERATED_KEYS);
+        String sDate = "'" + sourceDate + "'";
+        String dDate = "'" + destination_date + "'";
+        
+        String query = "insert into flight_info ( reservation_id, airline_flight_id, flight_source_date, flight_dest_date, flight_fly_time, flight_land_time, source_name, destination_name ) \n" +
+                "\t values ( '" + reservation_id + "' , '" + airline_flight_id + "' , " + sDate + " , " + dDate + " , " + flyTime + " , " + landTime + " , " + source + " , " + dest + " ) ; ";
+        try
+        {
+            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.execute();
-            ResultSet rs = ps.getGeneratedKeys();
-            int generatedKey = 0;
-            if (rs.next()) {
-                generatedKey = rs.getInt(1);
-            }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
             throw new java.lang.IllegalArgumentException("Insert Flight ");
         }
         
@@ -1130,14 +1145,16 @@ public class DatabaseService implements Services
         
     }
     
-    private int insert_reservation_info(Integer customer_id, String reservation_by, LocalDate localDate) throws IllegalArgumentException {
-        
+    private int insert_reservation_info(Integer customer_id, String reservation_by, LocalDate localDate)
+            throws IllegalArgumentException
+    {
         String date = "'" + localDate.toString() + "'";
         String rvb = "'" + reservation_by + "'";
-        String query = "insert into reservation_info(customer_id, reservation_by, reservation_date) values( " + customer_id + "," + rvb + "," + date + ")";
+        String query = "insert into reservation_info(customer_id, reservation_by, reservation_date) values( "
+                + customer_id + "," + rvb + "," + date + ")";
         int reservation_key = -1;
         try {
-            PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = this.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.execute();
             ResultSet rs = ps.getGeneratedKeys();
             int generatedKey = 0;
@@ -1145,11 +1162,9 @@ public class DatabaseService implements Services
                 generatedKey = rs.getInt(1);
             }
             reservation_key = generatedKey;
-            System.out.println("b");
             insert_reservation_status(generatedKey, "ACTIVE");
-            System.out.println("a");
-            
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new java.lang.IllegalArgumentException("Reservation Info");
         }
         

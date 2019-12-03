@@ -134,7 +134,7 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), "", ""))
+                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), username.getText(), pass.getText()))
                     {
                         AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
                                 Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
