@@ -12,7 +12,7 @@ public class FieldValue
     
     public static final String AR_AMERICAN = "American Airlines";
     public static final String AR_JET_BLUE = "JetBlue";
-    public static final String AR_DELTA = "Delta Airlines";
+    public static final String AR_DELTA = "Delta";
     
     public static final String AP_LA = "LAX";
     public static final String AP_LAX_NAME = "Los Angeles I.A. - CA";

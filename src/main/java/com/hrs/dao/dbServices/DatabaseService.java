@@ -36,14 +36,18 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate) {
+    public Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate)
+    {
+        System.out.println(airlineName+localDate);
         
         airlineName = "'" + airlineName + "'";
         String dt = "'" + localDate.toString() + "'";
+        
         Set<Flight> flights = new LinkedHashSet<>();
-        String query = "select flight_info.flight_info_id,airline_flight_info.airline_flight_id,airline_info.airline_id, " +
+        
+        String query = "select flight_info.flight_info_id, airline_flight_info.airline_flight_id, airline_info.airline_id, " +
                 "source_name, destination_name, flight_status_info," +
-                "flight_source_date,flight_dest_date,flight_max_capacity,flight_current_capacity,fare,airline_name," +
+                "flight_source_date, flight_dest_date, flight_max_capacity, flight_current_capacity, fare, airline_name, " +
                 "airline_flight_name, flight_fly_time, flight_land_time\n" +
                 "from flight_info, airline_info, airline_flight_info, flight_status\n" +
                 "where flight_info.airline_flight_id = airline_flight_info.airline_flight_id and\n" +
@@ -51,15 +55,18 @@ public class DatabaseService implements Services
                 "flight_status.airline_flight_id = airline_flight_info.airline_flight_id and\n" +
                 "airline_info.airline_name = " + airlineName + " and\n" +
                 "flight_source_date > " + dt;
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
+            
             int rowcount = 0;
             if (rs.last()) {
                 rowcount = rs.getRow();
                 rs.beforeFirst();
             }
-            if (rowcount == 0) {
+            if (rowcount == 0)
+            {
                 throw new java.lang.IllegalArgumentException("Airline Name Not Found");
             }
             
@@ -81,9 +88,8 @@ public class DatabaseService implements Services
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
                 flights.add(flight);
             }
-        } catch (SQLException e) {
-        
         }
+        catch (SQLException e) {}
         
         return flights;
     }
@@ -91,12 +97,8 @@ public class DatabaseService implements Services
     @Override
     public Set<Flight> getAllFlightsForReservation(String str)
     {
-        /*
-         * @this query will show you all the current available flights, before you showed it to customer screen, make
-         * sure check the given date.
-         * */
         Set<Flight> flights = new LinkedHashSet<>();
-        String current = "'" + LocalDate.now().toString() + "'";
+        String current = "'" + Configuration.GET_CURRENT_DATE().toString() + "'";
         
         String query = "select flight_info.flight_info_id, airline_flight_info.airline_flight_id,airline_info.airline_id, \n" +
                 "source_name, destination_name, flight_status_info,flight_source_date, \n" +
@@ -143,10 +145,7 @@ public class DatabaseService implements Services
                 
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
                 flights.add(flight);
-                System.out.println(flight.getFlightId());
             }
-    
-            System.out.println(flights.size());
         }
         catch (SQLException e) {}
         
@@ -215,10 +214,12 @@ public class DatabaseService implements Services
         
         username = "'" + username + "'";
         password = "'" + password + "'";
+        
         String query = "select customer_info.customer_id, customer_first_name, customer_last_name, customer_email, cust_username, cust_password\n" +
                 "from customer_info, customer_login\n" +
                 "where customer_info.customer_id = customer_login.customer_id\n" +
                 "and cust_username = " + username + " and cust_password = " + password;
+        
         Integer id = null;
         String fname = "";
         String lname = "";
@@ -256,8 +257,11 @@ public class DatabaseService implements Services
                     "customer_info.customer_id = reservation_info.customer_id and\n" +
                     "reservation_info.reservation_id = reservation_status.reservation_id and\n" +
                     "reservation_info.reservation_id = flight_info.reservation_id";
+            
             ResultSet rs2 = statement.executeQuery(query2);
-            while (rs2.next()) {
+            
+            while (rs2.next())
+            {
                 Integer flightID = Integer.parseInt(rs2.getString("flight_info.flight_info_id"));
                 String flightCode = Integer.toString(rs2.getString("airline_flight_name").hashCode());
                 LocalDate sourceDate = LocalDate.parse(rs2.getString("flight_source_date"));
@@ -275,7 +279,9 @@ public class DatabaseService implements Services
             }
             customer = new Customer(id, fname, lname, login, reservations, flights);
             
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             System.out.println(e.getMessage());
         }
         
@@ -321,7 +327,6 @@ public class DatabaseService implements Services
     @Override
     public Admin getAirlineAdminByLogin(String airline, String username, String password)
     {
-        System.out.println();
         username = "'" + username + "'";
         password = "'" + password + "'";
         airline = "'" + airline + "'";
@@ -334,7 +339,8 @@ public class DatabaseService implements Services
                 "and airline_name = " + airline;
         
         Admin admin = new Admin();
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
@@ -351,9 +357,8 @@ public class DatabaseService implements Services
                 admin = new Admin(rs.getString("airline_admin_fname"), rs.getString("airline_admin_lname"), new Login(rs.getString("admin_username"), rs.getString("admin_password")));
             }
             
-        } catch (SQLException e) {
-        
         }
+        catch (SQLException e) {}
         
         return admin;
     }
@@ -481,10 +486,15 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName) {
+    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName)
+    {
+        System.out.println(airlineName);
+        
         airlineName = "'" + airlineName + "'";
+        
         Set<Flight> flights = new LinkedHashSet<>();
-        String current = "'" + LocalDate.now().toString() + "'";
+        
+        String current = "'" + Configuration.GET_CURRENT_DATE().toString() + "'";
         
         String query = "select flight_info.flight_info_id, airline_flight_info.airline_flight_id,airline_info.airline_id, \n" +
                 "source_name, destination_name, flight_status_info,flight_source_date, \n" +
@@ -498,7 +508,8 @@ public class DatabaseService implements Services
                 "flight_status_info = 'On Time' and\n" +
                 "flight_source_date > " + current + "and airline_name = " + airlineName;
         
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
@@ -529,9 +540,8 @@ public class DatabaseService implements Services
                 Flight flight = new Flight(flightID, flightCode, source, destination, availableSeat, status, airLine, airplane, fare);
                 flights.add(flight);
             }
-        } catch (SQLException e) {
-        
         }
+        catch (SQLException e) {}
         
         return flights;
     }
@@ -608,10 +618,13 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public boolean makeReservation(Integer flightIdPk, String username, String password) {
+    public boolean makeReservation(Integer flightIdPk, String username, String password)
+    {
         String user_name = "'" + username + "'";
         String pass_word = "'" + password + "'";
+        
         String current_date = "'" + LocalDate.now().toString() + "'";
+        
         Integer reservation_id = -1;
         Integer customer_id = -1;
         String customer_id_select = "select customer_info.customer_id\n" +
@@ -631,10 +644,13 @@ public class DatabaseService implements Services
             while (rs.next()) {
                 customer_id = Integer.parseInt(rs.getString("customer_info.customer_id"));
             }
+            
             reservation_id = insert_reservation_info(customer_id, "1", LocalDate.now());
             rs = statement.executeQuery(flight_select);
+            
             LocalDate sourceDate = LocalDate.now();
             LocalDate destDate = LocalDate.now();
+            
             String src = "";
             String dest = "";
             String fly_time = "";
@@ -658,7 +674,8 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public boolean makeReservation(Integer flightIdPk, Integer customerId) {
+    public boolean makeReservation(Integer flightIdPk, Integer customerId)
+    {
         String current_date = "'" + LocalDate.now().toString() + "'";
         Integer reservation_id = -1;
         String flight_select = "select flight_source_date,flight_dest_date,flight_fly_time,flight_land_time,source_name,destination_name\n" +
@@ -758,17 +775,23 @@ public class DatabaseService implements Services
     }
     
     @Override
-    public boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId) {
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId)
+    {
         String current_date = "'" + LocalDate.now().toString() + "'";
+        
         Integer reservation_id = -1;
+        
         String flight_select = "select flight_source_date,flight_dest_date,flight_fly_time,flight_land_time,source_name,destination_name\n" +
                 "from flight_info, airline_flight_info\n" +
                 "where airline_flight_info.airline_flight_id = flight_info.airline_flight_id and\n" +
                 "airline_flight_info.airline_flight_id = " + flightIdPk.toString() + " and\n" +
                 "flight_source_date > " + current_date;
-        try {
+        
+        try
+        {
             Statement statement = this.connection.createStatement();
             reservation_id = insert_reservation_info(customerId, "1", LocalDate.now());
+            
             ResultSet rs = statement.executeQuery(flight_select);
             LocalDate sourceDate = LocalDate.now();
             LocalDate destDate = LocalDate.now();
@@ -851,7 +874,8 @@ public class DatabaseService implements Services
         return flights;
     }
     
-    public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName) {
+    public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
+    {
         Set<Reservation> reservations = new LinkedHashSet<>();
         String aln = "'" + airlineName + "'";
         String query = "select cust_username, cust_password, customer_info.customer_id," +
@@ -869,7 +893,8 @@ public class DatabaseService implements Services
                 "reservation_by = 0 and\n" +
                 "customer_info.customer_id = reservation_info.customer_id and\n" +
                 "customer_info.customer_id = customer_login.customer_id and airline_name = " + aln;
-        try {
+        try
+        {
             Statement statement = this.connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             int rowcount = 0;

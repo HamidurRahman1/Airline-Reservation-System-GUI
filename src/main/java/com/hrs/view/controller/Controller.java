@@ -158,8 +158,8 @@ public class Controller
                     }
                     try
                     {
-                        view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine()
-                                                                            .getAirlineName(), apiService.getAllFlightsByAirlineForReservation(flight.getAirLine()
+                        view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
+                                apiService.getAllFlightsByAirlineForReservation(flight.getAirLine()
                                                                                                                                                      .getAirlineName())));
                     } catch(IllegalArgumentException ex1)
                     {
@@ -275,8 +275,6 @@ public class Controller
         try
         {
             Customer customer = apiService.getCustomerByLogin(username, password);
-    
-            System.out.println(customer);
             
             Configuration.GET_SESSION().addCustomerToSession(customer);
             

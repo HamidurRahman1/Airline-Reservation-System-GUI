@@ -40,7 +40,7 @@ public class ApiService implements Services
     @Override
     public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName) throws IllegalArgumentException
     {
-        return databaseService.getAllFlightsForReservation(airlineName);
+        return databaseService.getAllFlightsByAirlineForReservation(airlineName);
     }
     
     @Override

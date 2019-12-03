@@ -15,3 +15,15 @@ is null. (Tested for American Airlines)
 instead of airline_flight_id. Could not move forward with since it is not valid function. (American Airlines)
 
 8. insertFlightByAirline() needs implementation.
+
+9. getAllFlightsByAirline(delta) does not return any rows.
+
+10. JetBlue airline admin cannot see rsvps.
+
+11. JetBlue cannot cancel the flights, no flights found for this airline(*).
+
+12. getAllFlightsByAirlineForReservation(airline) returns all flights for global.
+
+13. makeReservation() all four methods needs to be checked for dates -> dest, src
+
+14. Changed all LocalDate.now() to Configuration.GET_CURRENT_DATE() for consistency.
