@@ -4,6 +4,7 @@ import com.hrs.configs.Configuration;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
@@ -185,12 +186,12 @@ public class View extends Application
         stage.show();
     }
     
-    public void ui_addFlightForAirline(Admin admin, String airline, Set<Airport> airports, Set<Airplane> airplanes)
+    public void ui_addFlightForAirline(Admin admin, Airline airline, Set<Airport> airports, Set<Airplane> airplanes)
     {
         Stage stage = new Stage();
         stage.setWidth(900);
         stage.setHeight(700);
-        stage.setTitle(ADD_FLIGHT_FOR(airline));
+        stage.setTitle(ADD_FLIGHT_FOR(airline.getAirlineName()));
         
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -236,6 +237,13 @@ public class View extends Application
         Label capacityLabel = LABEL(FieldValue.ENTER_CAP);
         capacityLabel.setPadding(FLIGHT_LABEL());
         capacityLabel.setStyle(GENERAL_BTN_STYLE());
+    
+        Label fareLabel = LABEL(FieldValue.ENTER_FARE);
+        fareLabel.setPadding(FLIGHT_LABEL());
+        fareLabel.setStyle(GENERAL_BTN_STYLE());
+    
+        TextField fare = new TextField();
+        fare.setStyle(GENERAL_BTN_STYLE());
         
         TextField codeField = new TextField();
         codeField.setStyle(GENERAL_BTN_STYLE());
@@ -315,21 +323,25 @@ public class View extends Application
         
         gridPane.add(capacityLabel, 0, 10);
         gridPane.add(capacity1, 1, 10);
+    
+        gridPane.add(fareLabel, 0, 11);
+        gridPane.add(fare, 1, 11);
         
-        gridPane.add(new Label(), 0, 11);
         gridPane.add(new Label(), 0, 12);
+        gridPane.add(new Label(), 0, 13);
         
         Button submit = new Button(FieldValue.SUBMIT);
         submit.setStyle(CLICK_ME());
         submit.setOnAction(e ->
         {
             controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
-                        sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1);
+                        sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1, fare);
             stage.close();
-            AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER, FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
+            AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
+                    FLIGHT_BY_ADMIN(admin.getFirstName(), airline.getAirlineName()));
         });
         
-        gridPane.add(submit, 1, 13, 1, 1);
+        gridPane.add(submit, 1, 14, 1, 1);
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);
         stage.showAndWait();

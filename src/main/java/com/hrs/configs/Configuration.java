@@ -1,7 +1,6 @@
 package com.hrs.configs;
 
 import com.hrs.dao.dbServices.DB2;
-//import com.hrs.dao.dbServices.DatabaseService;
 import com.hrs.dao.gateway.Gateway;
 import com.hrs.service.ApiService;
 import com.hrs.view.View;
@@ -19,7 +18,6 @@ public class Configuration
     private static Session session = null;
     private static View view = null;
     private static Gateway gateway = null;
-//    private static DatabaseService databaseService = null;
     private static DB2 db2 = null;
     private static String LAST_QUERY = null;
     
@@ -28,7 +26,6 @@ public class Configuration
         try
         {
             initializeGateway();
-//            initializeDatabaseService();
             initializeDatabaseService2();
             initializeApiService();
             initializeController();
@@ -47,11 +44,6 @@ public class Configuration
             System.out.println(ex.getMessage());
         }
     }
-    
-//    private static void initializeDatabaseService() throws ClassNotFoundException, SQLException
-//    {
-//        databaseService = new DatabaseService();
-//    }
     
     private static void initializeDatabaseService2() throws ClassNotFoundException, SQLException
     {
@@ -127,11 +119,6 @@ public class Configuration
     {
         return gateway;
     }
-    
-//    public static DatabaseService GET_DATABASE_SERVICE()
-//    {
-//        return databaseService;
-//    }
     
     public static DB2 GET_DB2_SERVICE()
     {

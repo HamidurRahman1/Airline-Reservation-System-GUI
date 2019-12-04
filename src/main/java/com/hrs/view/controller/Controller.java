@@ -1,10 +1,7 @@
 package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
-import com.hrs.exceptions.IllegalArgumentException;
-import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.service.ApiService;
-import com.hrs.test.Tester;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
@@ -19,7 +16,6 @@ import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
 import com.hrs.resources.FieldValue;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -27,18 +23,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
-
-import static com.hrs.util.Utility.BUTTON;
 
 /**
  * A class that navigates views and talk to database
@@ -72,13 +63,13 @@ public class Controller
         {
             try
             {
-//                apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+                apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+                
                 AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                         (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
                                       .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
-//                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
-    
-                view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
+                
+                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
             }
             catch(Exception ex)
             {
@@ -97,16 +88,14 @@ public class Controller
         {
             try
             {
-//                apiService.makeReservation(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+                apiService.makeReservation(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
                 
                 AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                         (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
                                       .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
-//                view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
-//                        apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
-    
+                
                 view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
-                        Tester.testFlights2()));
+                        apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
             }
             catch(Exception ex)
             {
@@ -122,6 +111,7 @@ public class Controller
     public void reservationWithUsernameAndPass(Flight flight, Integer key)
     {
         Stage stage = new Stage();
+        
         stage.setTitle(FieldValue.EXP_RSVP);
         
         GridPane gridPane = view.ui_loginContainer(FieldValue.CUSTOMER_LOGIN_LABEL);
@@ -142,15 +132,14 @@ public class Controller
             {
                 if(key == 0)
                 {
-//                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), username.getText(), pass.getText()))
-//                    {
-//                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
-//                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
-//                    }
+                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), username.getText(), pass.getText()))
+                    {
+                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
+                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+                    }
                     try
                     {
-//                        Set<Flight> flights = apiService.getAllFlightsForReservation(" ");
-                        view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
+                        view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
                     }
                     catch(Exception ex)
                     {
@@ -159,17 +148,14 @@ public class Controller
                 }
                 else
                 {
-//                    if(apiService.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
-//                    {
-//                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
-//                    }
+                    if(apiService.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
+                    {
+                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+                    }
                     try
                     {
-//                        view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
-//                                apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
-    
                         view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
-                                Tester.testFlights2()));
+                                apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
                     }
                     catch(Exception ex1)
                     {
@@ -211,7 +197,7 @@ public class Controller
         });
         
         HBox hBox = new HBox();
-        Button button = BUTTON(FieldValue.HOME); button.setMinWidth(FieldValue.HOME_BTN_WIDTH);
+        Button button = Utility.BUTTON(FieldValue.HOME); button.setMinWidth(FieldValue.HOME_BTN_WIDTH);
         button.setStyle(Utility.HOME_STYLE());
         button.setAlignment(Pos.CENTER);
         button.setOnAction(e ->
@@ -326,14 +312,11 @@ public class Controller
     {
         try
         {
-//            Set<Airport> airports = apiService.getAllAirports();
-//            Set<Airplane> airplanes = apiService.getAllAirPlaneByAirLine(airlineName);
-    
-            Set<Airport> airports = new LinkedHashSet <>(Tester.airports());
+            Airline airline = apiService.getAirlineByName(airlineName);
+            Set<Airport> airports = apiService.getAllAirports();
+            Set<Airplane> airplanes = apiService.getAllAirPlaneByAirLine(airlineName);
             
-            Set<Airplane> airplanes = new LinkedHashSet <>(Tester.airPlanes());
-            
-            view.ui_addFlightForAirline(admin, airlineName, airports, airplanes);
+            view.ui_addFlightForAirline(admin, airline, airports, airplanes);
         }
         catch(Exception ex)
         {
@@ -382,7 +365,7 @@ public class Controller
     {
         if(AlertBox.DisplayConfirmation(FieldValue.CANCEL_HEADER, FieldValue.CANCEL_MSG))
         {
-//            apiService.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
+            apiService.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
             
             customer.setReservations(apiService.getAllReservationsByCustomerId(customer.getCustomerId()));
             
@@ -397,11 +380,9 @@ public class Controller
             try
             {
                 stage.close();
-//                apiService.cancelFlight(flight);
-//                view.ui_cancelFlightsByAirlineAdmin(airlineName,
-//                        apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
-    
-                view.ui_cancelFlightsByAirlineAdmin(airlineName, Tester.testFlights2());
+                apiService.cancelFlight(flight);
+                view.ui_cancelFlightsByAirlineAdmin(airlineName,
+                        apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
             }
             catch(Exception ex)
             {
@@ -441,26 +422,26 @@ public class Controller
         }
     }
     
-//    ChoiceBox<Airline> airlineChoiceBox
-    public void addFlightForAirline(String airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
-                                       ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
-                                       ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
-                                       DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1)
+    public void addFlightForAirline(Airline airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
+                                    ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
+                                    ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
+                                    DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1,
+                                    TextField fare)
     {
         try
         {
             Flight flight = new Flight();
-//            flight.setAirLine(airlineChoiceBox.getValue());
-            flight.setAirLine(new Airline());
+            flight.setAirLine(airline);
             flight.setFlightCode(codeField.getText());
             flight.setAirplane(airPlaneChoiceBox.getValue());
             
             flight.setSource(new Source(sourceChoices.getValue().getAirportId(), sourceChoices.getValue().getAirportName(), sourceDate.getValue(), sourceTimes.getValue()));
             flight.setDestination(new Destination(destinationChoices.getValue().getAirportId(), destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
-            flight.setCapacity(Integer.parseInt(capacity1.getText()));
-//            flight.setFare();
             
-//            apiService.insertFlightByAirline(flight);
+            flight.setCapacity(Integer.parseInt(capacity1.getText()));
+            flight.setFare(Float.parseFloat(fare.getText()));
+            
+            apiService.insertFlightByAirline(flight);
         }
         catch(Exception ex)
         {

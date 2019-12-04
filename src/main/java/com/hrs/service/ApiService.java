@@ -2,11 +2,11 @@ package com.hrs.service;
 
 import com.hrs.configs.Configuration;
 import com.hrs.dao.dbServices.DB2;
-//import com.hrs.dao.dbServices.DatabaseService;
 import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
@@ -150,5 +150,11 @@ public class ApiService implements Services
     public boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId)
     {
         return databaseService.makeReservationBySearchEngine(flightIdPk, customerId);
+    }
+    
+    @Override
+    public Airline getAirlineByName(String airlineName)
+    {
+        return databaseService.getAirlineByName(airlineName);
     }
 }

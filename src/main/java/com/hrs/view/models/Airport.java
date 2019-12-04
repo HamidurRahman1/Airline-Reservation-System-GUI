@@ -44,6 +44,6 @@ public class Airport
     @Override
     public String toString()
     {
-        return this.getAirportId() + " - " + this.getAirportName();
+        return this.getAirportName();
     }
 }

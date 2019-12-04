@@ -5,7 +5,6 @@ import com.hrs.resources.FieldValue;
 import com.hrs.view.models.Flight;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Set;
 
 public class DBTester

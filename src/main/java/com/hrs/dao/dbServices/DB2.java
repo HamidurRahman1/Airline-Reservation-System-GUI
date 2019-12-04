@@ -155,7 +155,7 @@ public class DB2 implements Services
                 "from Flights, Airlines, Airplanes, Status where Airlines.airlineId = Flights.airlineId "+
                 "and Airplanes.airplaneId = Flights.airplaneId and Status.statusId = Flights.statusId "+
                 " and Flights.dept_date >= ? "+
-                "and Flights.airlineId = (select airlineId from Airlines where airlineName = ? )";
+                " and Flights.airlineId = (select airlineId from Airlines where airlineName = ? )";
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -301,7 +301,7 @@ public class DB2 implements Services
                 reservation.setRsvpDate(rs.getDate("rsvpDate").toLocalDate());
                 reservation.setRsvpBy(rs.getInt("rsvpBy"));
                 String rsvpStatus = rs.getString("rsvpStatus");
-                if(rsvpStatus.equalsIgnoreCase("A"))
+                if(rsvpStatus.equalsIgnoreCase(FieldValue.ACTIVE))
                     reservation.setStatus(FieldValue.ACTIVE);
                 else
                     reservation.setStatus(FieldValue.CANCELED);
@@ -576,10 +576,8 @@ public class DB2 implements Services
         " and Airplanes.airplaneId = Flights.airplaneId "+
         " and Flights.dept_date >= ? "+
         " and Reservations.flightId = Flights.flightId "+
-        " and Reservations.rsvpBy = 1 ";
+        " and Reservations.rsvpBy = 0 ";
         
-        // 0 = search engine, 1 = plane web gui
-    
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
@@ -790,7 +788,7 @@ public class DB2 implements Services
         {
             System.out.println(ex.getMessage());
         }
-        return -1;
+        return Integer.MIN_VALUE;
     }
     
     @Override
@@ -835,12 +833,90 @@ public class DB2 implements Services
     @Override
     public boolean cancelReservation(Integer customerId, Integer reservationId)
     {
-        return false;
+        try
+        {
+            final String query = "select flightId from Reservations where rsvpId = ? and customerId = ? ";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, reservationId);
+            ps.setInt(2, customerId);
+            ResultSet rs = ps.executeQuery();
+            int flightId = Integer.MIN_VALUE;
+            while(rs.next())
+            {
+                flightId = rs.getInt(1);
+            }
+            rs.close();
+            ps.close();
+    
+            final String update = "update Reservations set rsvpStatus = ? " +
+                    "where rsvpId = ? and customerId = ? and flightId = ?";
+            PreparedStatement ps1 = connection.prepareStatement(update);
+            ps1.setString(1, FieldValue.CANCELED);
+            ps1.setInt(2, reservationId);
+            ps1.setInt(3, customerId);
+            ps1.setInt(4, flightId);
+            ps1.executeUpdate();
+            ps1.close();
+    
+    
+            final String delete = "delete from Flights_Customers where customerId = ? and flightId = ?";
+            PreparedStatement ps2 = connection.prepareStatement(delete);
+            ps2.setInt(1, customerId);
+            ps2.setInt(2, flightId);
+            ps2.executeUpdate();
+            ps2.close();
+    
+            final String flightSeatGet = "select avlSeat from Flights where flightId = ? ";
+            PreparedStatement ps3 = connection.prepareStatement(flightSeatGet);
+            ps3.setInt(1, flightId);
+            ResultSet resultSet = ps3.executeQuery();
+            int seats = Integer.MIN_VALUE;
+            while(resultSet.next())
+            {
+                seats = resultSet.getInt(1);
+            }
+            seats = seats + 1;
+            resultSet.close();
+            ps3.close();
+            
+            final String flightSeatUpdate = "update Flights set avlSeat = ? where flightId = ? ";
+            PreparedStatement ps4 = connection.prepareStatement(flightSeatUpdate);
+            ps4.setInt(1, seats);
+            ps4.setInt(2, flightId);
+            ps4.executeUpdate();
+            ps4.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        
+        return true;
     }
     
     @Override
     public boolean cancelFlight(Integer flightId)
     {
+        try
+        {
+            final String update = "update Flights set statusId = ? where flightId = ? ";
+            PreparedStatement p1 = connection.prepareStatement(update);
+            p1.setInt(1, 2);
+            p1.setInt(2, flightId);
+            p1.executeUpdate();
+            p1.close();
+            
+            final String update2 = "update Reservations set rsvpStatus = ? where flightId = ? ";
+            PreparedStatement p2 = connection.prepareStatement(update2);
+            p2.setString(1, FieldValue.CANCELED);
+            p2.setInt(2, flightId);
+            p2.executeUpdate();
+            p2.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
         return false;
     }
     
@@ -903,32 +979,23 @@ public class DB2 implements Services
         try
         {
             final String flightSeatGet = "select avlSeat from Flights where flightId = ? ";
-        
             PreparedStatement ps = connection.prepareStatement(flightSeatGet);
             ps.setInt(1, flightIdPk);
-        
             ResultSet resultSet = ps.executeQuery();
-        
-            int seats = -1;
-        
+            int seats = Integer.MIN_VALUE;
             while(resultSet.next())
             {
                 seats = resultSet.getInt(1);
             }
-        
             seats = seats - 1;
-        
             resultSet.close();
             ps.close();
         
             final String flightSeatUpdate = "update Flights set avlSeat = ? where flightId = ? ";
-        
             PreparedStatement ps1 = connection.prepareStatement(flightSeatUpdate);
             ps1.setInt(1, seats);
             ps1.setInt(2, flightIdPk);
-        
             ps1.executeUpdate();
-        
             ps1.close();
         }
         catch(Exception ex)
@@ -957,6 +1024,23 @@ public class DB2 implements Services
             System.out.println(ex.getMessage());
         }
     
+        try
+        {
+            final String flightCustomer = "insert into Flights_Customers ( flightId, customerId ) "+
+                    " values ( ? , ? )";
+        
+            PreparedStatement ps = connection.prepareStatement(flightCustomer);
+            ps.setInt(1, flightIdPk);
+            ps.setInt(2, customer.getCustomerId());
+        
+            ps.executeUpdate();
+            ps.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+    
         return true;
     }
     
@@ -972,7 +1056,7 @@ public class DB2 implements Services
         
             ResultSet resultSet = ps.executeQuery();
         
-            int seats = -1;
+            int seats = Integer.MIN_VALUE;
         
             while(resultSet.next())
             {
@@ -1013,6 +1097,23 @@ public class DB2 implements Services
         
             ps.executeUpdate();
         
+            ps.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+    
+        try
+        {
+            final String flightCustomer = "insert into Flights_Customers ( flightId, customerId ) "+
+                    " values ( ? , ? )";
+        
+            PreparedStatement ps = connection.prepareStatement(flightCustomer);
+            ps.setInt(1, flightIdPk);
+            ps.setInt(2, customerId);
+        
+            ps.executeUpdate();
             ps.close();
         }
         catch(Exception ex)
@@ -1088,7 +1189,7 @@ public class DB2 implements Services
         
             ResultSet resultSet = ps.executeQuery();
         
-            int seats = -1;
+            int seats = Integer.MIN_VALUE;
         
             while(resultSet.next())
             {
@@ -1135,6 +1236,23 @@ public class DB2 implements Services
         {
             System.out.println(ex.getMessage());
         }
+    
+        try
+        {
+            final String flightCustomer = "insert into Flights_Customers ( flightId, customerId ) "+
+                    " values ( ? , ? )";
+        
+            PreparedStatement ps = connection.prepareStatement(flightCustomer);
+            ps.setInt(1, flightIdPk);
+            ps.setInt(2, customer.getCustomerId());
+        
+            ps.executeUpdate();
+            ps.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
         
         return true;
     }
@@ -1151,7 +1269,7 @@ public class DB2 implements Services
         
             ResultSet resultSet = ps.executeQuery();
         
-            int seats = -1;
+            int seats = Integer.MIN_VALUE;
         
             while(resultSet.next())
             {
@@ -1198,7 +1316,49 @@ public class DB2 implements Services
         {
             System.out.println(ex.getMessage());
         }
+    
+        try
+        {
+            final String flightCustomer = "insert into Flights_Customers ( flightId, customerId ) "+
+                    " values ( ? , ? )";
+        
+            PreparedStatement ps = connection.prepareStatement(flightCustomer);
+            ps.setInt(1, flightIdPk);
+            ps.setInt(2, customerId);
+        
+            ps.executeUpdate();
+            ps.close();
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
         
         return true;
+    }
+    
+    @Override
+    public Airline getAirlineByName(String airlineName)
+    {
+        Airline airline = new Airline();
+    
+        final String query = "select airlineId, airlineName from Airlines where airlineName = ? ";
+        try
+        {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, airlineName);
+            ResultSet rs = ps.executeQuery();
+        
+            while(rs.next())
+            {
+                airline.setAirlineId(rs.getInt(1));
+                airline.setAirlineName(rs.getString(2));
+            }
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        return airline;
     }
 }

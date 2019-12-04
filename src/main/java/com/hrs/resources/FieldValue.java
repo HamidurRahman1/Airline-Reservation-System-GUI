@@ -198,6 +198,7 @@ public class FieldValue
     public static final String SELECT_ARR = "Select arrival airport: ";
     public static final String SELECT_ARR_DATE = "Select arrival date: ";
     public static final String SELECT_ARR_TIME = "Select arrival time: ";
+    public static final String ENTER_FARE = "Enter fare $: ";
     public static final String ENTER_CAP = "Enter max capacity: ";
     
     public static final String ALL_RSVP = "All RSVPs";
@@ -218,5 +219,5 @@ public class FieldValue
     public static final String INVALID_INSERT = "Invalid Info";
     
     public static final Set<String> QUERIES =
-            new LinkedHashSet <>(Arrays.asList("q", "find flights", "get flights", "all flights", "flights"));
+            new LinkedHashSet <>(Arrays.asList("find flights", "get flights", "all flights", "flights"));
 }

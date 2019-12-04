@@ -4,6 +4,7 @@ import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.exceptions.IllegalArgumentException;
 
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
@@ -84,4 +85,7 @@ public interface Services
     // Customer making a reservation for a flight, provided flightId and user using customer id
     // Reservation is being made from Search Engine page (GUI)
     boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId);
+    
+    // Returns an Airline object given the name
+    Airline getAirlineByName(String airlineName);
 }
