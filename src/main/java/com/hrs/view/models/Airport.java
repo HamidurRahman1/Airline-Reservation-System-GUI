@@ -31,9 +31,19 @@ public class Airport
         return airportId;
     }
     
+    public void setAirportId(Integer airportId)
+    {
+        this.airportId = airportId;
+    }
+    
+    public void setAirportName(String airportName)
+    {
+        this.airportName = airportName;
+    }
+    
     @Override
     public String toString()
     {
-        return this.getAirportName();
+        return this.getAirportId() + " - " + this.getAirportName();
     }
 }

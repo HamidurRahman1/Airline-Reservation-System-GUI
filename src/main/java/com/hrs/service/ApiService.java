@@ -1,7 +1,8 @@
 package com.hrs.service;
 
 import com.hrs.configs.Configuration;
-import com.hrs.dao.dbServices.DatabaseService;
+import com.hrs.dao.dbServices.DB2;
+//import com.hrs.dao.dbServices.DatabaseService;
 import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 
@@ -20,7 +21,7 @@ import java.util.Set;
  */
 public class ApiService implements Services
 {
-    private DatabaseService databaseService = Configuration.GET_DATABASE_SERVICE();
+    private DB2 databaseService = Configuration.GET_DB2_SERVICE();
     
     // first character has to be letter, must contain at least 4 character and no more then 14 character (number, letter and _)
     public final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";

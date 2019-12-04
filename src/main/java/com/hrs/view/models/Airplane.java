@@ -59,6 +59,6 @@ public class Airplane
     @Override
     public String toString()
     {
-        return this.getAirPlaneName();
+        return getAirPlaneId() + " - " + this.getAirPlaneName();
     }
 }

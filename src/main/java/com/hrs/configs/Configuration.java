@@ -1,6 +1,7 @@
 package com.hrs.configs;
 
-import com.hrs.dao.dbServices.DatabaseService;
+import com.hrs.dao.dbServices.DB2;
+//import com.hrs.dao.dbServices.DatabaseService;
 import com.hrs.dao.gateway.Gateway;
 import com.hrs.service.ApiService;
 import com.hrs.view.View;
@@ -18,7 +19,8 @@ public class Configuration
     private static Session session = null;
     private static View view = null;
     private static Gateway gateway = null;
-    private static DatabaseService databaseService = null;
+//    private static DatabaseService databaseService = null;
+    private static DB2 db2 = null;
     private static String LAST_QUERY = null;
     
     static
@@ -26,7 +28,8 @@ public class Configuration
         try
         {
             initializeGateway();
-            initializeDatabaseService();
+//            initializeDatabaseService();
+            initializeDatabaseService2();
             initializeApiService();
             initializeController();
             initializeSession();
@@ -45,9 +48,14 @@ public class Configuration
         }
     }
     
-    private static void initializeDatabaseService() throws ClassNotFoundException, SQLException
+//    private static void initializeDatabaseService() throws ClassNotFoundException, SQLException
+//    {
+//        databaseService = new DatabaseService();
+//    }
+    
+    private static void initializeDatabaseService2() throws ClassNotFoundException, SQLException
     {
-        databaseService = new DatabaseService();
+        db2 = new DB2();
     }
     
     private static void initializeApiService()
@@ -120,8 +128,13 @@ public class Configuration
         return gateway;
     }
     
-    public static DatabaseService GET_DATABASE_SERVICE()
+//    public static DatabaseService GET_DATABASE_SERVICE()
+//    {
+//        return databaseService;
+//    }
+    
+    public static DB2 GET_DB2_SERVICE()
     {
-        return databaseService;
+        return db2;
     }
 }

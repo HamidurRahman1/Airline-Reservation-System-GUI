@@ -4,6 +4,7 @@ import com.hrs.configs.Configuration;
 import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.service.ApiService;
+import com.hrs.test.Tester;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
@@ -34,6 +35,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static com.hrs.util.Utility.BUTTON;
@@ -70,13 +72,15 @@ public class Controller
         {
             try
             {
-                apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+//                apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
                 AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                         (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
                                       .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
-                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
+//                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
+    
+                view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
             }
-            catch(IllegalArgumentException ex)
+            catch(Exception ex)
             {
                 System.out.println(ex.getMessage());
             }
@@ -93,14 +97,18 @@ public class Controller
         {
             try
             {
-                apiService.makeReservation(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+//                apiService.makeReservation(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+                
                 AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
                         (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
                                       .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
+//                view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
+//                        apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
+    
                 view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
-                        apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
+                        Tester.testFlights2()));
             }
-            catch(IllegalArgumentException ex)
+            catch(Exception ex)
             {
                 System.out.println(ex.getMessage());
             }
@@ -134,40 +142,42 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), username.getText(), pass.getText()))
-                    {
-                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
-                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
-                    }
+//                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), username.getText(), pass.getText()))
+//                    {
+//                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
+//                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+//                    }
                     try
                     {
-                        Set<Flight> flights = apiService.getAllFlightsForReservation(" ");
-                        System.out.println(flights.size());
-                        view.setCenter(view.ui_globalSearchResults(flights));
+//                        Set<Flight> flights = apiService.getAllFlightsForReservation(" ");
+                        view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
                     }
-                    catch(IllegalArgumentException ex)
+                    catch(Exception ex)
                     {
                         System.out.println(ex.getMessage());
                     }
                 }
                 else
                 {
-                    if(apiService.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
-                    {
-                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
-                    }
+//                    if(apiService.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
+//                    {
+//                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+//                    }
                     try
                     {
+//                        view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
+//                                apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
+    
                         view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
-                                apiService.getAllFlightsByAirlineForReservation(flight.getAirLine()
-                                                                                                                                                     .getAirlineName())));
-                    } catch(IllegalArgumentException ex1)
+                                Tester.testFlights2()));
+                    }
+                    catch(Exception ex1)
                     {
                         System.out.println(ex1.getMessage());
                     }
                 }
             }
-            catch(InvalidLoginException ex)
+            catch(Exception ex)
             {
                 AlertBox.DisplayError(FieldValue.INVALID_LOGIN, FieldValue.NO_USER_FOUND+username);
             }
@@ -186,47 +196,19 @@ public class Controller
         
         GridPane gridPane = view.ui_searchBarContainer(Utility.FIND_FLIGHTS_BY_LABEL(airlineName));
         
-        TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW,
-                FieldValue.SEARCH_BAR_COL, gridPane);
+        TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW, FieldValue.SEARCH_BAR_COL, gridPane);
         
         searchBar.setOnAction(e ->
         {
             try
             {
-                view.setCenter(view.ui_searchResultsByAirline(airlineName,
-                        apiService.getAllFlightsByAirlineForReservation(airlineName)));
+                view.setCenter(view.ui_searchResultsByAirline(airlineName, apiService.getAllFlightsByAirlineForReservation(airlineName)));
             }
-            catch(IllegalArgumentException ex)
+            catch(Exception ex)
             {
                 AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage());
             }
         });
-        
-//        searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
-//        {
-//            @Override
-//            public void handle(KeyEvent ke)
-//            {
-//                final String query = searchBar.getText();
-//
-//                if (ke.getCode().equals(KeyCode.ENTER))
-//                {
-//                    try
-//                    {
-//                        view.setCenter(view.ui_searchResultsByAirline(airlineName, apiService.getAllFlightsByAirlineForReservation(airlineName)));
-//                    }
-//                    catch(IllegalArgumentException ex)
-//                    {
-//                        AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage());
-//                    }
-//                }
-//                else
-//                {
-//                    System.out.println(ke.getCode());
-//                    AlertBox.DisplayError(FieldValue.INVALID_QUERY, "Given query is not valid. query="+query);
-//                }
-//            }
-//        });
         
         HBox hBox = new HBox();
         Button button = BUTTON(FieldValue.HOME); button.setMinWidth(FieldValue.HOME_BTN_WIDTH);
@@ -270,15 +252,11 @@ public class Controller
         try
         {
             apiService.insertNewCustomer(firstName, lastName, email, password);
+            
             AlertBox.DisplayInformation(FieldValue.NEW_CUST_LABEL,
                     FieldValue.NEW_CUSTOMER_ADDED.concat("\n")
                                                  .concat(FieldValue.USERNAME
                                                          .concat(firstName).concat(" ").concat(lastName)));
-        }
-        catch(IllegalArgumentException ex)
-        {
-            AlertBox.DisplayError(FieldValue.INVALID_INFO, ex.getMessage());
-            view.ui_newCustomerRegistration();
         }
         catch(Exception ex)
         {
@@ -298,8 +276,9 @@ public class Controller
             view.setTop(view.ui_menuBar(view.ui_searchEngine(), view.ui_airlines(), view.ui_airports()));
             view.setCenter(view.ui_customerInfo(customer));
         }
-        catch(InvalidLoginException ex)
+        catch(Exception ex)
         {
+            System.out.println(ex.getMessage());
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.ui_customerLogin();
         }
@@ -313,11 +292,11 @@ public class Controller
             
             Configuration.GET_SESSION().addAdminToSession(admin);
             
-            Set<Reservation> reservations = apiService.getGlobalReservationsMadeUsingSearchEngine();
-            view.ui_handleAfterGlobalAdminLogin(admin, reservations);
+            view.ui_handleAfterGlobalAdminLogin(admin, apiService.getGlobalReservationsMadeUsingSearchEngine());
         }
-        catch(InvalidLoginException ex)
+        catch(Exception ex)
         {
+            System.out.println(ex.getMessage());
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.ui_globalAdminLogin();
         }
@@ -336,8 +315,9 @@ public class Controller
             view.setTop(view.ui_menuBar(view.ui_airports()));
             view.setCenter(adminAccessView);
         }
-        catch(InvalidLoginException ex)
+        catch(Exception ex)
         {
+            System.out.println(ex.getMessage());
             AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getMessage().concat("\n\n"));
         }
     }
@@ -346,11 +326,16 @@ public class Controller
     {
         try
         {
-            Set<Airport> airports = apiService.getAllAirports();
-            Set<Airplane> airplanes = apiService.getAllAirPlaneByAirLine(airlineName);
+//            Set<Airport> airports = apiService.getAllAirports();
+//            Set<Airplane> airplanes = apiService.getAllAirPlaneByAirLine(airlineName);
+    
+            Set<Airport> airports = new LinkedHashSet <>(Tester.airports());
+            
+            Set<Airplane> airplanes = new LinkedHashSet <>(Tester.airPlanes());
+            
             view.ui_addFlightForAirline(admin, airlineName, airports, airplanes);
         }
-        catch(IllegalArgumentException ex)
+        catch(Exception ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -360,10 +345,10 @@ public class Controller
     {
         try
         {
-            Set<Flight> flights = apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE());
-            view.ui_cancelFlightsByAirlineAdmin(airlineName, flights);
+            view.ui_cancelFlightsByAirlineAdmin
+                    (airlineName, apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
         }
-        catch(IllegalArgumentException ex)
+        catch(Exception ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -371,8 +356,8 @@ public class Controller
     
     public void handleAllRSVPsForAirline(String airlineName)
     {
-        Set<Reservation> reservations = apiService.getAllReservationsMadeUsingSearchEngineAndAirlineGui(airlineName);
-        view.ui_displayRSVPsByAirline(airlineName, reservations);
+        view.ui_displayRSVPsByAirline(airlineName,
+                apiService.getAllReservationsMadeUsingSearchEngineAndAirlineGui(airlineName));
     }
     
     public void logoutCustomer()
@@ -397,7 +382,8 @@ public class Controller
     {
         if(AlertBox.DisplayConfirmation(FieldValue.CANCEL_HEADER, FieldValue.CANCEL_MSG))
         {
-            apiService.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
+//            apiService.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
+            
             customer.setReservations(apiService.getAllReservationsByCustomerId(customer.getCustomerId()));
             
             view.setCenter(view.ui_customerInfo(customer));
@@ -411,28 +397,27 @@ public class Controller
             try
             {
                 stage.close();
-                apiService.cancelFlight(flight);
-                view.ui_cancelFlightsByAirlineAdmin(airlineName,
-                        apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
+//                apiService.cancelFlight(flight);
+//                view.ui_cancelFlightsByAirlineAdmin(airlineName,
+//                        apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
+    
+                view.ui_cancelFlightsByAirlineAdmin(airlineName, Tester.testFlights2());
             }
-            catch(IllegalArgumentException ex)
+            catch(Exception ex)
             {
                 System.out.println(ex.getMessage());
             }
         }
     }
     
-    public void eventGlobalSearchBar(String query)
+    public void handleGlobalSearchBar(String query)
     {
         try
         {
-            Set<Flight> flights = apiService.getAllFlightsForReservation(query);
-            
-            GridPane center = view.ui_globalSearchResults(flights);
-            
+            GridPane center = view.ui_globalSearchResults(apiService.getAllFlightsForReservation(query));
             view.setSearchResultsInCenter(center);
         }
-        catch(Exception ex) // IllegalArgumentException
+        catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.setHome();
@@ -456,6 +441,7 @@ public class Controller
         }
     }
     
+//    ChoiceBox<Airline> airlineChoiceBox
     public void addFlightForAirline(String airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
                                        ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
                                        ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
@@ -464,18 +450,17 @@ public class Controller
         try
         {
             Flight flight = new Flight();
-            flight.setAirLine(new Airline(airline));
+//            flight.setAirLine(airlineChoiceBox.getValue());
+            flight.setAirLine(new Airline());
             flight.setFlightCode(codeField.getText());
             flight.setAirplane(airPlaneChoiceBox.getValue());
-            flight.setSource(new Source(sourceChoices.getValue().getAirportName(), sourceDate.getValue(), sourceTimes.getValue()));
-            flight.setDestination(new Destination(destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
+            
+            flight.setSource(new Source(sourceChoices.getValue().getAirportId(), sourceChoices.getValue().getAirportName(), sourceDate.getValue(), sourceTimes.getValue()));
+            flight.setDestination(new Destination(destinationChoices.getValue().getAirportId(), destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
             flight.setCapacity(Integer.parseInt(capacity1.getText()));
-    
-            apiService.insertFlightByAirline(flight);
-        }
-        catch(IllegalArgumentException ex)
-        {
-            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+//            flight.setFare();
+            
+//            apiService.insertFlightByAirline(flight);
         }
         catch(Exception ex)
         {

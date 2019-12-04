@@ -14,7 +14,7 @@ public class FieldValue
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AR_AMERICAN = "American Airlines";
+    public static final String AR_AMERICAN = "American";
     public static final String AR_JET_BLUE = "JetBlue";
     public static final String AR_DELTA = "Delta";
     

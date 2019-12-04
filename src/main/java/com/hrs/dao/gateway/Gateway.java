@@ -19,7 +19,7 @@ public class Gateway
     private static final String PASSWORD = "mysql?";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/";
-    private static final String DATABASE = "cs370p2";
+    private static final String DATABASE = "cs370";
     private static final String QUESTION = "?";
     private static final String AND = "&";
     private static final String SSL = "useSSL=false";

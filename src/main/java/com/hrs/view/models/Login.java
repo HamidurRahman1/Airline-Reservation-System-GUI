@@ -5,6 +5,7 @@ package com.hrs.view.models;
  */
 public class Login
 {
+    private Integer loginId;
     private String username;
     private String password;
     
@@ -12,6 +13,13 @@ public class Login
     
     public Login(String username, String password)
     {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public Login(Integer loginId, String username, String password)
+    {
+        this.loginId = loginId;
         this.username = username;
         this.password = password;
     }
@@ -34,6 +42,16 @@ public class Login
     public void setPassword(String password)
     {
         this.password = password;
+    }
+    
+    public Integer getLoginId()
+    {
+        return loginId;
+    }
+    
+    public void setLoginId(Integer loginId)
+    {
+        this.loginId = loginId;
     }
     
     @Override
