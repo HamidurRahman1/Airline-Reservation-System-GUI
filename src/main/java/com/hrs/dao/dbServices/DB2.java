@@ -742,12 +742,13 @@ public class DB2 implements Services
     public boolean insertNewCustomer(String firstName, String lastName, String email, String password) throws IllegalArgumentException
     {
         Login login = new Login(email, password);
-        int loginId = insertLogin(login);
         
         final String query = " insert into Customers ( firstName, lastName, loginId ) values ( ? , ? , ? ) ";
         
         try
         {
+            int loginId = insertLogin(login);
+            
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, firstName);
             ps.setString(2, lastName);
@@ -755,16 +756,19 @@ public class DB2 implements Services
             
             ps.executeUpdate();
         }
+        catch(SQLException ex)
+        {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
-            return false;
+            throw ex;
         }
         
         return true;
     }
     
-    private int insertLogin(Login login)
+    private int insertLogin(Login login) throws IllegalArgumentException
     {
         try
         {
@@ -784,9 +788,13 @@ public class DB2 implements Services
                 }
             }
         }
+        catch(SQLException ex)
+        {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
+            throw ex;
         }
         return Integer.MIN_VALUE;
     }

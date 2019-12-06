@@ -247,7 +247,7 @@ public class Controller
         }
         catch(IllegalArgumentException ex)
         {
-            AlertBox.DisplayError(FieldValue.INVALID_INSERT, FieldValue.INVALID_INFO);
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
             view.ui_newCustomerRegistration();
         }
         catch(Exception ex)

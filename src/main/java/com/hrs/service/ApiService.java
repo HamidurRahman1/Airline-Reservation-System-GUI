@@ -5,6 +5,7 @@ import com.hrs.dao.dbServices.DB2;
 import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 
+import com.hrs.resources.FieldValue;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
@@ -13,6 +14,7 @@ import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -118,7 +120,7 @@ public class ApiService implements Services
         if(!password.matches(passRegEx))
             throw new IllegalArgumentException("Invalid password provided, length must be at least 4 har long. " +
                     "given password=".concat(password));
-        
+    
         return databaseService.insertNewCustomer(firstName, lastName, email, password);
     }
     
