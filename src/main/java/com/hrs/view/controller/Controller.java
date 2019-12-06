@@ -1,6 +1,7 @@
 package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
+import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.service.ApiService;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
@@ -243,6 +244,11 @@ public class Controller
                     FieldValue.NEW_CUSTOMER_ADDED.concat("\n")
                                                  .concat(FieldValue.USERNAME
                                                          .concat(firstName).concat(" ").concat(lastName)));
+        }
+        catch(IllegalArgumentException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, FieldValue.INVALID_INFO);
+            view.ui_newCustomerRegistration();
         }
         catch(Exception ex)
         {

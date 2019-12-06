@@ -24,13 +24,13 @@ public class ApiService implements Services
     private DB2 databaseService = Configuration.GET_DB2_SERVICE();
     
     // first character has to be letter, must contain at least 4 character and no more then 14 character (number, letter and _)
-    public final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
+    public static final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
 
     //character@test.test
-    public final String emailRegEx = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+    public static final String emailRegEx = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
     //name validation
-    public final String nameRegEx = "^[a-zA-Z]\\w\\D{3,14}$";
+    public static final String nameRegEx = "^[a-zA-Z]\\w{3,14}$";
     
     @Override
     public Set<Flight> getAllFlightsForReservation(String query) throws IllegalArgumentException
@@ -107,6 +107,18 @@ public class ApiService implements Services
     @Override
     public boolean insertNewCustomer(String firstName, String lastName, String email, String password) throws IllegalArgumentException
     {
+        if(!firstName.matches(nameRegEx))
+            throw new IllegalArgumentException(("Invalid first name provided, length must be at least 4 char long. " +
+                    "given firstName=").concat(firstName));
+        if(!lastName.matches(nameRegEx))
+            throw new IllegalArgumentException(("Invalid last name provided, length must be at least 4 char long. " +
+                    "given lastName=").concat(lastName));
+        if(!email.matches(emailRegEx))
+            throw new IllegalArgumentException(("Invalid email provided. given email=").concat(email));
+        if(!password.matches(passRegEx))
+            throw new IllegalArgumentException("Invalid password provided, length must be at least 4 har long. " +
+                    "given password=".concat(password));
+        
         return databaseService.insertNewCustomer(firstName, lastName, email, password);
     }
     

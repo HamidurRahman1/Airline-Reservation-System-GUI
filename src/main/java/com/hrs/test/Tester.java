@@ -1,5 +1,6 @@
 package com.hrs.test;
 
+import com.hrs.service.ApiService;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
@@ -30,8 +31,20 @@ import java.util.Set;
 
 public class Tester
 {
-    public static void main(String[] args) {}
-
+    public static void main(String[] args)
+    {
+        testName("aAaa");
+    }
+    
+    private static void testName(String name)
+    {
+        if(name.matches(ApiService.nameRegEx))
+        {
+            System.out.println("match");
+        }
+        else System.out.println("no");
+    }
+    
     public void start(Stage stage) throws Exception
     {
         // Set title for the stage
