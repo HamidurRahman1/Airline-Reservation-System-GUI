@@ -84,7 +84,7 @@ public class DB2 implements Services
         }
         catch(SQLException ex)
         {
-            System.out.println(ex.getMessage());
+            throw new IllegalArgumentException(ex.getMessage());
         }
         
         return flights;
@@ -138,7 +138,7 @@ public class DB2 implements Services
         }
         catch(SQLException ex)
         {
-            System.out.println(ex.getMessage());
+            throw new IllegalArgumentException(ex.getMessage());
         }
     
         return flights;
@@ -192,7 +192,7 @@ public class DB2 implements Services
         }
         catch(SQLException ex)
         {
-            System.out.println(ex.getMessage());
+            throw new IllegalArgumentException(ex.getMessage());
         }
     
         return flights;

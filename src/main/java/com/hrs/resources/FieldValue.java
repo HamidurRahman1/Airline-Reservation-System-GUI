@@ -218,6 +218,8 @@ public class FieldValue
     
     public static final String INVALID_INSERT = "Invalid Info";
     
+    public static final String UNK = "UNKNOWN";
+    
     public static final Set<String> QUERIES =
             new LinkedHashSet <>(Arrays.asList("find flights", "get flights", "all flights", "flights"));
 }

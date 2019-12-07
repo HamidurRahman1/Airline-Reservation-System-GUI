@@ -6,6 +6,7 @@ import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 
 import com.hrs.resources.FieldValue;
+import com.hrs.util.Utility;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
@@ -14,7 +15,6 @@ import com.hrs.view.models.Customer;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -37,7 +37,13 @@ public class ApiService implements Services
     @Override
     public Set<Flight> getAllFlightsForReservation(String query) throws IllegalArgumentException
     {
-        return databaseService.getAllFlightsForReservation(query);
+        if(FieldValue.QUERIES.contains(query.toLowerCase()))
+        {
+            Configuration.SET_QUERY(query.toLowerCase());
+            return databaseService.getAllFlightsForReservation(query);
+        }
+        else throw new IllegalArgumentException(FieldValue.INVALID_QUERY.concat("\n").concat("please use one of the " +
+                "given queries. queries=").concat(FieldValue.QUERIES.toString()));
     }
     
     @Override

@@ -70,7 +70,7 @@ public class Controller
                         (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
                                       .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
                 
-                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
+                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(Configuration.GET_QUERY())));
             }
             catch(Exception ex)
             {
@@ -100,7 +100,7 @@ public class Controller
             }
             catch(Exception ex)
             {
-                System.out.println(ex.getMessage());
+                AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
             }
         }
         else
@@ -140,7 +140,7 @@ public class Controller
                     }
                     try
                     {
-                        view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(" ")));
+                        view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(Configuration.GET_QUERY())));
                     }
                     catch(Exception ex)
                     {
@@ -189,7 +189,15 @@ public class Controller
         {
             try
             {
-                view.setCenter(view.ui_searchResultsByAirline(airlineName, apiService.getAllFlightsByAirlineForReservation(airlineName)));
+                if(FieldValue.QUERIES.contains(searchBar.getText().toLowerCase()))
+                {
+                    Configuration.SET_QUERY(searchBar.getText().toLowerCase());
+                    view.setCenter(view.ui_searchResultsByAirline
+                            (airlineName, apiService.getAllFlightsByAirlineForReservation(airlineName)));
+                }
+                else AlertBox.DisplayError(FieldValue.INVALID_QUERY, "Invalid query. query="
+                        .concat(searchBar.getText().concat("\nPlease use one of the valid query."
+                                .concat(FieldValue.QUERIES.toString()))));
             }
             catch(Exception ex)
             {
