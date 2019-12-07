@@ -33,6 +33,8 @@ import java.util.Set;
 /**
  * A Utility/helper class for others usage. Provides support to other classes. Any method in here must be stand
  * alone method. All methods must be -- public static --. Other methods can exists but with must be private access.
+ *
+ * Almost all CSS styling code have been taken from google.com
  */
 public class Utility
 {

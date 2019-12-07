@@ -277,6 +277,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         return reservations;
@@ -344,6 +345,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         return reservations;
@@ -414,9 +416,10 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         try
@@ -462,9 +465,10 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
         
         customer.setReservations(getAllReservationsByCustomerId(customer.getCustomerId()));
@@ -511,9 +515,10 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         try
@@ -535,9 +540,10 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
         
         return admin;
@@ -582,9 +588,10 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         try
@@ -608,9 +615,10 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         return admin;
@@ -673,6 +681,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
     
         return reservations;
@@ -731,9 +740,10 @@ public class DB2 implements Services
             rs.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
         
         return flights;
@@ -807,6 +817,7 @@ public class DB2 implements Services
         catch (SQLException e)
         {
             System.out.println(e.getMessage());
+            return null;
         }
         
         return airports;
@@ -977,6 +988,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         return true;
     }
@@ -1003,6 +1015,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         return true;
     }
@@ -1051,6 +1064,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1073,6 +1087,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1100,6 +1115,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1121,6 +1137,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1138,6 +1155,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         return true;
     }
@@ -1171,6 +1189,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1190,6 +1209,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1206,6 +1226,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         return true;
     }
@@ -1254,6 +1275,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1276,6 +1298,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1312,6 +1335,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1333,6 +1357,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1350,6 +1375,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         
         return true;
@@ -1392,6 +1418,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         
         try
@@ -1413,6 +1440,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
     
         try
@@ -1430,6 +1458,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return false;
         }
         
         return true;
@@ -1459,6 +1488,7 @@ public class DB2 implements Services
         catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
+            return null;
         }
         return airline;
     }

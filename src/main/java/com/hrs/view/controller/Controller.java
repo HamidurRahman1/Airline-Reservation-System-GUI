@@ -75,7 +75,7 @@ public class Controller
             }
             catch(Exception ex)
             {
-                System.out.println(ex.getMessage());
+                AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
             }
         }
         else
@@ -145,7 +145,7 @@ public class Controller
                     }
                     catch(Exception ex)
                     {
-                        System.out.println(ex.getMessage());
+                        AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
                     }
                 }
                 else
@@ -161,7 +161,7 @@ public class Controller
                     }
                     catch(Exception ex1)
                     {
-                        System.out.println(ex1.getMessage());
+                        AlertBox.DisplayError(FieldValue.UNK, ex1.getMessage());
                     }
                 }
             }
@@ -301,7 +301,6 @@ public class Controller
         }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.ui_globalAdminLogin();
         }
@@ -322,7 +321,6 @@ public class Controller
         }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
             AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getMessage().concat("\n\n"));
         }
     }
@@ -339,7 +337,7 @@ public class Controller
         }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
+            AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
         }
     }
     
@@ -352,7 +350,7 @@ public class Controller
         }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
+            AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
         }
     }
     
@@ -405,7 +403,7 @@ public class Controller
             }
             catch(Exception ex)
             {
-                System.out.println(ex.getMessage());
+                AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
             }
         }
     }
