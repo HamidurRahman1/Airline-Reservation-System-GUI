@@ -81,6 +81,9 @@ public class DB2 implements Services
                 flights.add(flight);
             }
             
+            rs.close();
+            ps.close();
+            
         }
         catch(SQLException ex)
         {
@@ -135,6 +138,9 @@ public class DB2 implements Services
             
                 flights.add(flight);
             }
+            
+            rs.close();
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -189,6 +195,9 @@ public class DB2 implements Services
             
                 flights.add(flight);
             }
+            
+            rs.close();
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -261,6 +270,9 @@ public class DB2 implements Services
                 reservation.setFlight(flight);
                 reservations.add(reservation);
             }
+            
+            rs.close();
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -325,6 +337,9 @@ public class DB2 implements Services
                 
                 reservations.add(reservation);
             }
+            
+            rs.close();
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -349,7 +364,19 @@ public class DB2 implements Services
             ps.setString(2, password);
             
             ResultSet resultSet = ps.executeQuery();
-            
+    
+            int rowCount = 0;
+            if (resultSet.last())
+            {
+                rowCount = resultSet.getRow();
+                resultSet.beforeFirst();
+            }
+            if (rowCount == 0)
+            {
+                throw new InvalidLoginException(FieldValue.NO_USER_FOUND
+                        .concat(username).concat(" and password=").concat(password));
+            }
+    
             while(resultSet.next())
             {
                 login.setLoginId(resultSet.getInt(1));
@@ -358,13 +385,14 @@ public class DB2 implements Services
             }
     
             customer.setLogin(login);
-            
+    
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
-            System.out.println(ex.getMessage());
+            throw new InvalidLoginException(FieldValue.NO_USER_FOUND
+                    .concat(username).concat(" and password=").concat(password));
         }
         
         try
@@ -459,6 +487,18 @@ public class DB2 implements Services
     
             ResultSet resultSet = ps.executeQuery();
     
+            int rowCount = 0;
+            if (resultSet.last())
+            {
+                rowCount = resultSet.getRow();
+                resultSet.beforeFirst();
+            }
+            if (rowCount == 0)
+            {
+                throw new InvalidLoginException("No Global Admin found with given username="
+                        .concat(username).concat(" and password=").concat(password));
+            }
+    
             while(resultSet.next())
             {
                 login.setLoginId(resultSet.getInt(1));
@@ -517,6 +557,18 @@ public class DB2 implements Services
             ps.setString(2, password);
         
             ResultSet resultSet = ps.executeQuery();
+    
+            int rowCount = 0;
+            if (resultSet.last())
+            {
+                rowCount = resultSet.getRow();
+                resultSet.beforeFirst();
+            }
+            if (rowCount == 0)
+            {
+                throw new InvalidLoginException("No Airline Admin found with given username="
+                        .concat(username).concat(" and password=").concat(password));
+            }
         
             while(resultSet.next())
             {
@@ -614,6 +666,9 @@ public class DB2 implements Services
                 
                 reservations.add(reservation);
             }
+            
+            rs.close();
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -672,8 +727,9 @@ public class DB2 implements Services
                 
                 flights.add(flight);
             }
-    
-            System.out.println(airportName + " " + flights.size());
+            
+            rs.close();
+            ps.close();
         }
         catch(Exception ex)
         {
@@ -697,17 +753,32 @@ public class DB2 implements Services
             ps.setString(1, airlineName);
             
             ResultSet rs = ps.executeQuery();
+    
+            int rowCount = 0;
+            if (rs.last())
+            {
+                rowCount = rs.getRow();
+                rs.beforeFirst();
+            }
+            if (rowCount == 0)
+            {
+                throw new IllegalArgumentException("Given airline name is invalid. name=".concat(airlineName));
+            }
             
             while (rs.next())
             {
-                Airplane airplane = new Airplane(Integer.parseInt(rs.getString("airplaneId")), rs.getString("airplaneName"));
+                Airplane airplane = new Airplane
+                        (Integer.parseInt(rs.getString("airplaneId")), rs.getString("airplaneName"));
                 airplanes.add(airplane);
             }
+            
+            rs.close();
+            ps.close();
         
         }
         catch (SQLException e)
         {
-            System.out.println(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         }
         return airplanes;
     }
@@ -729,6 +800,9 @@ public class DB2 implements Services
                 Airport airplane = new Airport(Integer.parseInt(rs.getString("airportId")), rs.getString("airportName"));
                 airports.add(airplane);
             }
+            
+            rs.close();
+            ps.close();
         }
         catch (SQLException e)
         {
@@ -755,6 +829,8 @@ public class DB2 implements Services
             ps.setInt(3, loginId);
             
             ps.executeUpdate();
+            
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -787,6 +863,8 @@ public class DB2 implements Services
                     return generatedKeys.getInt(1);
                 }
             }
+            
+            ps.close();
         }
         catch(SQLException ex)
         {
@@ -830,12 +908,14 @@ public class DB2 implements Services
             ps.setString(15, flight.getDestination().getTime());
             
             ps.executeUpdate();
+            
+            ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
-        
+            throw new IllegalArgumentException(ex.getMessage());
         }
-        return false;
+        return true;
     }
     
     @Override
@@ -894,11 +974,10 @@ public class DB2 implements Services
             ps4.executeUpdate();
             ps4.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
-        
         return true;
     }
     
@@ -921,11 +1000,11 @@ public class DB2 implements Services
             p2.executeUpdate();
             p2.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
-        return false;
+        return true;
     }
     
     @Override
@@ -944,6 +1023,18 @@ public class DB2 implements Services
             ps.setString(2, password);
         
             ResultSet resultSet = ps.executeQuery();
+    
+            int rowCount = 0;
+            if (resultSet.last())
+            {
+                rowCount = resultSet.getRow();
+                resultSet.beforeFirst();
+            }
+            if (rowCount == 0)
+            {
+                throw new InvalidLoginException(FieldValue.NO_USER_FOUND
+                        .concat(username).concat(" and password=").concat(password));
+            }
         
             while(resultSet.next())
             {
@@ -957,7 +1048,7 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -979,7 +1070,7 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1006,7 +1097,7 @@ public class DB2 implements Services
             ps1.executeUpdate();
             ps1.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1027,7 +1118,7 @@ public class DB2 implements Services
         
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1044,11 +1135,10 @@ public class DB2 implements Services
             ps.executeUpdate();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
-    
         return true;
     }
     
@@ -1061,32 +1151,24 @@ public class DB2 implements Services
         
             PreparedStatement ps = connection.prepareStatement(flightSeatGet);
             ps.setInt(1, flightIdPk);
-        
             ResultSet resultSet = ps.executeQuery();
-        
             int seats = Integer.MIN_VALUE;
-        
             while(resultSet.next())
             {
                 seats = resultSet.getInt(1);
             }
-        
             seats = seats - 1;
-        
             resultSet.close();
             ps.close();
         
             final String flightSeatUpdate = "update Flights set avlSeat = ? where flightId = ? ";
-        
             PreparedStatement ps1 = connection.prepareStatement(flightSeatUpdate);
             ps1.setInt(1, seats);
             ps1.setInt(2, flightIdPk);
-        
             ps1.executeUpdate();
-        
             ps1.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1102,12 +1184,10 @@ public class DB2 implements Services
             ps.setString(3, LocalDate.now().toString());
             ps.setString(4, FieldValue.ACTIVE);
             ps.setInt(5, 1);
-        
             ps.executeUpdate();
-        
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1120,15 +1200,13 @@ public class DB2 implements Services
             PreparedStatement ps = connection.prepareStatement(flightCustomer);
             ps.setInt(1, flightIdPk);
             ps.setInt(2, customerId);
-        
             ps.executeUpdate();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
-    
         return true;
     }
     
@@ -1141,13 +1219,25 @@ public class DB2 implements Services
         try
         {
             final String loginQuery = "select loginId, email, password from Logins where email = ? and password = ? ";
-        
+            
             PreparedStatement ps = connection.prepareStatement(loginQuery);
-        
+            
             ps.setString(1, username);
             ps.setString(2, password);
-        
+            
             ResultSet resultSet = ps.executeQuery();
+            
+            int rowCount = 0;
+            if (resultSet.last())
+            {
+                rowCount = resultSet.getRow();
+                resultSet.beforeFirst();
+            }
+            if (rowCount == 0)
+            {
+                throw new InvalidLoginException(FieldValue.NO_USER_FOUND
+                        .concat(username).concat(" and password=").concat(password));
+            }
         
             while(resultSet.next())
             {
@@ -1161,7 +1251,7 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1183,7 +1273,7 @@ public class DB2 implements Services
             resultSet.close();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1219,7 +1309,7 @@ public class DB2 implements Services
         
             ps1.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1240,7 +1330,7 @@ public class DB2 implements Services
             
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1257,7 +1347,7 @@ public class DB2 implements Services
             ps.executeUpdate();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1299,7 +1389,7 @@ public class DB2 implements Services
         
             ps1.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1320,7 +1410,7 @@ public class DB2 implements Services
         
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1337,7 +1427,7 @@ public class DB2 implements Services
             ps.executeUpdate();
             ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }
@@ -1362,8 +1452,11 @@ public class DB2 implements Services
                 airline.setAirlineId(rs.getInt(1));
                 airline.setAirlineName(rs.getString(2));
             }
+            
+            rs.close();
+            ps.close();
         }
-        catch(Exception ex)
+        catch(SQLException ex)
         {
             System.out.println(ex.getMessage());
         }

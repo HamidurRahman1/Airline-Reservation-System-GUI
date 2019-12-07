@@ -2,6 +2,7 @@ package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
 import com.hrs.exceptions.IllegalArgumentException;
+import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.service.ApiService;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.models.Admin;
@@ -276,9 +277,13 @@ public class Controller
             view.setTop(view.ui_menuBar(view.ui_searchEngine(), view.ui_airlines(), view.ui_airports()));
             view.setCenter(view.ui_customerInfo(customer));
         }
+        catch(InvalidLoginException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+            view.ui_customerLogin();
+        }
         catch(Exception ex)
         {
-            System.out.println(ex.getMessage());
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.ui_customerLogin();
         }

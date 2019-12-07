@@ -73,6 +73,11 @@ public class ApiService implements Services
     @Override
     public Customer getCustomerByLogin(String username, String password) throws InvalidLoginException
     {
+        if(!username.matches(emailRegEx))
+            throw new InvalidLoginException("Invalid username/email. username=".concat(username));
+        if(!password.matches(passRegEx))
+            throw new InvalidLoginException("Invalid password. password=".concat(password));
+        
         return databaseService.getCustomerByLogin(username, password);
     }
     
@@ -151,6 +156,11 @@ public class ApiService implements Services
     @Override
     public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidLoginException
     {
+        if(!username.matches(emailRegEx))
+            throw new InvalidLoginException("Invalid username/email. username=".concat(username));
+        if(!password.matches(passRegEx))
+            throw new InvalidLoginException("Invalid password. password=".concat(password));
+        
         return databaseService.makeReservation(flightIdPk, username, password);
     }
     
@@ -163,6 +173,11 @@ public class ApiService implements Services
     @Override
     public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password) throws InvalidLoginException
     {
+        if(!username.matches(emailRegEx))
+            throw new InvalidLoginException("Invalid username/email. username=".concat(username));
+        if(!password.matches(passRegEx))
+            throw new InvalidLoginException("Invalid password. password=".concat(password));
+        
         return databaseService.makeReservationBySearchEngine(flightIdPk, username, password);
     }
     
