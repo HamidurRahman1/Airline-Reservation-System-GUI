@@ -42,11 +42,11 @@ public class DB2 implements Services
         Set<Flight> flights = new LinkedHashSet <>();
         
         final String query = "select flightId, flightCode, dept_airportId, dept_airportName, dept_date, dept_time, \n"
-                + "arri_airportId, arri_airportName, arri_date, arri_time, avlSeat, Status.status, Airlines.airlineId, " +
-                " Airlines.airlineName,\n" + " Flights.airplaneId, Airplanes.airplaneName, fare, capacity\n"
-                + " from Flights, Airlines, Airplanes, Status \n" + " where Airlines.airlineId = Flights.airlineId\n"
-                + " and Airplanes.airplaneId = Flights.airplaneId\n" + " and Status.statusId = Flights.statusId\n"
-                + " and Flights.dept_date >= ?";
+                + " arri_airportId, arri_airportName, arri_date, arri_time, avlSeat, Status.status, Airlines.airlineId, \n"
+                + " Airlines.airlineName, Flights.airplaneId, Airplanes.airplaneName, fare, capacity\n"
+                + " from Flights, Airlines, Airplanes, Status where Airlines.airlineId = Flights.airlineId\n"
+                + " and Airplanes.airplaneId = Flights.airplaneId and Status.statusId = Flights.statusId\n"
+                + " and Flights.dept_date > ?";
         
         try
         {
@@ -102,10 +102,10 @@ public class DB2 implements Services
         final String query = "select flightId, flightCode, dept_airportId, dept_airportName, dept_date, dept_time, "+
             "arri_airportId, arri_airportName, arri_date, arri_time, avlSeat, Status.status, Airlines.airlineId, "+
             "Airlines.airlineName, Flights.airplaneId, Airplanes.airplaneName, fare, capacity "+
-        "from Flights, Airlines, Airplanes, Status where Airlines.airlineId = Flights.airlineId "+
-        "and Airplanes.airplaneId = Flights.airplaneId and Status.statusId = Flights.statusId "+
-        " and Flights.dept_date >= ? "+
-        "and Flights.airlineId = (select airlineId from Airlines where airlineName = ? )";
+            "from Flights, Airlines, Airplanes, Status where Airlines.airlineId = Flights.airlineId "+
+            "and Airplanes.airplaneId = Flights.airplaneId and Status.statusId = Flights.statusId "+
+            "and Flights.dept_date > ? "+
+            "and Flights.airlineId = (select airlineId from Airlines where airlineName = ? )";
         
         try
         {
@@ -220,13 +220,13 @@ public class DB2 implements Services
             "Flights.flightId, flightCode, dept_airportId, dept_airportName, dept_date, dept_time, " +
             "arri_airportId, arri_airportName, arri_date, arri_time, avlSeat, Status.status, Airlines.airlineId, " +
             "Airlines.airlineName, Flights.airplaneId, Airplanes.airplaneName, fare, capacity " +
-        "from Flights, Airlines, Airplanes, Status, Reservations " +
-        "where Airlines.airlineId = Flights.airlineId " +
-        "and Airplanes.airplaneId = Flights.airplaneId " +
-        "and Status.statusId = Flights.statusId " +
-        "and customerId = ? " +
-        "and Flights.dept_date >= ? " +
-        "and Reservations.flightId = Flights.flightId";
+            "from Flights, Airlines, Airplanes, Status, Reservations " +
+            "where Airlines.airlineId = Flights.airlineId " +
+            "and Airplanes.airplaneId = Flights.airplaneId " +
+            "and Status.statusId = Flights.statusId " +
+            "and customerId = ? " +
+            "and Flights.dept_date > ? " +
+            "and Reservations.flightId = Flights.flightId";
         
         try
         {
@@ -639,12 +639,12 @@ public class DB2 implements Services
         
         final String query = "select Flights.flightId, flightCode, dept_airportName, arri_airportName, Airlines.airlineId, "+
             " Airlines.airlineName, Flights.airplaneId, Airplanes.airplaneName, fare, rsvpId, rsvpDate "+
-        " from Flights, Airlines, Airplanes, Reservations "+
-        " where Airlines.airlineId = Flights.airlineId "+
-        " and Airplanes.airplaneId = Flights.airplaneId "+
-        " and Flights.dept_date >= ? "+
-        " and Reservations.flightId = Flights.flightId "+
-        " and Reservations.rsvpBy = 0 ";
+            " from Flights, Airlines, Airplanes, Reservations "+
+            " where Airlines.airlineId = Flights.airlineId "+
+            " and Airplanes.airplaneId = Flights.airplaneId "+
+            " and Flights.dept_date >= ? "+
+            " and Reservations.flightId = Flights.flightId "+
+            " and Reservations.rsvpBy = 0 ";
         
         try
         {
@@ -704,7 +704,7 @@ public class DB2 implements Services
         final String query = "select Flights.flightId, flightCode, Airlines.airlineId, Airlines.airlineName, " +
         " Flights.airplaneId, Airplanes.airplaneName, dept_airportName, arri_airportName, Status.status, dept_date, arri_date " +
         " from Flights, Status, Airlines, Airplanes, Airports " +
-        " where Flights.dept_date >= ? " +
+        " where Flights.dept_date == ? " +
         " and Status.statusId = Flights.statusId " +
         " and Airplanes.airplaneId = Flights.airplaneId " +
         " and Airlines.airlineId = Flights.airlineId " +

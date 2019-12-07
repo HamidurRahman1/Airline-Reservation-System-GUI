@@ -138,6 +138,27 @@ public class ApiService implements Services
     @Override
     public boolean insertFlightByAirline(Flight flight) throws IllegalArgumentException
     {
+        if(flight.getFlightCode().trim().isEmpty())
+            throw new IllegalArgumentException("Flight code cannot be empty. given=".concat(flight.getFlightCode()));
+        if(flight.getAirplane() == null)
+            throw new IllegalArgumentException("Airplane cannot be null.");
+        if(flight.getSource() == null)
+            throw new IllegalArgumentException("Source cannot be null");
+        if(flight.getSource().getDate() == null)
+            throw new IllegalArgumentException("Source date cannot be null.");
+        if(flight.getSource().getTime().isEmpty() || flight.getSource().getTime() == null)
+            throw new IllegalArgumentException("Source time cannot be null or empty.");
+        if(flight.getDestination() == null)
+            throw new IllegalArgumentException("Destination cannot be null");
+        if(flight.getDestination().getDate() == null)
+            throw new IllegalArgumentException("Destination date cannot be null.");
+        if(flight.getDestination().getTime().isEmpty() || flight.getDestination().getTime() == null)
+            throw new IllegalArgumentException("Destination time cannot be null or empty.");
+        if(flight.getCapacity() == null || flight.getCapacity() <= 0 || flight.getCapacity() >= 50)
+            throw new IllegalArgumentException("Capacity cannot be null or less 0 or more than 50.");
+        if(flight.getFare() == null || flight.getFare() <= 0 || flight.getFare() >= 200)
+            throw new IllegalArgumentException("Fare cannot be null or less than 0 or more than 200.");
+        
         return databaseService.insertFlightByAirline(flight);
     }
     
