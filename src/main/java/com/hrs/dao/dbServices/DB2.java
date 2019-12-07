@@ -51,7 +51,8 @@ public class DB2 implements Services
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, LocalDate.now().toString());
+            
+            ps.setString(1, Configuration.GET_CURRENT_DATE().toString());
     
             ResultSet rs = ps.executeQuery();
     
@@ -105,10 +106,12 @@ public class DB2 implements Services
         "and Airplanes.airplaneId = Flights.airplaneId and Status.statusId = Flights.statusId "+
         " and Flights.dept_date >= ? "+
         "and Flights.airlineId = (select airlineId from Airlines where airlineName = ? )";
+        
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, LocalDate.now().toString());
+            
+            ps.setString(1, Configuration.GET_CURRENT_DATE().toString());
             ps.setString(2, airlineName);
         
             ResultSet rs = ps.executeQuery();
@@ -165,7 +168,8 @@ public class DB2 implements Services
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, LocalDate.now().toString());
+            
+            ps.setString(1, localDate.toString());
             ps.setString(2, airlineName);
         
             ResultSet rs = ps.executeQuery();
@@ -227,8 +231,9 @@ public class DB2 implements Services
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
+            
             ps.setInt(1, customerId);
-            ps.setString(2, LocalDate.now().toString());
+            ps.setString(2, Configuration.GET_CURRENT_DATE().toString());
         
             ResultSet rs = ps.executeQuery();
         
@@ -301,7 +306,8 @@ public class DB2 implements Services
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, LocalDate.now().toString());
+            
+            ps.setString(1, Configuration.GET_CURRENT_DATE().toString());
             ps.setString(2, airlineName);
         
             ResultSet rs = ps.executeQuery();
@@ -356,6 +362,7 @@ public class DB2 implements Services
     {
         Customer customer = new Customer();
         Login login = new Login();
+        
         try
         {
             final String loginQuery = "select loginId, email, password from Logins where email = ? and password = ? ";
@@ -431,10 +438,11 @@ public class DB2 implements Services
             " from Flights, Airlines, Airplanes, Status where Airlines.airlineId = Flights.airlineId " +
             " and Airplanes.airplaneId = Flights.airplaneId " +
             " and Status.statusId = Flights.statusId " +
-            " and Flights.dept_date >= ? " +
+            " and Flights.dept_date < ? " +
             " and flightId in (select flightId from Flights_Customers where customerId = ?) ";
         
             PreparedStatement ps = connection.prepareStatement(previousFlightQuery);
+            
             ps.setString(1, LocalDate.now().toString());
             ps.setInt(2, customer.getCustomerId());
             
@@ -641,6 +649,7 @@ public class DB2 implements Services
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
+            
             ps.setString(1, LocalDate.now().toString());
         
             ResultSet rs = ps.executeQuery();
@@ -706,6 +715,7 @@ public class DB2 implements Services
         try
         {
             PreparedStatement ps = connection.prepareStatement(query);
+            
             ps.setString(1, LocalDate.now().toString());
             ps.setString(2, airportName);
             ps.setString(3, airportName);
@@ -835,6 +845,7 @@ public class DB2 implements Services
             int loginId = insertLogin(login);
             
             PreparedStatement ps = connection.prepareStatement(query);
+            
             ps.setString(1, firstName);
             ps.setString(2, lastName);
             ps.setInt(3, loginId);
