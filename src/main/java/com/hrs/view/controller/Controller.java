@@ -282,6 +282,11 @@ public class Controller
             AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
             view.ui_customerLogin();
         }
+        catch(NullPointerException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getLocalizedMessage());
+            view.ui_customerLogin();
+        }
         catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
@@ -298,6 +303,11 @@ public class Controller
             Configuration.GET_SESSION().addAdminToSession(admin);
             
             view.ui_handleAfterGlobalAdminLogin(admin, apiService.getGlobalReservationsMadeUsingSearchEngine());
+        }
+        catch(NullPointerException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getLocalizedMessage());
+            view.ui_globalAdminLogin();
         }
         catch(Exception ex)
         {
@@ -318,6 +328,10 @@ public class Controller
             
             view.setTop(view.ui_menuBar(view.ui_airports()));
             view.setCenter(adminAccessView);
+        }
+        catch(NullPointerException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getLocalizedMessage());
         }
         catch(Exception ex)
         {
@@ -439,7 +453,7 @@ public class Controller
         }
     }
     
-    public void addFlightForAirline(Airline airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
+    public boolean addFlightForAirline(Airline airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
                                     ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
                                     ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
                                     DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1,
@@ -458,11 +472,12 @@ public class Controller
             flight.setCapacity(Integer.parseInt(capacity1.getText()));
             flight.setFare(Float.parseFloat(fare.getText()));
             
-            apiService.insertFlightByAirline(flight);
+            return apiService.insertFlightByAirline(flight);
         }
         catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+            return false;
         }
     }
 }

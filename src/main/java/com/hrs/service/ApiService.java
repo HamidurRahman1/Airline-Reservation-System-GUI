@@ -25,13 +25,10 @@ public class ApiService implements Services
 {
     private DB2 databaseService = Configuration.GET_DB2_SERVICE();
     
-    // first character has to be letter, must contain at least 4 character and no more then 14 character (number, letter and _)
     public static final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
-
-    //character@test.test
+    
     public static final String emailRegEx = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-
-    //name validation
+    
     public static final String nameRegEx = "^[a-zA-Z]\\w{3,14}$";
     
     @Override
