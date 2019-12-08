@@ -111,7 +111,6 @@ public class Reservation
         if(! (o instanceof Reservation)) return false;
         Reservation that = (Reservation) o;
         return Objects.equals(getReservationId(), that.getReservationId())
-                && Objects.equals(getCustomer(), that.getCustomer())
                 && Objects.equals(getFlight(), that.getFlight())
                 && Objects.equals(getRsvpDate(), that.getRsvpDate())
                 && Objects.equals(getStatus(), that.getStatus())
@@ -121,7 +120,7 @@ public class Reservation
     @Override
     public int hashCode()
     {
-        return Objects.hash(getReservationId(), getCustomer(), getFlight(), getRsvpDate(), getStatus(), getRsvpBy());
+        return Objects.hash(getReservationId(), getFlight().getFlightId(), getRsvpDate(), getStatus(), getRsvpBy());
     }
     
     @Override

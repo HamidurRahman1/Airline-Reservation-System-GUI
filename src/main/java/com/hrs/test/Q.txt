@@ -1,0 +1,23 @@
+// Customer's previous flight
+select flightId, flightCode, dept_airportId, dept_airportName, dept_date, dept_time,
+arri_airportId, arri_airportName, arri_date, arri_time, avlSeat, Status.status, Airlines.airlineId,
+Airlines.airlineName, Flights.airplaneId, Airplanes.airplaneName, fare, capacity
+from Flights, Airlines, Airplanes, Status where Airlines.airlineId = Flights.airlineId
+and Airplanes.airplaneId = Flights.airplaneId
+and Status.statusId = Flights.statusId
+and Flights.dept_date > '2019-12-03'
+and flightId in (select flightId from Flights_Customers where customerId = 1)
+
+
+// Customer's RSVP
+select rsvpId, rsvpDate, rsvpStatus, rsvpBy,
+Flights.flightId, flightCode, dept_airportId, dept_airportName, dept_date, dept_time,
+arri_airportId, arri_airportName, arri_date, arri_time, avlSeat, Status.status, Airlines.airlineId,
+Airlines.airlineName, Flights.airplaneId, Airplanes.airplaneName, fare, capacity
+from Flights, Airlines, Airplanes, Status, Reservations
+where Airlines.airlineId = Flights.airlineId
+and Airplanes.airplaneId = Flights.airplaneId
+and Status.statusId = Flights.statusId
+and customerId = 1
+and Flights.dept_date > '2019-12-2'
+and Reservations.flightId = Flights.flightId

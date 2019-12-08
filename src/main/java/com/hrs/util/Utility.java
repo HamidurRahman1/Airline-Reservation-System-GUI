@@ -33,6 +33,8 @@ import java.util.Set;
 /**
  * A Utility/helper class for others usage. Provides support to other classes. Any method in here must be stand
  * alone method. All methods must be -- public static --. Other methods can exists but with must be private access.
+ *
+ * Almost all CSS styling code have been taken from google.com
  */
 public class Utility
 {
@@ -302,11 +304,10 @@ public class Utility
         Button b4 = BUTTON(FieldValue.DEP_DATE_TIME); b4.setStyle(HEADERS_STYLE());
         Button b5 = BUTTON(FieldValue.DESTINATION); b5.setStyle(HEADERS_STYLE());
         Button b6 = BUTTON(FieldValue.ARR_DATE_TIME); b6.setStyle(HEADERS_STYLE());
-        Button b7 = BUTTON(FieldValue.TOTAL_RSVP); b7.setStyle(HEADERS_STYLE());
         Button b8 = BUTTON(FieldValue.STATUS); b8.setStyle(HEADERS_STYLE());
         Button b9 = BUTTON(FieldValue.TO_CANCEL); b9.setStyle(HEADERS_STYLE());
         
-        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b7, b8, b9);
+        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b8, b9);
         
         return hBox;
     }
@@ -319,12 +320,11 @@ public class Utility
         Button b2 = BUTTON(FieldValue.AIRPLANE); b2.setStyle(HEADERS_STYLE());
         Button b3 = BUTTON(FieldValue.SOURCE); b3.setStyle(HEADERS_STYLE());
         Button b4 = BUTTON(FieldValue.DESTINATION); b4.setStyle(HEADERS_STYLE());
-        Button b5 = BUTTON(FieldValue.LAST_NAME); b5.setStyle(HEADERS_STYLE());
         Button b6 = BUTTON(FieldValue.STATUS); b6.setStyle(HEADERS_STYLE());
         Button b7 = BUTTON(FieldValue.RSVP_BY); b7.setStyle(HEADERS_STYLE());
         Button b8 = BUTTON(FieldValue.RSVP_DATE); b8.setStyle(HEADERS_STYLE());
         
-        hBox.getChildren().addAll(b1, b2, b3, b4, b5, b6, b7, b8);
+        hBox.getChildren().addAll(b1, b2, b3, b4, b6, b7, b8);
         
         return hBox;
     }

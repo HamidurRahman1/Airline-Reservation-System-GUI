@@ -1,5 +1,6 @@
 package com.hrs.test;
 
+import com.hrs.service.ApiService;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
@@ -30,10 +31,23 @@ import java.util.Set;
 
 public class Tester
 {
-    public static void main(String[] args) {}
-
+    public static void main(String[] args)
+    {
+        testName("aAaa");
+    }
+    
+    private static void testName(String name)
+    {
+        if(name.matches(ApiService.nameRegEx))
+        {
+            System.out.println("match");
+        }
+        else System.out.println("no");
+    }
+    
     public void start(Stage stage) throws Exception
-    {// Set title for the stage
+    {
+        // Set title for the stage
         stage.setTitle("creating combo box ");
 
         // Create a tile pane
@@ -86,6 +100,7 @@ public class Tester
         customer.setLogin(testLogin());
         customer.setFlights(customerFlights());
         customer.setReservations(customerReservation());
+        customer.setCustomerId(1);
         return customer;
     }
 
@@ -224,7 +239,7 @@ public class Tester
 
     public static Admin admin()
     {
-        return new Admin("Hamidur", "Rahman");
+        return new Admin(1, "Hamidur", "Rahman");
     }
 
     public static List<Airport> airports()

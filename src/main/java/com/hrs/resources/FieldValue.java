@@ -1,5 +1,9 @@
 package com.hrs.resources;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 public class FieldValue
 {
     public static final String APP_TITLE = "Airline Reservation System";
@@ -10,11 +14,11 @@ public class FieldValue
     public static final String AIRPORT_LABEL = "Airports";
     public static final String AIRLINE_LABEL = "Airlines";
     
-    public static final String AR_AMERICAN = "American Airlines";
+    public static final String AR_AMERICAN = "American";
     public static final String AR_JET_BLUE = "JetBlue";
-    public static final String AR_DELTA = "Delta Airlines";
+    public static final String AR_DELTA = "Delta";
     
-    public static final String AP_LA = "LA";
+    public static final String AP_LA = "LAX";
     public static final String AP_LAX_NAME = "Los Angeles I.A. - CA";
     public static final String AP_JFK = "JFK";
     public static final String AP_JFK_NAME = "John F. Kennedy I.A. - NY";
@@ -155,7 +159,7 @@ public class FieldValue
     
     public static final String ON_TIME = "ON TIME";
     public static final String ACTIVE = "ACTIVE";
-    public static final String CANCELED = "CANCELED";
+    public static final String CANCELED = "CANCELLED";
     public static final String CLICK = "CLICK ME";
     public static final String SEARCH_ENGINE = "Search Engine";
     
@@ -194,6 +198,7 @@ public class FieldValue
     public static final String SELECT_ARR = "Select arrival airport: ";
     public static final String SELECT_ARR_DATE = "Select arrival date: ";
     public static final String SELECT_ARR_TIME = "Select arrival time: ";
+    public static final String ENTER_FARE = "Enter fare $: ";
     public static final String ENTER_CAP = "Enter max capacity: ";
     
     public static final String ALL_RSVP = "All RSVPs";
@@ -212,4 +217,9 @@ public class FieldValue
     public static final String LOGIN = "Login Page";
     
     public static final String INVALID_INSERT = "Invalid Info";
+    
+    public static final String UNK = "UNKNOWN";
+    
+    public static final Set<String> QUERIES =
+            new LinkedHashSet <>(Arrays.asList("find flights", "get flights", "all flights", "flights"));
 }

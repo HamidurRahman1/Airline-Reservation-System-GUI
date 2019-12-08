@@ -1,6 +1,7 @@
 package com.hrs.view.controller;
 
 import com.hrs.configs.Configuration;
+import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
 import com.hrs.service.ApiService;
 import com.hrs.view.alerts.AlertBox;
@@ -8,7 +9,6 @@ import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
-import com.hrs.test.Tester;
 import com.hrs.util.Utility;
 import com.hrs.view.View;
 import com.hrs.view.models.Customer;
@@ -18,7 +18,6 @@ import com.hrs.view.models.Reservation;
 import com.hrs.view.models.Source;
 import com.hrs.resources.FieldValue;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -26,8 +25,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -35,8 +32,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.Set;
-
-import static com.hrs.util.Utility.BUTTON;
 
 /**
  * A class that navigates views and talk to database
@@ -68,11 +63,20 @@ public class Controller
     {
         if(Configuration.GET_SESSION().isCustomerInSession())
         {
-            apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
-            AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
-                    (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
-                                  .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
-            view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
+            try
+            {
+                apiService.makeReservationBySearchEngine(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+                
+                AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
+                        (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
+                                      .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
+                
+                view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(Configuration.GET_QUERY())));
+            }
+            catch(Exception ex)
+            {
+                AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
+            }
         }
         else
         {
@@ -84,11 +88,21 @@ public class Controller
     {
         if(Configuration.GET_SESSION().isCustomerInSession())
         {
-            apiService.makeReservation(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
-            AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
-                    (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
-                                  .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
-            view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(), Tester.testFlights2()));
+            try
+            {
+                apiService.makeReservation(flight.getFlightId(), Configuration.GET_SESSION().getCustomer().getCustomerId());
+                
+                AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE
+                        (Configuration.GET_SESSION().getCustomer().getFirstName().concat(" ")
+                                      .concat(Configuration.GET_SESSION().getCustomer().getLastName())));
+                
+                view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
+                        apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
+            }
+            catch(Exception ex)
+            {
+                AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
+            }
         }
         else
         {
@@ -99,6 +113,7 @@ public class Controller
     public void reservationWithUsernameAndPass(Flight flight, Integer key)
     {
         Stage stage = new Stage();
+        
         stage.setTitle(FieldValue.EXP_RSVP);
         
         GridPane gridPane = view.ui_loginContainer(FieldValue.CUSTOMER_LOGIN_LABEL);
@@ -119,24 +134,38 @@ public class Controller
             {
                 if(key == 0)
                 {
-                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), "", ""))
+                    if(apiService.makeReservationBySearchEngine(flight.getFlightId(), username.getText(), pass.getText()))
                     {
                         AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
                                 Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
                     }
-                    view.setCenter(view.ui_globalSearchResults(Tester.testFlights2()));
+                    try
+                    {
+                        view.setCenter(view.ui_globalSearchResults(apiService.getAllFlightsForReservation(Configuration.GET_QUERY())));
+                    }
+                    catch(Exception ex)
+                    {
+                        AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
+                    }
                 }
                 else
                 {
                     if(apiService.makeReservation(flight.getFlightId(), username.getText(), pass.getText()))
                     {
-                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS,
-                                Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
+                        AlertBox.DisplayConfirmation(FieldValue.RSVP_SUCCESS, Utility.RSVP_CUSTOMER_MESSAGE(username.getText()));
                     }
-                    view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(), Tester.testFlights()));
+                    try
+                    {
+                        view.setCenter(view.ui_searchResultsByAirline(flight.getAirLine().getAirlineName(),
+                                apiService.getAllFlightsByAirlineForReservation(flight.getAirLine().getAirlineName())));
+                    }
+                    catch(Exception ex1)
+                    {
+                        AlertBox.DisplayError(FieldValue.UNK, ex1.getMessage());
+                    }
                 }
             }
-            catch(InvalidLoginException ex)
+            catch(Exception ex)
             {
                 AlertBox.DisplayError(FieldValue.INVALID_LOGIN, FieldValue.NO_USER_FOUND+username);
             }
@@ -155,26 +184,30 @@ public class Controller
         
         GridPane gridPane = view.ui_searchBarContainer(Utility.FIND_FLIGHTS_BY_LABEL(airlineName));
         
-        TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW,
-                FieldValue.SEARCH_BAR_COL, gridPane);
+        TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW, FieldValue.SEARCH_BAR_COL, gridPane);
         
-        searchBar.setOnKeyPressed(new EventHandler<KeyEvent>()
+        searchBar.setOnAction(e ->
         {
-            @Override
-            public void handle(KeyEvent ke)
+            try
             {
-                final String query = searchBar.getText();
-                
-                if (ke.getCode().equals(KeyCode.ENTER))
+                if(FieldValue.QUERIES.contains(searchBar.getText().toLowerCase()))
                 {
-                    view.setCenter(view.ui_searchResultsByAirline(airlineName,
-                            apiService.getAllFlightsByAirlineForReservation(airlineName)));
+                    Configuration.SET_QUERY(searchBar.getText().toLowerCase());
+                    view.setCenter(view.ui_searchResultsByAirline
+                            (airlineName, apiService.getAllFlightsByAirlineForReservation(airlineName)));
                 }
+                else AlertBox.DisplayError(FieldValue.INVALID_QUERY, "Invalid query. query="
+                        .concat(searchBar.getText().concat("\nPlease use one of the valid query."
+                                .concat(FieldValue.QUERIES.toString()))));
+            }
+            catch(Exception ex)
+            {
+                AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage());
             }
         });
         
         HBox hBox = new HBox();
-        Button button = BUTTON(FieldValue.HOME); button.setMinWidth(FieldValue.HOME_BTN_WIDTH);
+        Button button = Utility.BUTTON(FieldValue.HOME); button.setMinWidth(FieldValue.HOME_BTN_WIDTH);
         button.setStyle(Utility.HOME_STYLE());
         button.setAlignment(Pos.CENTER);
         button.setOnAction(e ->
@@ -214,17 +247,21 @@ public class Controller
     {
         try
         {
-            if(apiService.insertNewCustomer(firstName, lastName, email, password))
-            {
-                AlertBox.DisplayInformation(FieldValue.NEW_CUST_LABEL,
-                        FieldValue.NEW_CUSTOMER_ADDED.concat("\n")
-                                                     .concat(FieldValue.USERNAME
-                                                             .concat(firstName).concat(" ").concat(lastName)));
-            }
+            apiService.insertNewCustomer(firstName, lastName, email, password);
+            
+            AlertBox.DisplayInformation(FieldValue.NEW_CUST_LABEL,
+                    FieldValue.NEW_CUSTOMER_ADDED.concat("\n")
+                                                 .concat(FieldValue.USERNAME
+                                                         .concat(firstName).concat(" ").concat(lastName)));
         }
-        catch(Exception ex)     //IllegalArgumentException
+        catch(IllegalArgumentException ex)
         {
-            AlertBox.DisplayError(FieldValue.INVALID_INFO, ex.getMessage());
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+            view.ui_newCustomerRegistration();
+        }
+        catch(Exception ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
             view.ui_newCustomerRegistration();
         }
     }
@@ -242,6 +279,16 @@ public class Controller
         }
         catch(InvalidLoginException ex)
         {
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+            view.ui_customerLogin();
+        }
+        catch(NullPointerException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getLocalizedMessage());
+            view.ui_customerLogin();
+        }
+        catch(Exception ex)
+        {
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.ui_customerLogin();
         }
@@ -255,10 +302,14 @@ public class Controller
             
             Configuration.GET_SESSION().addAdminToSession(admin);
             
-            Set<Reservation> reservations = apiService.getGlobalReservationsMadeUsingSearchEngine();
-            view.ui_handleAfterGlobalAdminLogin(admin, reservations);
+            view.ui_handleAfterGlobalAdminLogin(admin, apiService.getGlobalReservationsMadeUsingSearchEngine());
         }
-        catch(InvalidLoginException ex)
+        catch(NullPointerException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getLocalizedMessage());
+            view.ui_globalAdminLogin();
+        }
+        catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.ui_globalAdminLogin();
@@ -278,7 +329,11 @@ public class Controller
             view.setTop(view.ui_menuBar(view.ui_airports()));
             view.setCenter(adminAccessView);
         }
-        catch(InvalidLoginException ex)
+        catch(NullPointerException ex)
+        {
+            AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getLocalizedMessage());
+        }
+        catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_LOGIN, ex.getMessage().concat("\n\n"));
         }
@@ -286,23 +341,37 @@ public class Controller
     
     public void handleAddFlightForAirline(Admin admin, String airlineName)
     {
-        Set<Airport> airports = apiService.getAllAirports();
-        Set<Airplane> airplanes = apiService.getAllAirPlaneByAirLine(airlineName);
-        
-        view.ui_addFlightForAirline(admin, airlineName, airports, airplanes);
+        try
+        {
+            Airline airline = apiService.getAirlineByName(airlineName);
+            Set<Airport> airports = apiService.getAllAirports();
+            Set<Airplane> airplanes = apiService.getAllAirPlaneByAirLine(airlineName);
+            
+            view.ui_addFlightForAirline(admin, airline, airports, airplanes);
+        }
+        catch(Exception ex)
+        {
+            AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
+        }
     }
     
     public void handleCancelFlightForAirline(Admin admin, String airlineName)
     {
-        Set<Flight> flights = apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE());
-        view.ui_cancelFlightsByAirlineAdmin(airlineName, flights);
+        try
+        {
+            view.ui_cancelFlightsByAirlineAdmin
+                    (airlineName, apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
+        }
+        catch(Exception ex)
+        {
+            AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
+        }
     }
     
     public void handleAllRSVPsForAirline(String airlineName)
     {
-        Set<Reservation> reservations = apiService.getAllReservationsMadeUsingSearchEngineAndAirlineGui(airlineName);
-        
-        view.ui_displayRSVPsByAirline(airlineName, reservations);
+        view.ui_displayRSVPsByAirline(airlineName,
+                apiService.getAllReservationsMadeUsingSearchEngineAndAirlineGui(airlineName));
     }
     
     public void logoutCustomer()
@@ -328,6 +397,7 @@ public class Controller
         if(AlertBox.DisplayConfirmation(FieldValue.CANCEL_HEADER, FieldValue.CANCEL_MSG))
         {
             apiService.cancelReservation(customer.getCustomerId(), reservation.getReservationId());
+            
             customer.setReservations(apiService.getAllReservationsByCustomerId(customer.getCustomerId()));
             
             view.setCenter(view.ui_customerInfo(customer));
@@ -338,31 +408,28 @@ public class Controller
     {
         if(AlertBox.DisplayConfirmation(FieldValue.CANCEL_HEADER, FieldValue.CANCEL_MSG))
         {
-            stage.close();
-            apiService.cancelFlight(flight);
-            view.ui_cancelFlightsByAirlineAdmin(airlineName,
-                    apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
+            try
+            {
+                stage.close();
+                apiService.cancelFlight(flight);
+                view.ui_cancelFlightsByAirlineAdmin(airlineName,
+                        apiService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE()));
+            }
+            catch(Exception ex)
+            {
+                AlertBox.DisplayError(FieldValue.UNK, ex.getMessage());
+            }
         }
     }
     
-    public void eventGlobalSearchBar()
+    public void handleGlobalSearchBar(String query)
     {
-        GridPane gridPane = view.ui_searchBarContainer(FieldValue.GLOBAL_SEARCH_ENGINE_LABEL);
-        
-        TextField searchBar = (TextField)Utility.GET_NODE(FieldValue.SEARCH_BAR_RAW,
-                FieldValue.SEARCH_BAR_COL, gridPane);
-        
         try
         {
-            String query = searchBar.getText();
-            
-            Set<Flight> flights = apiService.getAllFlightsForReservation(query);
-            
-            GridPane center = view.ui_globalSearchResults(flights);
-            
+            GridPane center = view.ui_globalSearchResults(apiService.getAllFlightsForReservation(query));
             view.setSearchResultsInCenter(center);
         }
-        catch(Exception ex) // IllegalArgumentException
+        catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_QUERY, ex.getMessage().concat("\n\n"));
             view.setHome();
@@ -386,28 +453,31 @@ public class Controller
         }
     }
     
-    public boolean addFlightForAirline(String airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
-                                       ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
-                                       ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
-                                       DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1)
+    public boolean addFlightForAirline(Airline airline, TextField codeField, ChoiceBox<Airplane> airPlaneChoiceBox,
+                                    ChoiceBox<Airport> sourceChoices, DatePicker sourceDate,
+                                    ChoiceBox<String> sourceTimes, ChoiceBox<Airport> destinationChoices,
+                                    DatePicker destinationDate, ChoiceBox<String> destinationTimes, TextField capacity1,
+                                    TextField fare)
     {
-        boolean isInserted = false;
         try
         {
             Flight flight = new Flight();
-            flight.setAirLine(new Airline(airline));
+            flight.setAirLine(airline);
             flight.setFlightCode(codeField.getText());
             flight.setAirplane(airPlaneChoiceBox.getValue());
-            flight.setSource(new Source(sourceChoices.getValue().getAirportName(), sourceDate.getValue(), sourceTimes.getValue()));
-            flight.setDestination(new Destination(destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
+            
+            flight.setSource(new Source(sourceChoices.getValue().getAirportId(), sourceChoices.getValue().getAirportName(), sourceDate.getValue(), sourceTimes.getValue()));
+            flight.setDestination(new Destination(destinationChoices.getValue().getAirportId(), destinationChoices.getValue().getAirportName(), destinationDate.getValue(), destinationTimes.getValue()));
+            
             flight.setCapacity(Integer.parseInt(capacity1.getText()));
-    
-            isInserted = apiService.insertFlightByAirline(flight);
+            flight.setFare(Float.parseFloat(fare.getText()));
+            
+            return apiService.insertFlightByAirline(flight);
         }
-        catch(IllegalArgumentException ex)
+        catch(Exception ex)
         {
             AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+            return false;
         }
-        return isInserted;
     }
 }

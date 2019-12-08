@@ -4,6 +4,7 @@ import com.hrs.configs.Configuration;
 import com.hrs.view.alerts.AlertBox;
 import com.hrs.view.controller.Controller;
 import com.hrs.view.models.Admin;
+import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
@@ -30,8 +31,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -92,6 +91,9 @@ public class View extends Application
     private Controller controller = Configuration.GET_CONTROLLER();
     private Stage primaryStage;
     private BorderPane homeSceneContainer;
+    
+    private Stage arrival;
+    private Stage departure;
     
     public View() {}
     
@@ -184,12 +186,12 @@ public class View extends Application
         stage.show();
     }
     
-    public void ui_addFlightForAirline(Admin admin, String airline, Set<Airport> airports, Set<Airplane> airplanes)
+    public void ui_addFlightForAirline(Admin admin, Airline airline, Set<Airport> airports, Set<Airplane> airplanes)
     {
         Stage stage = new Stage();
         stage.setWidth(900);
         stage.setHeight(700);
-        stage.setTitle(ADD_FLIGHT_FOR(airline));
+        stage.setTitle(ADD_FLIGHT_FOR(airline.getAirlineName()));
         
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -235,6 +237,13 @@ public class View extends Application
         Label capacityLabel = LABEL(FieldValue.ENTER_CAP);
         capacityLabel.setPadding(FLIGHT_LABEL());
         capacityLabel.setStyle(GENERAL_BTN_STYLE());
+    
+        Label fareLabel = LABEL(FieldValue.ENTER_FARE);
+        fareLabel.setPadding(FLIGHT_LABEL());
+        fareLabel.setStyle(GENERAL_BTN_STYLE());
+    
+        TextField fare = new TextField();
+        fare.setStyle(GENERAL_BTN_STYLE());
         
         TextField codeField = new TextField();
         codeField.setStyle(GENERAL_BTN_STYLE());
@@ -314,24 +323,27 @@ public class View extends Application
         
         gridPane.add(capacityLabel, 0, 10);
         gridPane.add(capacity1, 1, 10);
+    
+        gridPane.add(fareLabel, 0, 11);
+        gridPane.add(fare, 1, 11);
         
-        gridPane.add(new Label(), 0, 11);
         gridPane.add(new Label(), 0, 12);
+        gridPane.add(new Label(), 0, 13);
         
         Button submit = new Button(FieldValue.SUBMIT);
         submit.setStyle(CLICK_ME());
         submit.setOnAction(e ->
         {
             if(controller.addFlightForAirline(airline, codeField, airPlaneChoiceBox, sourceChoices,
-                    sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1))
+                sourceDate, sourceTimes, destinationChoices, destinationDate, destinationTimes, capacity1, fare))
             {
                 stage.close();
                 AlertBox.DisplayInformation(FieldValue.FLIGHT_ADDITION_SUCCESS_HEADER,
-                        FLIGHT_BY_ADMIN(admin.getFirstName(), airline));
+                        FLIGHT_BY_ADMIN(admin.getFirstName(), airline.getAirlineName()));
             }
         });
         
-        gridPane.add(submit, 1, 13, 1, 1);
+        gridPane.add(submit, 1, 14, 1, 1);
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);
         stage.showAndWait();
@@ -430,8 +442,6 @@ public class View extends Application
             b3.setStyle(GENERAL_BTN_STYLE());
             Button b4 = BUTTON(reservation.getFlight().getDestination().getAirportName());
             b4.setStyle(GENERAL_BTN_STYLE());
-            Button b5 = BUTTON(reservation.getCustomer().getLastName());
-            b5.setStyle(GENERAL_BTN_STYLE());
             Button b6 = BUTTON(reservation.getStatus());
             Button b7 = BUTTON(reservation.getRsvpBy() == 0 ? FieldValue.SE : FieldValue.WP);
             b7.setStyle(GENERAL_BTN_STYLE());
@@ -442,10 +452,9 @@ public class View extends Application
             gridPane.add(b2, 1, row);
             gridPane.add(b3, 2, row);
             gridPane.add(b4, 3, row);
-            gridPane.add(b5, 4, row);
-            gridPane.add(b6, 5, row);
-            gridPane.add(b7, 6, row);
-            gridPane.add(b8, 7, row);
+            gridPane.add(b6, 4, row);
+            gridPane.add(b7, 5, row);
+            gridPane.add(b8, 6, row);
             
             if(reservation.getStatus().equalsIgnoreCase(FieldValue.CANCELED)) b6.setStyle(RED());
             else b6.setStyle(GREEN());
@@ -566,17 +575,7 @@ public class View extends Application
         
         gridPane.add(new Label(FieldValue.KEY_WORDS), 1, 4, 3, 1);
         
-        searchBar.setOnKeyPressed(new EventHandler <KeyEvent>()
-        {
-            @Override
-            public void handle(KeyEvent ke)
-            {
-                if (ke.getCode().equals(KeyCode.ENTER))
-                {
-                    controller.eventGlobalSearchBar();
-                }
-            }
-        });
+        searchBar.setOnAction(e -> controller.handleGlobalSearchBar(searchBar.getText()));
         
         return gridPane;
     }
@@ -819,10 +818,8 @@ public class View extends Application
             Button b6 = BUTTON(flight.getDestination().getDate().toString()
                                      .concat(" ").concat(flight.getDestination().getTime()));
             b6.setStyle(GENERAL_BTN_STYLE());
-            Button b7 = BUTTON(flight.getCustomers().size()+"");
-            b7.setStyle(GENERAL_BTN_STYLE());
             
-            Button b8 = BUTTON(flight.getStatus());
+            Button b7 = BUTTON(flight.getStatus());
             
             gridPane.add(b1, 0, row);
             gridPane.add(b2, 1, row);
@@ -831,16 +828,15 @@ public class View extends Application
             gridPane.add(b5, 4, row);
             gridPane.add(b6, 5, row);
             gridPane.add(b7, 6, row);
-            gridPane.add(b8, 7, row);
             
             if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
             {
-                b8.setStyle(GREEN());
+                b7.setStyle(GREEN());
                 
                 Button toCancel = BUTTON(FieldValue.CLICK);
                 toCancel.setStyle(CLICK_ME());
                 
-                gridPane.add(toCancel, 8, row);
+                gridPane.add(toCancel, 7, row);
                 toCancel.setOnAction(e ->
                 {
                     if(flight.getStatus().equalsIgnoreCase(FieldValue.ON_TIME))
@@ -849,7 +845,7 @@ public class View extends Application
                     }
                 });
             }
-            else b8.setStyle(RED());
+            else b7.setStyle(RED());
             row++;
         }
         
@@ -1365,16 +1361,18 @@ public class View extends Application
     
     public void ui_arrivalWindow(String airportName, Double x, Double y, Set<Flight> flights)
     {
-        Stage stage = new Stage();
-        stage.setMinWidth(900);
-        stage.setMinHeight(600);
+        if(arrival == null) arrival = new Stage();
+        else arrival.close();
+    
+        arrival.setMinWidth(900);
+        arrival.setMinHeight(600);
         
         VBox container = new VBox(new Label());
         
         container.setAlignment(Pos.TOP_CENTER);
         container.setPadding(new Insets(5, 5, 5, 5));
         
-        GridPane gridPane = ui_populateGridForArrival(flights);
+        GridPane gridPane = ui_populateGridForArrival(flights, airportName);
         
         Label header = new Label(FieldValue.ARRIVAL_HEADER.concat(airportName.toUpperCase()));
         header.setStyle(GENERAL_BTN_STYLE());
@@ -1383,21 +1381,21 @@ public class View extends Application
         refresh.setStyle(GREEN());
         
         refresh.setOnAction(e -> container.getChildren().set(2,
-                ui_populateGridForArrival(controller.refreshAirportScreen(airportName))));
+                ui_populateGridForArrival(controller.refreshAirportScreen(airportName), airportName)));
         
         container.getChildren().add(header);
         container.getChildren().add(gridPane);
         container.getChildren().add(refresh);
         
         Scene scene = new Scene(container);
-        stage.setScene(scene);
-        stage.setTitle(TITTLE_BY(FieldValue.ARRIVAL_LABEL, airportName));
-        stage.setX(x);
-        stage.setY(y);
-        stage.show();
+        arrival.setScene(scene);
+        arrival.setTitle(TITTLE_BY(FieldValue.ARRIVAL_LABEL, airportName));
+        arrival.setX(x);
+        arrival.setY(y);
+        arrival.show();
     }
     
-    public GridPane ui_populateGridForArrival(Set<Flight> flights)
+    public GridPane ui_populateGridForArrival(Set<Flight> flights, String airportName)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
@@ -1419,28 +1417,31 @@ public class View extends Application
         
         for(Flight flight : flights)
         {
-            Button b1 = BUTTON(flight.getFlightCode());  b1.setStyle(GENERAL_BTN_STYLE());
-            Button b2 = BUTTON(flight.getAirLine().getAirlineName()); b2.setStyle(GENERAL_BTN_STYLE());
-            Button b3 = BUTTON(flight.getAirplane().getAirPlaneName()); b3.setStyle(GENERAL_BTN_STYLE());
-            Button b4 = BUTTON(flight.getSource().getAirportName()); b4.setStyle(GENERAL_BTN_STYLE());
-            Button b5 = BUTTON(flight.getStatus());
-            if(flight.getStatus().equalsIgnoreCase(FieldValue.CANCELED)) b5.setStyle(RED());
-            else b5.setStyle(GREEN());
-            Button b6 = BUTTON(Configuration.GET_CURRENT_DATE().toString()); b6.setStyle(GENERAL_BTN_STYLE());
-            
-            gridPane.add(b1, 0, row);
-            gridPane.add(b2, 1, row);
-            gridPane.add(b3, 2, row);
-            gridPane.add(b4, 3, row);
-            gridPane.add(b5, 4, row);
-            gridPane.add(b6, 5, row);
-            row++;
+            if(flight.getDestination().getAirportName().equalsIgnoreCase(airportName))
+            {
+                Button b1 = BUTTON(flight.getFlightCode());  b1.setStyle(GENERAL_BTN_STYLE());
+                Button b2 = BUTTON(flight.getAirLine().getAirlineName()); b2.setStyle(GENERAL_BTN_STYLE());
+                Button b3 = BUTTON(flight.getAirplane().getAirPlaneName()); b3.setStyle(GENERAL_BTN_STYLE());
+                Button b4 = BUTTON(flight.getSource().getAirportName()); b4.setStyle(GENERAL_BTN_STYLE());
+                Button b5 = BUTTON(flight.getStatus());
+                if(flight.getStatus().equalsIgnoreCase(FieldValue.CANCELED)) b5.setStyle(RED());
+                else b5.setStyle(GREEN());
+                Button b6 = BUTTON(Configuration.GET_CURRENT_DATE().toString()); b6.setStyle(GENERAL_BTN_STYLE());
+    
+                gridPane.add(b1, 0, row);
+                gridPane.add(b2, 1, row);
+                gridPane.add(b3, 2, row);
+                gridPane.add(b4, 3, row);
+                gridPane.add(b5, 4, row);
+                gridPane.add(b6, 5, row);
+                row++;
+            }
         }
         
         return gridPane;
     }
     
-    public GridPane ui_populateGridForDeparture(Set<Flight> flights)
+    public GridPane ui_populateGridForDeparture(Set<Flight> flights, String airportName)
     {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
@@ -1462,22 +1463,25 @@ public class View extends Application
         
         for(Flight flight : flights)
         {
-            Button b1 = BUTTON(flight.getFlightCode());  b1.setStyle(GENERAL_BTN_STYLE());
-            Button b2 = BUTTON(flight.getAirLine().getAirlineName()); b2.setStyle(GENERAL_BTN_STYLE());
-            Button b3 = BUTTON(flight.getAirplane().getAirPlaneName()); b3.setStyle(GENERAL_BTN_STYLE());
-            Button b4 = BUTTON(flight.getDestination().getAirportName()); b4.setStyle(GENERAL_BTN_STYLE());
-            Button b5 = BUTTON(flight.getStatus());
-            if(flight.getStatus().equalsIgnoreCase(FieldValue.CANCELED)) b5.setStyle(RED());
-            else b5.setStyle(GREEN());
-            Button b6 = BUTTON(Configuration.GET_CURRENT_DATE().toString()); b6.setStyle(GENERAL_BTN_STYLE());
-            
-            gridPane.add(b1, 0, row);
-            gridPane.add(b2, 1, row);
-            gridPane.add(b3, 2, row);
-            gridPane.add(b4, 3, row);
-            gridPane.add(b5, 4, row);
-            gridPane.add(b6, 5, row);
-            row++;
+            if(flight.getSource().getAirportName().equalsIgnoreCase(airportName))
+            {
+                Button b1 = BUTTON(flight.getFlightCode());  b1.setStyle(GENERAL_BTN_STYLE());
+                Button b2 = BUTTON(flight.getAirLine().getAirlineName()); b2.setStyle(GENERAL_BTN_STYLE());
+                Button b3 = BUTTON(flight.getAirplane().getAirPlaneName()); b3.setStyle(GENERAL_BTN_STYLE());
+                Button b4 = BUTTON(flight.getDestination().getAirportName()); b4.setStyle(GENERAL_BTN_STYLE());
+                Button b5 = BUTTON(flight.getStatus());
+                if(flight.getStatus().equalsIgnoreCase(FieldValue.CANCELED)) b5.setStyle(RED());
+                else b5.setStyle(GREEN());
+                Button b6 = BUTTON(Configuration.GET_CURRENT_DATE().toString()); b6.setStyle(GENERAL_BTN_STYLE());
+    
+                gridPane.add(b1, 0, row);
+                gridPane.add(b2, 1, row);
+                gridPane.add(b3, 2, row);
+                gridPane.add(b4, 3, row);
+                gridPane.add(b5, 4, row);
+                gridPane.add(b6, 5, row);
+                row++;
+            }
         }
         
         return gridPane;
@@ -1485,16 +1489,18 @@ public class View extends Application
     
     public void ui_departureWindow(String airportName, Double x, Double y, Set<Flight> flights)
     {
-        Stage stage = new Stage();
-        stage.setMinWidth(900);
-        stage.setMinHeight(600);
+        if(departure == null) departure = new Stage();
+        else departure.close();
+    
+        departure.setMinWidth(900);
+        departure.setMinHeight(600);
         
         VBox container = new VBox(new Label());
         
         container.setAlignment(Pos.TOP_CENTER);
         container.setPadding(new Insets(5, 5, 5, 5));
         
-        GridPane gridPane = ui_populateGridForDeparture(flights);
+        GridPane gridPane = ui_populateGridForDeparture(flights, airportName);
         
         Label header = new Label(FieldValue.DEPARTURE_HEADER.concat(airportName.toUpperCase()));
         header.setStyle(GENERAL_BTN_STYLE());
@@ -1503,16 +1509,16 @@ public class View extends Application
         refresh.setStyle(GREEN());
         
         refresh.setOnAction(e -> container.getChildren().set(2,
-                ui_populateGridForDeparture(controller.refreshAirportScreen(airportName))));
+                ui_populateGridForDeparture(controller.refreshAirportScreen(airportName), airportName)));
         
         container.getChildren().add(header);
         container.getChildren().add(gridPane);
         container.getChildren().add(refresh);
         Scene scene = new Scene(container);
-        stage.setScene(scene);
-        stage.setTitle(TITTLE_BY(FieldValue.DEPARTURE_LABEL, airportName));
-        stage.setX(x);
-        stage.setY(y);
-        stage.show();
+        departure.setScene(scene);
+        departure.setTitle(TITTLE_BY(FieldValue.DEPARTURE_LABEL, airportName));
+        departure.setX(x);
+        departure.setY(y);
+        departure.show();
     }
 }

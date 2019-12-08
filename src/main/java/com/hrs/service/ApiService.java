@@ -1,205 +1,213 @@
 package com.hrs.service;
 
+import com.hrs.configs.Configuration;
+import com.hrs.dao.dbServices.DB2;
+import com.hrs.exceptions.IllegalArgumentException;
 import com.hrs.exceptions.InvalidLoginException;
-import com.hrs.test.Tester;
+
+import com.hrs.resources.FieldValue;
+import com.hrs.util.Utility;
 import com.hrs.view.models.Admin;
 import com.hrs.view.models.Airline;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Customer;
-import com.hrs.view.models.Destination;
 import com.hrs.view.models.Flight;
 import com.hrs.view.models.Reservation;
-import com.hrs.view.models.Source;
-import com.hrs.resources.FieldValue;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
 import java.util.Set;
-
-import static com.hrs.test.Tester.STATUS_ACTIVE;
-import static com.hrs.test.Tester.STATUS_CANCELED;
-import static com.hrs.test.Tester.STATUS_ON_TIME;
-import static com.hrs.test.Tester.testCustomer;
-import static com.hrs.test.Tester.testFlight1;
-import static com.hrs.test.Tester.testFlight2;
 
 /**
  * A service class that provides database access
  */
 public class ApiService implements Services
 {
-    // first character has to be letter, must contain at least 4 character and no more then 14 character (number, letter and _)
-    public final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
-
-    //character@test.test
-    public final String emailRegEx = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-
-    //name validation
-    public final String nameRegEx = "^[a-zA-Z]\\w\\D{3,14}$";
-
+    private DB2 databaseService = Configuration.GET_DB2_SERVICE();
+    
+    public static final String passRegEx = "^[a-zA-Z0-9]\\w{3,14}$";
+    
+    public static final String emailRegEx = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+    
+    public static final String nameRegEx = "^[a-zA-Z]\\w{3,14}$";
+    
     @Override
-    public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
+    public Set<Flight> getAllFlightsForReservation(String query) throws IllegalArgumentException
     {
-        return Tester.testReservation();
+        if(FieldValue.QUERIES.contains(query.toLowerCase()))
+        {
+            Configuration.SET_QUERY(query.toLowerCase());
+            return databaseService.getAllFlightsForReservation(query);
+        }
+        else throw new IllegalArgumentException(FieldValue.INVALID_QUERY.concat("\n").concat("please use one of the " +
+                "given queries. queries=").concat(FieldValue.QUERIES.toString()));
     }
     
     @Override
-    public Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate)
+    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName) throws IllegalArgumentException
     {
-        return Tester.testFlights();
+        return databaseService.getAllFlightsByAirlineForReservation(airlineName);
     }
     
     @Override
-    public Set<Flight> getAllFlightsForReservation(String query)
+    public Set<Flight> getAllFlightsByAirline(String airlineName, LocalDate localDate) throws IllegalArgumentException
     {
-        return Tester.testFlights();
+        return databaseService.getAllFlightsByAirline(airlineName, Configuration.GET_CURRENT_DATE());
     }
     
     @Override
     public Set<Reservation> getAllReservationsByCustomerId(Integer customerId)
     {
-        Set<Reservation> reservations = new LinkedHashSet <>();
+        return databaseService.getAllReservationsByCustomerId(customerId);
+    }
     
-        Flight f2 = new Flight("8PK9",
-                new Source("LGA", LocalDate.of(2019, 11, 12), "3:00 pm"),
-                new Destination("TXD", LocalDate.of(2019, 11, 12), "9:00 pm"),
-                STATUS_ON_TIME(), new Airline("Delta Ar."), new Airplane("D 909P"), 110f);
-    
-        Flight f3 = new Flight("9PU7",
-                new Source("LAC", LocalDate.of(2019, 11, 20), "12:00 pm"),
-                new Destination("JFK", LocalDate.of(2019, 11, 20), "6:00 pm"),
-                STATUS_ON_TIME(), new Airline("Jet Blue"), new Airplane("JB P17B"), 120f);
-    
-        reservations.add(new Reservation(f2, LocalDate.of(2019, 11, 7), STATUS_CANCELED(), 0));
-        reservations.add(new Reservation(f3, LocalDate.now(), STATUS_ACTIVE(), 1));
-    
-        return reservations;
+    @Override
+    public Set<Reservation> getAllReservationsMadeUsingSearchEngineAndAirlineGui(String airlineName)
+    {
+        return databaseService.getAllReservationsMadeUsingSearchEngineAndAirlineGui(airlineName);
     }
     
     @Override
     public Customer getCustomerByLogin(String username, String password) throws InvalidLoginException
     {
-        return Tester.testCustomer();
+        if(!username.matches(emailRegEx))
+            throw new InvalidLoginException("Invalid username/email. username=".concat(username));
+        if(!password.matches(passRegEx))
+            throw new InvalidLoginException("Invalid password. password=".concat(password));
+        
+        return databaseService.getCustomerByLogin(username, password);
     }
     
     @Override
     public Admin getGlobalAdminByLogin(String username, String password) throws InvalidLoginException
     {
-        return Tester.admin();
+        return databaseService.getGlobalAdminByLogin(username, password);
     }
     
     @Override
     public Admin getAirlineAdminByLogin(String airline, String username, String password) throws InvalidLoginException
     {
-        return new Admin("Hamidur", "Rahman");
+        return databaseService.getAirlineAdminByLogin(airline, username, password);
     }
     
     @Override
     public Set<Reservation> getGlobalReservationsMadeUsingSearchEngine()
     {
-        Set<Reservation> reservations = new LinkedHashSet <>();
-        reservations.add(new Reservation(testCustomer(), testFlight1(), LocalDate.now(), STATUS_ACTIVE(), 0));
-        reservations.add(new Reservation(testCustomer(), testFlight2(), LocalDate.now(), STATUS_CANCELED(), 0));
-        return reservations;
-    }
-    
-    @Override
-    public Set<Airplane> getAllAirPlaneByAirLine(String airlineName)
-    {
-        Set<Airplane> airplanes = new LinkedHashSet <>();
-        airplanes.add(new Airplane(11, "AP1"));
-        airplanes.add(new Airplane(12, "AP2"));
-        airplanes.add(new Airplane(13, "AP3"));
-        airplanes.add(new Airplane(14, "AP4"));
-        return airplanes;
-    }
-    
-    @Override
-    public Set<Airport> getAllAirports()
-    {
-        Set<Airport> airports = new LinkedHashSet <>();
-        airports.add(new Airport(101, "A1"));
-        airports.add(new Airport(102, "A2"));
-        airports.add(new Airport(103, "A3"));
-        airports.add(new Airport(104, "A4"));
-        return airports;
-    }
-    
-    @Override
-    public Set<Flight> getAllFlightsByAirlineForReservation(String airlineName)
-    {
-        return Tester.testFlights();
-    }
-    
-    @Override
-    public boolean insertNewCustomer(String firstName, String lastName, String email, String password)
-            throws IllegalArgumentException
-    {
-        try
-        {
-        
-        }
-        catch(Exception ex)
-        {
-        
-        }
-        return true;
-    }
-    
-    @Override
-    public boolean cancelReservation(Integer customerId, Integer reservationId)
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean cancelFlight(Integer flightId)
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidLoginException
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean makeReservation(Integer flightIdPk, Integer customerId)
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password) throws InvalidLoginException
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId)
-    {
-        return true;
-    }
-    
-    @Override
-    public boolean insertFlightByAirline(Flight flight) throws IllegalArgumentException
-    {
-        return true;
+        return databaseService.getGlobalReservationsMadeUsingSearchEngine();
     }
     
     @Override
     public Set<Flight> getAllFlightsByAirport(String airportName)
     {
-        Set<Flight> flights = new LinkedHashSet <>();
-        
-        flights.add(new Flight("C1D8", new Source("NY"), new Destination("TXD"), FieldValue.ON_TIME, new Airline("AME. Airline"), new Airplane("AA109K")));
-        flights.add(new Flight("HS78", new Source("NY"), new Destination("LA"), FieldValue.CANCELED, new Airline("JB"), new Airplane("JB90P")));
+        return databaseService.getAllFlightsByAirport(airportName);
+    }
     
-        flights.add(new Flight("AY90", new Source("NC"), new Destination("NY"), FieldValue.ON_TIME, new Airline("Delta"), new Airplane("D01L")));
-        flights.add(new Flight("78T6", new Source("MI"), new Destination("NY"), FieldValue.CANCELED, new Airline("JB"), new Airplane("JB9Y")));
+    @Override
+    public Set<Airplane> getAllAirPlaneByAirLine(String airlineName) throws IllegalArgumentException
+    {
+        return databaseService.getAllAirPlaneByAirLine(airlineName);
+    }
+    
+    @Override
+    public Set<Airport> getAllAirports()
+    {
+        return databaseService.getAllAirports();
+    }
+    
+    @Override
+    public boolean insertNewCustomer(String firstName, String lastName, String email, String password) throws IllegalArgumentException
+    {
+        if(!firstName.matches(nameRegEx))
+            throw new IllegalArgumentException(("Invalid first name provided, length must be at least 4 char long. " +
+                    "given firstName=").concat(firstName));
+        if(!lastName.matches(nameRegEx))
+            throw new IllegalArgumentException(("Invalid last name provided, length must be at least 4 char long. " +
+                    "given lastName=").concat(lastName));
+        if(!email.matches(emailRegEx))
+            throw new IllegalArgumentException(("Invalid email provided. given email=").concat(email));
+        if(!password.matches(passRegEx))
+            throw new IllegalArgumentException("Invalid password provided, length must be at least 4 har long. " +
+                    "given password=".concat(password));
+    
+        return databaseService.insertNewCustomer(firstName, lastName, email, password);
+    }
+    
+    @Override
+    public boolean insertFlightByAirline(Flight flight) throws IllegalArgumentException
+    {
+        if(flight.getFlightCode().trim().isEmpty())
+            throw new IllegalArgumentException("Flight code cannot be empty. given=".concat(flight.getFlightCode()));
+        if(flight.getAirplane() == null)
+            throw new IllegalArgumentException("Airplane cannot be null.");
+        if(flight.getSource() == null)
+            throw new IllegalArgumentException("Source cannot be null");
+        if(flight.getSource().getDate() == null)
+            throw new IllegalArgumentException("Source date cannot be null.");
+        if(flight.getSource().getTime().isEmpty() || flight.getSource().getTime() == null)
+            throw new IllegalArgumentException("Source time cannot be null or empty.");
+        if(flight.getDestination() == null)
+            throw new IllegalArgumentException("Destination cannot be null");
+        if(flight.getDestination().getDate() == null)
+            throw new IllegalArgumentException("Destination date cannot be null.");
+        if(flight.getDestination().getTime().isEmpty() || flight.getDestination().getTime() == null)
+            throw new IllegalArgumentException("Destination time cannot be null or empty.");
+        if(flight.getCapacity() == null || flight.getCapacity() <= 0 || flight.getCapacity() >= 50)
+            throw new IllegalArgumentException("Capacity cannot be null or less 0 or more than 50.");
+        if(flight.getFare() == null || flight.getFare() <= 0 || flight.getFare() >= 200)
+            throw new IllegalArgumentException("Fare cannot be null or less than 0 or more than 200.");
         
-        return flights;
+        return databaseService.insertFlightByAirline(flight);
+    }
+    
+    @Override
+    public boolean cancelReservation(Integer customerId, Integer reservationId)
+    {
+        return databaseService.cancelReservation(customerId, reservationId);
+    }
+    
+    @Override
+    public boolean cancelFlight(Integer flightId)
+    {
+        return databaseService.cancelFlight(flightId);
+    }
+    
+    @Override
+    public boolean makeReservation(Integer flightIdPk, String username, String password) throws InvalidLoginException
+    {
+        if(!username.matches(emailRegEx))
+            throw new InvalidLoginException("Invalid username/email. username=".concat(username));
+        if(!password.matches(passRegEx))
+            throw new InvalidLoginException("Invalid password. password=".concat(password));
+        
+        return databaseService.makeReservation(flightIdPk, username, password);
+    }
+    
+    @Override
+    public boolean makeReservation(Integer flightIdPk, Integer customerId)
+    {
+        return databaseService.makeReservation(flightIdPk, customerId);
+    }
+    
+    @Override
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, String username, String password) throws InvalidLoginException
+    {
+        if(!username.matches(emailRegEx))
+            throw new InvalidLoginException("Invalid username/email. username=".concat(username));
+        if(!password.matches(passRegEx))
+            throw new InvalidLoginException("Invalid password. password=".concat(password));
+        
+        return databaseService.makeReservationBySearchEngine(flightIdPk, username, password);
+    }
+    
+    @Override
+    public boolean makeReservationBySearchEngine(Integer flightIdPk, Integer customerId)
+    {
+        return databaseService.makeReservationBySearchEngine(flightIdPk, customerId);
+    }
+    
+    @Override
+    public Airline getAirlineByName(String airlineName)
+    {
+        return databaseService.getAirlineByName(airlineName);
     }
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Admin extends Person
 {
+    private Integer adminId;
     private Login login;
     
     public Admin()
@@ -11,9 +12,10 @@ public class Admin extends Person
         super();
     }
     
-    public Admin(String firstName, String lastName)
+    public Admin(Integer adminId, String firstName, String lastName)
     {
         super(firstName, lastName);
+        this.adminId = adminId;
     }
     
     public Admin(String firstName, String lastName, Login login)
@@ -36,6 +38,16 @@ public class Admin extends Person
     public void setLogin(Login login)
     {
         this.login = login;
+    }
+    
+    public Integer getAdminId()
+    {
+        return adminId;
+    }
+    
+    public void setAdminId(Integer adminId)
+    {
+        this.adminId = adminId;
     }
     
     @Override
