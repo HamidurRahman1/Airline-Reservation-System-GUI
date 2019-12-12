@@ -441,6 +441,7 @@ public class Controller
         if(Configuration.GET_SESSION().isCustomerInSession())
         {
             Customer customer = Configuration.GET_SESSION().getCustomer();
+            customer.setReservations(apiService.getAllReservationsByCustomerId(customer.getCustomerId()));
             view.setTop(view.ui_menuBar(view.ui_searchEngine(), view.ui_airlines(), view.ui_airports()));
             VBox center = view.ui_customerInfo(customer);
             view.setCenter(center);
