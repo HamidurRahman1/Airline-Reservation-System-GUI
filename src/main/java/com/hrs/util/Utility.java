@@ -1,5 +1,6 @@
 package com.hrs.util;
 
+import com.hrs.configs.Configuration;
 import com.hrs.view.models.Airplane;
 import com.hrs.view.models.Airport;
 import com.hrs.view.models.Flight;
@@ -418,7 +419,7 @@ public class Utility
     
     public static String ADD_FLIGHT_FOR(String airline)
     {
-        return "Adding a flight for ".concat(airline.toUpperCase());
+        return "Adding a flight for ".concat(airline.toUpperCase()).concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString()));
     }
     
     public static String FLIGHT_BY_ADMIN(String firstName, String airline)

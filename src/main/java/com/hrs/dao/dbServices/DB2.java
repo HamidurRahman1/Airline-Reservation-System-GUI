@@ -896,7 +896,12 @@ public class DB2 implements Services
         }
         catch(SQLException ex)
         {
-            throw new IllegalArgumentException(ex.getMessage());
+            if(ex.getMessage().contains("Duplicate"))
+            {
+                throw new IllegalArgumentException("Entered email=".concat(login.getUsername()).concat(" already exists. "+
+                        "Please enter a different email."));
+            }
+            else throw new IllegalArgumentException(ex.getMessage());
         }
         catch(Exception ex)
         {
