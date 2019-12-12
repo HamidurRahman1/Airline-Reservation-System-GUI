@@ -136,7 +136,7 @@ public class FieldValue
     public static final String ADD_FLIGHT = "ADD FLIGHT";
     public static final String CANCEL_FLIGHT = "CANCEL FLIGHT";
     
-    public static final String LOGOUT_LABEL = "Logout";
+    public static final String LOGOUT_LABEL = "Log out";
     
     public static final Double HOME_BTN_WIDTH = 150.0;
     
@@ -160,7 +160,7 @@ public class FieldValue
     public static final String ON_TIME = "ON TIME";
     public static final String ACTIVE = "ACTIVE";
     public static final String CANCELED = "CANCELLED";
-    public static final String CLICK = "CLICK ME";
+    public static final String CLICK = "SELECT";
     public static final String SEARCH_ENGINE = "Search Engine";
     
     public static final String LOGGED_USER = "User";
