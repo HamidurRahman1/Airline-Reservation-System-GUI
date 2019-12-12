@@ -110,7 +110,7 @@ public class View extends Application
     {
         Scene homeScene = new Scene(this.homeSceneContainer, FieldValue.HOME_SCENE_WIDTH, FieldValue.HOME_SCENE_HEIGHT);
         
-        primaryStage.setTitle(FieldValue.APP_TITLE);
+        primaryStage.setTitle(FieldValue.APP_TITLE + " : " + Configuration.GET_CURRENT_DATE().toString());
         primaryStage.setWidth(FieldValue.HOME_WINDOW_WIDTH);
         primaryStage.setHeight(FieldValue.HOME_WINDOW_HEIGHT);
         primaryStage.setScene(homeScene);
@@ -352,7 +352,8 @@ public class View extends Application
     public void ui_cancelFlightsByAirlineAdmin(String airline, Set<Flight> flights)
     {
         Stage cancelFlightStage = new Stage();
-        cancelFlightStage.setTitle(FieldValue.CANCELABLE.concat(airline.toUpperCase()));
+        cancelFlightStage.setTitle(FieldValue.CANCELABLE.concat(airline.toUpperCase())
+                                                        .concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         
         cancelFlightStage.setWidth(FieldValue.HOME_SCENE_WIDTH-300);
         cancelFlightStage.setHeight(FieldValue.HOME_SCENE_HEIGHT-150);
@@ -544,7 +545,7 @@ public class View extends Application
         Scene scene = new Scene(gridPane, 600, 450);
         
         stage.setScene(scene);
-        stage.setTitle(FieldValue.NEW_CUST_LABEL);
+        stage.setTitle(FieldValue.NEW_CUST_LABEL.concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         stage.setAlwaysOnTop(true);
         stage.show();
     }
@@ -1078,7 +1079,8 @@ public class View extends Application
     public void ui_displayRSVPsByAirline(String airlineName, Set<Reservation> reservations)
     {
         Stage stage = new Stage();
-        stage.setTitle(FieldValue.RSVP_TITLE.concat(airlineName.toUpperCase()));
+        stage.setTitle(FieldValue.RSVP_TITLE.concat(airlineName.toUpperCase())
+                                            .concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         stage.setHeight(600);
         stage.setWidth(1300);
         
@@ -1176,7 +1178,7 @@ public class View extends Application
                 controller.handleAirlineAdminLogin(key, username.getText(), pass.getText());
             }
         });
-        stage.setTitle(FieldValue.LOGIN);
+        stage.setTitle(FieldValue.LOGIN.concat(" On : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         stage.setScene(scene);
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
@@ -1389,7 +1391,8 @@ public class View extends Application
         
         Scene scene = new Scene(container);
         arrival.setScene(scene);
-        arrival.setTitle(TITTLE_BY(FieldValue.ARRIVAL_LABEL, airportName));
+        arrival.setTitle(TITTLE_BY(FieldValue.ARRIVAL_LABEL, airportName)
+                .concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         arrival.setX(x);
         arrival.setY(y);
         arrival.show();
@@ -1516,7 +1519,8 @@ public class View extends Application
         container.getChildren().add(refresh);
         Scene scene = new Scene(container);
         departure.setScene(scene);
-        departure.setTitle(TITTLE_BY(FieldValue.DEPARTURE_LABEL, airportName));
+        departure.setTitle(TITTLE_BY(FieldValue.DEPARTURE_LABEL, airportName)
+                .concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         departure.setX(x);
         departure.setY(y);
         departure.show();

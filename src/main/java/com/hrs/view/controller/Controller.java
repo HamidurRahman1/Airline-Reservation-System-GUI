@@ -114,7 +114,7 @@ public class Controller
     {
         Stage stage = new Stage();
         
-        stage.setTitle(FieldValue.EXP_RSVP);
+        stage.setTitle(FieldValue.EXP_RSVP.concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         
         GridPane gridPane = view.ui_loginContainer(FieldValue.CUSTOMER_LOGIN_LABEL);
         
@@ -171,7 +171,7 @@ public class Controller
             }
         });
         stage.setScene(scene);
-        stage.setTitle(FieldValue.CUSTOMER);
+        stage.setTitle(FieldValue.CUSTOMER.concat(" : ".concat(Configuration.GET_CURRENT_DATE().toString())));
         stage.setAlwaysOnTop(true);
         stage.showAndWait();
     }
@@ -477,7 +477,7 @@ public class Controller
         }
         catch(Exception ex)
         {
-            AlertBox.DisplayError(FieldValue.INVALID_INSERT, ex.getMessage());
+            AlertBox.DisplayError(FieldValue.INVALID_INSERT, "Invalid info provided. Please try again with valid info.");
             return false;
         }
     }

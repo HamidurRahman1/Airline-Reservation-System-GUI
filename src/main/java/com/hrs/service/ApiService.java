@@ -151,7 +151,7 @@ public class ApiService implements Services
             throw new IllegalArgumentException("Destination date cannot be null.");
         if(flight.getDestination().getTime().isEmpty() || flight.getDestination().getTime() == null)
             throw new IllegalArgumentException("Destination time cannot be null or empty.");
-        if(flight.getCapacity() == null || flight.getCapacity() <= 0 || flight.getCapacity() >= 50)
+        if(flight.getCapacity() == null || flight.getCapacity() <= 0 || flight.getCapacity() >= 80)
             throw new IllegalArgumentException("Capacity cannot be null or less 0 or more than 50.");
         if(flight.getFare() == null || flight.getFare() <= 0 || flight.getFare() >= 200)
             throw new IllegalArgumentException("Fare cannot be null or less than 0 or more than 200.");
