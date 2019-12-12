@@ -20,7 +20,9 @@ insert into Logins (email, password) values
 ('adnan@gmail.com', 'adnan123'),
 ('syed@gmail.com', 'syed123'),
 ('hamidur@gmail.com', 'hamidur123'),
-('random@gmail.com', 'random123');
+('random1@gmail.com', 'random123'),
+('random2@gmail.com', 'random123'),
+('random3@gmail.com', 'random123');
 
 insert into Admins(firstName, lastName, airlineId, loginId) values
 ('Megatron', 'Live', null, 1),
@@ -29,7 +31,9 @@ insert into Admins(firstName, lastName, airlineId, loginId) values
 ('Hamidur', 'Rahman', 3, 4);
 
 insert into Customers(firstName, lastName, loginId) values
-('Random', 'User', 5);
+('Random1', 'User1', 5),
+('Random2', 'User2', 6),
+('Random3', 'User3', 7);
 
 
 insert into Flights(flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
@@ -37,7 +41,6 @@ dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_air
 values ('V1X9', 1, 1, 1, '90', 25, 5, 1, 'JFK',  '2019-12-05', '1:00 pm', 2, 'LAX', '2019-12-05', '10:00 pm');
 
 insert into Flights_Customers (flightId, customerId) values (1,1);
-
 
 
 
@@ -77,15 +80,13 @@ values ('T108', 3, 12, 1, 145, 25, 17, 4, 'Boston', '2019-12-12', '3:00 pm', 2, 
 
 
 
-
-
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat, 
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
 values ('P5Q', 1, 1, 1, 94, 25, 0, 1, 'JFK', '2019-12-13', '3:00 am', 4, 'Boston', '2019-12-13', '9:00 am');
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('E41X', 1, 3, 1, 133, 25, 3, 3, 'MI', '2019-12-13', '12:00 pm', 6, 'Georgia', '2019-12-13', '6:00 pm');
+values ('E41X', 1, 3, 1, 133, 25, 2, 2, 'MI', '2019-12-13', '12:00 pm', 6, 'Georgia', '2019-12-13', '6:00 pm');
 
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
@@ -111,4 +112,18 @@ insert into Reservations (customerId, flightId, rsvpDate, rsvpStatus, rsvpBy) va
 
 insert into Reservations (customerId, flightId, rsvpDate, rsvpStatus, rsvpBy) values
 (1, 13, '2019-12-12', 'CANCELLED', 0);
+
+insert into Reservations (customerId, flightId, rsvpDate, rsvpStatus, rsvpBy) values
+(2, 14, '2019-12-12', 'ACTIVE', 1);
+
+insert into Reservations (customerId, flightId, rsvpDate, rsvpStatus, rsvpBy) values
+(3, 10, '2019-12-12', 'ACTIVE', 1);
+
+insert into Flights_Customers (flightId, customerId) values (11,1);
+
+insert into Flights_Customers (flightId, customerId) values (14,2);
+
+insert into Flights_Customers (flightId, customerId) values (10,3);
+
+
 
