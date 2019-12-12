@@ -41,31 +41,39 @@ insert into Flights_Customers (flightId, customerId) values (1,1);
 
 
 
+insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
+dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
+values ('T101', 1, 2, 1, 87, 25, 19, 1, 'JFK','2019-12-12', '12:00 pm', 6, 'Georgia', '2019-12-12', '6:00 pm');
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('T101', 1, 9, 1, 87, 25, 19, 1, 'JFK','2019-12-12', '12:00 pm', 6, 'Georgia', '2019-12-12', '6:00 pm');
-
-insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
-dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('T102', 2, 10, 1, 65, 25, 20, 3, 'MI', '2019-12-12', '3:00 pm', 4, 'Boston', '2019-12-12', '9:00 pm');
-
-insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
-dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('T103', 3, 11, 1, 145, 25, 17, 5, 'Newark', '2019-12-12', '3:00 pm', 2, 'LAX' , '2019-12-12', '9:00 pm');
+values ('T102', 1, 4, 1, 78, 25, 15, 1, 'JFK','2019-12-12', '12:00 am', 3, 'MI', '2019-12-12', '6:00 am');
 
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('T104', 3, 9, 1, 87, 25, 19, 6, 'Georgia','2019-12-12', '12:00 pm', 5, 'Newark', '2019-12-12', '6:00 pm');
+values ('T103', 2, 5, 1, 65, 25, 20, 3, 'MI', '2019-12-12', '3:00 pm', 4, 'Boston', '2019-12-12', '9:00 pm');
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('T105', 2, 10, 1, 65, 25, 20, 4, 'Boston', '2019-12-12', '3:00 pm', 3, 'MI', '2019-12-12', '9:00 pm');
+values ('T104', 2, 7, 1, 65, 25, 20, 4, 'Boston', '2019-12-12', '3:00 pm', 3, 'MI', '2019-12-12', '9:00 pm');
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('T106', 1, 11, 1, 145, 25, 17, 2, 'LAX', '2019-12-12', '3:00 pm', 1, 'JFK' , '2019-12-12', '9:00 pm');
+values ('T106', 3, 10, 1, 87, 25, 19, 6, 'Georgia','2019-12-12', '12:00 pm', 5, 'Newark', '2019-12-12', '6:00 pm');
+
+insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
+dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
+values ('T107', 1, 4, 1, 145, 25, 17, 2, 'LAX', '2019-12-12', '3:00 pm', 1, 'JFK' , '2019-12-12', '9:00 pm');
+
+insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
+dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
+values ('T105', 3, 11, 1, 145, 25, 17, 5, 'Newark', '2019-12-12', '3:00 pm', 2, 'LAX' , '2019-12-12', '9:00 pm');
+
+insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
+dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
+values ('T108', 3, 12, 1, 145, 25, 17, 4, 'Boston', '2019-12-12', '3:00 pm', 2, 'LAX' , '2019-12-12', '9:00 pm');
+
 
 
 
@@ -79,10 +87,6 @@ insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
 values ('E41X', 1, 3, 1, 133, 25, 3, 3, 'MI', '2019-12-13', '12:00 pm', 6, 'Georgia', '2019-12-13', '6:00 pm');
 
-insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
-dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('FGT1', 1, 2, 1, 105, 25, 5, 5, 'Newark', '2019-12-13', '12:00 pm', 2, 'LAX', '2019-12-13', '6:00 pm');
-
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
@@ -91,10 +95,6 @@ values ('UYT6', 2, 6, 1, 85, 25, 16, 6, 'Georgia', '2019-12-13', '6:00 pm', 3, '
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
 values ('109F', 2, 8, 1, 125, 25, 20, 4, 'Boston', '2019-12-14', '6:00 pm', 1, 'JFK', '2019-12-14', '9:00 pm');
-
-insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
-dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('Y82Z', 2, 5, 1, 75, 25, 3, 2, 'LAX', '2019-12-13', '6:00 pm', 5, 'Newark', '2019-12-13', '9:00 pm');
 
 
 insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
@@ -105,13 +105,10 @@ insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity
 dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
 values ('X34A', 3, 10, 1, 65, 25, 20, 3, 'MI', '2019-12-15', '3:00 am', 4, 'Boston', '2019-12-15', '9:00 am');
 
-insert into Flights (flightCode, airlineId, airplaneId, statusId, fare, capacity, avlSeat,
-dept_airportId, dept_airportName, dept_date, dept_time, arri_airportId, arri_airportName, arri_date, arri_time)
-values ('6T7A', 3, 11, 1, 145, 25, 17, 5, 'Newark', '2019-12-13', '3:00 am', 2, 'LAX' , '2019-12-13', '9:00 am');
 
 insert into Reservations (customerId, flightId, rsvpDate, rsvpStatus, rsvpBy) values
-(1, 8, '2019-12-12', 'ACTIVE', 1);
+(1, 11, '2019-12-12', 'ACTIVE', 1);
 
 insert into Reservations (customerId, flightId, rsvpDate, rsvpStatus, rsvpBy) values
-(1, 10, '2019-12-12', 'CANCELLED', 0);
+(1, 13, '2019-12-12', 'CANCELLED', 0);
 
