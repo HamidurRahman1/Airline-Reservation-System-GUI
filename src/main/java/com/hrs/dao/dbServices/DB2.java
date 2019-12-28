@@ -721,8 +721,8 @@ public class DB2 implements Services
         {
             PreparedStatement ps = connection.prepareStatement(query);
             
-            ps.setString(1, LocalDate.now().toString());
-            ps.setString(2, LocalDate.now().toString());
+            ps.setString(1, Configuration.GET_CURRENT_DATE().toString());
+            ps.setString(2, Configuration.GET_CURRENT_DATE().toString());
             ps.setString(3, airportName);
             ps.setString(4, airportName);
     
