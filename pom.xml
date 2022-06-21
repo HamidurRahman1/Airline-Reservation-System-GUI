@@ -17,7 +17,7 @@
 
     <java.version>13</java.version>
     <javafx.version>13</javafx.version>
-    <mysql.connector.version>8.0.16</mysql.connector.version>
+    <mysql.connector.version>8.0.28</mysql.connector.version>
 
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
